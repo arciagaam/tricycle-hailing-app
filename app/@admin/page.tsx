@@ -1,7 +1,6 @@
-import React from 'react'
+import { redirect } from 'next/navigation';
+
 
 export default function AdminHomepage() {
-  return (
-    <div>ADMIN</div>
-  )
+    redirect('/dropoffs');
 }
