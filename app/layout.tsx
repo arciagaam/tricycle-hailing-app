@@ -26,7 +26,7 @@ export default function RootLayout({
   passenger: React.ReactNode;
 }>) {
 
-  const role = 3;
+  const role: number = 3;
 
   const renderPageByRole = () => {
     switch (role) {
