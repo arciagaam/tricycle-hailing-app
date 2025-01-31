@@ -1,6 +1,6 @@
 import { MainLayout } from '@/components/ui/main-layout';
 import React from 'react'
-import PassengerMenu from './_components/passengermenu';
+import PassengerMenu from './_components/PassengerMenu';
 
 type PassengerLayoutTypes = {
     children: React.ReactNode;
@@ -9,8 +9,8 @@ type PassengerLayoutTypes = {
 export default function PassengerLayout({ children }: PassengerLayoutTypes) {
     return (
         <MainLayout>
-            {children}
             <PassengerMenu />
+            {children}
         </MainLayout>
     )
 }
