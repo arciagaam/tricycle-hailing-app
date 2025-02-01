@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 import jwt from 'jsonwebtoken';
 import { baseUserSchema } from "@/lib/schema";
 import { z } from "zod";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,8 +41,6 @@ export default async function RootLayout({
 
     const decodedUser = jwt.decode(user?.value) as z.infer<typeof baseUserSchema>;
 
-    console.log('decodedUser', decodedUser)
-
     switch (decodedUser.roleId) {
       case 1: return admin;
       case 2: return driver;
@@ -53,6 +52,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <Toaster />
         {renderPageByRole()}
       </body>
     </html>
