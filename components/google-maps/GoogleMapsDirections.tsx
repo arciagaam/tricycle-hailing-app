@@ -13,7 +13,7 @@ export default function GoogleMapsDirections({ origin = { lat: 14.562339, lng: 1
 
     const containerStyle = {
         width: '100%',
-        height: '400px'
+        height: '100%'
     };
 
     const mapOptions = {

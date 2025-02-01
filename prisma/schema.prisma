@@ -71,7 +71,7 @@ enum DropOffStatus {
 }
 
 enum BookingStatus {
-  PENDING
+  BOOKING
   ACCEPTED
   ONGOING
   COMPLETED

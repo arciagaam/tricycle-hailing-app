@@ -11,7 +11,7 @@ export default function PassengerMenu() {
     const pathname = usePathname()
 
     return (
-        <NavigationMenu className='border-b drop-shadow-sm border-b-muted p-1 flex justify-center'>
+        <NavigationMenu className='border-t drop-shadow-sm border-t-muted p-1 flex justify-center'>
             <NavigationMenuList className='w-full flex flex-1 justify-evenly gap-4'>
                 <NavigationMenuItem>
                     <Link href={"/"} legacyBehavior passHref>

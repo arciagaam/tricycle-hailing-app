@@ -20,7 +20,7 @@ export default function GoogleMaps({ onMapClick, center }: GoogleMapsProps) {
 
     const containerStyle = {
         width: '100%',
-        height: '400px'
+        height: '100%'
     };
 
     const mapOptions = {
@@ -51,7 +51,7 @@ export default function GoogleMaps({ onMapClick, center }: GoogleMapsProps) {
 
         setPoint(null);
     }
-
+    
     if (isLoaded)
         return (
             <GoogleMap
