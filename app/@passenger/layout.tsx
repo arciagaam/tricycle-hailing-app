@@ -9,8 +9,8 @@ type PassengerLayoutTypes = {
 export default function PassengerLayout({ children }: PassengerLayoutTypes) {
     return (
         <MainLayout>
-            {children}
             <PassengerMenu />
+            {children}
         </MainLayout>
     )
 }
