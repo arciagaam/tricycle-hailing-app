@@ -18,31 +18,27 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+
 import { LucideMenu } from 'lucide-react'
 import Link from 'next/link'
+import { Button } from '@/components/ui/button'
+import { prisma } from '@/lib/prisma'
 
-const _DATA = [
-  {
-    id: 1,
-    name: 'Dropoff 1',
-    status: 'ACTIVE'
-  },
-  {
-    id: 2,
-    name: 'Dropoff 2',
-    status: 'ACTIVE'
-  },
-  {
-    id: 3,
-    name: 'Dropoff 1',
-    status: 'DISABLED'
-  },
-]
+export default async function ManageDropoffs() {
 
-export default function ManageDropoffs() {
+  const dropoffs = await prisma.dropOff.findMany();
+
   return (
     <div className="flex flex-col gap-5">
-      <h1>Manage Dropoffs</h1>
+
+      <div className="flex w-full justify-between">
+        <h1>Manage Dropoffs</h1>
+        <Link href={'/dropoffs/create'}>
+          <Button>
+            Create Dropoff
+          </Button>
+        </Link>
+      </div>
 
       <Table>
         <TableHeader>
@@ -54,7 +50,7 @@ export default function ManageDropoffs() {
         </TableHeader>
         <TableBody>
           {
-            _DATA.map((item, index) => (
+            dropoffs.map((item, index) => (
               <TableRow key={index}>
                 <TableCell className="font-medium">{item.name}</TableCell>
                 <TableCell>{item.status}</TableCell>
@@ -66,8 +62,10 @@ export default function ManageDropoffs() {
                       <DropdownMenuSeparator />
 
                       <DropdownMenuItem>
-                        <Link href={`dropoffs/${item.id}`}>View Dropoff</Link>
+                        <Link href={`/dropoffs/${item.id}`}>View Dropoff</Link>
                       </DropdownMenuItem>
+
+
                       <DropdownMenuSeparator />
 
                       <DropdownMenuGroup>

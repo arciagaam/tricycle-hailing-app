@@ -5,13 +5,22 @@ const bookingStatusEnum = z.enum(['PENDING', 'ACCEPTED', 'ONGOING', 'COMPLETED',
 
 export const baseDropOffSchema = z.object({
     id: z.coerce.number(),
-    name: z.string(),
-    longitude: z.string(),
-    latitude: z.string(),
+    name: z.string().min(1, 'Required'),
+    address: z.string().min(1, 'Required'),
+    longitude: z.string().min(1, 'Required'),
+    latitude: z.string().min(1, 'Required'),
     status: dropOffStatusEnum.default("ACTIVE"),
     createdAt: z.string().datetime(),
     updatedAt: z.string().datetime().nullable(),
     deletedAt: z.string().datetime().nullable(),
+})
+
+export const createDropoffSchema = baseDropOffSchema.omit({
+    id: true,
+    status: true,
+    createdAt: true,
+    updatedAt: true,
+    deletedAt: true,
 })
 
 export const roleSchema = z.object({
@@ -37,13 +46,13 @@ export const baseBookingSchema = z.object({
     id: z.coerce.number(),
     dropOffId: z.coerce.number(),
     dropOff: baseDropOffSchema,
-  
+
     driverId: z.number().int().positive(),
     driver: baseUserSchema,
-  
+
     passengerId: z.number().int().positive(),
     passenger: baseUserSchema,
-  
+
     status: bookingStatusEnum,
     pickupTime: z.string().datetime(),
     dropoffTime: z.string().datetime(),

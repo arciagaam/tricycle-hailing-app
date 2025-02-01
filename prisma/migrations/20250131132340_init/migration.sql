@@ -23,6 +23,7 @@ CREATE TABLE "Role" (
 CREATE TABLE "DropOff" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "name" TEXT NOT NULL,
+    "address" TEXT NOT NULL,
     "longitude" TEXT NOT NULL,
     "latitude" TEXT NOT NULL,
     "status" TEXT NOT NULL DEFAULT 'ACTIVE',

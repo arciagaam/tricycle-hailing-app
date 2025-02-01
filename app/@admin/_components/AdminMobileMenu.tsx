@@ -27,8 +27,8 @@ export default function AdminMobileMenu() {
             {
                 open &&
                 <div className="flex flex-col h-[90lvh]">
-                    <Link onClick={() => setOpen(false)} href={'dropoffs'} className='py-4 px-4'>Manage Dropoffs</Link>
-                    <Link onClick={() => setOpen(false)} href={'users'} className='py-4 px-4'>Manage Users</Link>
+                    <Link onClick={() => setOpen(false)} href={'/dropoffs'} className='py-4 px-4'>Manage Dropoffs</Link>
+                    <Link onClick={() => setOpen(false)} href={'/users'} className='py-4 px-4'>Manage Users</Link>
                 </div>
             }
         </div>
