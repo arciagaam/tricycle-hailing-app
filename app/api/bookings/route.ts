@@ -2,9 +2,10 @@ import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
+
     try {
         const data = await req.json()
-
+        
         const booking = await prisma.booking.create({
             data: { ...data, status: 'BOOKING' },
             include: {
@@ -17,11 +18,13 @@ export async function POST(req: Request) {
         return NextResponse.json({ message: 'Booking successfully created', data: booking }, { status: 201 });
 
     } catch (error) {
+        console.log('ERROR', error)
+
         if (error instanceof Error) {
-            return NextResponse.json({ message: error.message }, { status: 401 });
+            return NextResponse.json({ message: error.message }, { status: 400 });
         }
 
-        return NextResponse.json({ message: 'Something went wrong while creating booking' }, { status: 401 });
+        return NextResponse.json({ message: 'Something went wrong while creating booking' }, { status: 400 });
     }
 
 }
@@ -45,9 +48,9 @@ export async function PATCH(req: Request) {
         return NextResponse.json({ message: 'Booking successfully updated', data: booking }, { status: 201 });
     } catch (error) {
         if (error instanceof Error) {
-            return NextResponse.json({ message: error.message }, { status: 401 });
+            return NextResponse.json({ message: error.message }, { status: 400 });
         }
 
-        return NextResponse.json({ message: 'Something went wrong while updating booking' }, { status: 401 });
+        return NextResponse.json({ message: 'Something went wrong while updating booking' }, { status: 400 });
     }
 }

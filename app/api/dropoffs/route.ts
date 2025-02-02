@@ -23,10 +23,10 @@ export async function GET(req: Request) {
 
     } catch (error) {
         if (error instanceof Error) {
-            return NextResponse.json({ message: error.message }, { status: 401 });
+            return NextResponse.json({ message: error.message }, { status: 400 });
         }
 
-        return NextResponse.json({ message: 'Something went wrong while fetching dropoffs' }, { status: 401 });
+        return NextResponse.json({ message: 'Something went wrong while fetching dropoffs' }, { status: 400 });
     }
 }
 
@@ -34,6 +34,8 @@ export async function POST(req: Request) {
 
     try {
         const data = await req.json()
+
+        console.log('post', data)
 
         const dropoff = await prisma.dropoff.create({
             data: { ...data, status: 'ACTIVE' }
@@ -43,10 +45,10 @@ export async function POST(req: Request) {
 
     } catch (error) {
         if (error instanceof Error) {
-            return NextResponse.json({ message: error.message }, { status: 401 });
+            return NextResponse.json({ message: error.message }, { status: 400 });
         }
 
-        return NextResponse.json({ message: 'Something went wrong while creating dropoff' }, { status: 401 });
+        return NextResponse.json({ message: 'Something went wrong while creating dropoff' }, { status: 400 });
 
     }
 
