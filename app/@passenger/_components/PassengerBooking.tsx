@@ -12,6 +12,7 @@ import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { $Enums } from '@prisma/client'
 import { socket } from '@/socket'
+import { ResponsiveProvider } from '@/hooks/useResponsive'
 
 
 const bookingStatuses = [
@@ -89,9 +90,11 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
 
     return (
         <div className='h-full relative flex flex-col'>
-            {
-                selectedDropoff ? <GoogleMapsDirections destination={{ lat: parseFloat(selectedDropoff.latitude), lng: parseFloat(selectedDropoff.longitude) }} /> : <GoogleMaps />
-            }
+            <ResponsiveProvider>
+                {
+                    selectedDropoff ? <GoogleMapsDirections destination={{ lat: parseFloat(selectedDropoff.latitude), lng: parseFloat(selectedDropoff.longitude) }} /> : <GoogleMaps />
+                }
+            </ResponsiveProvider>
 
 
             <div className="flex flex-col w-[92dvw] h-fit absolute left-[4vw] bottom-[4dvh]">
