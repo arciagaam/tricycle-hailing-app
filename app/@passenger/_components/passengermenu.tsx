@@ -3,12 +3,19 @@
 import { Button } from '@/components/ui/button'
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from '@/components/ui/navigation-menu'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import React, { ReactElement, useState } from 'react'
 import { IconType } from 'react-icons/lib'
 import { MdClose, MdHome, MdList, MdLogout, MdMenu, MdPerson } from 'react-icons/md'
 
 export default function PassengerMenu() {
+    const router = useRouter()
+
+    const handleLogout = async () => {
+        await fetch('api/auth/logout')
+        router.refresh()
+    }
+
     const pathname = usePathname()
     const [navOpen, setNavOpen] = useState<boolean>(false);
 
@@ -70,7 +77,7 @@ export default function PassengerMenu() {
                             </NavigationMenuList>
                         </NavigationMenu>
                         <div className='mt-auto w-full p-4'>
-                            <Button className='hover:bg-muted border-muted bg-transparent shadow-none text-red-500 w-full flex'>
+                            <Button onClick={handleLogout} className='hover:bg-muted border-muted bg-transparent shadow-none text-red-500 w-full flex'>
                                 <MdLogout className='text-[24px] ' />
                                 Logout
                             </Button>
