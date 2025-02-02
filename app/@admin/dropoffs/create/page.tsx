@@ -51,11 +51,13 @@ export default function CreateDropoff() {
 
     return (
 
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-5 w-full">
 
             <h1>Create Dropoff</h1>
-
-            <GoogleMaps onMapClick={handleMapClick} />
+            
+            <div className="w-full h-[400px]">
+                <GoogleMaps onMapClick={handleMapClick} />
+            </div>
 
             <Form {...createDropoffForm}>
                 <form onSubmit={createDropoffForm.handleSubmit(onSubmit)} className='flex flex-col gap-5'>
