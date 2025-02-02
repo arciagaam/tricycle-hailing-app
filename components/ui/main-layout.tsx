@@ -10,7 +10,7 @@ const MainLayout = ({ children, className }: MainLayoutTypes) => {
     return (
         <div className={
             twMerge(
-                `justify-center items-center flex flex-col w-dvh h-dvh`,
+                `justify-center items-center flex w-dvh h-dvh relative overflow-hidden`,
                 className
             )
         }>

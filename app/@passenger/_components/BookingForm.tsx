@@ -21,53 +21,50 @@ export default function BookingForm() {
     }
 
     return (
-        <div className="flex flex-col w-full h-full">
-
+        <div className='h-full relative flex flex-col'>
             {
                 selectedDropoff ? <GoogleMapsDirections destination={{ lat: parseFloat(selectedDropoff.latitude), lng: parseFloat(selectedDropoff.longitude) }} /> : <GoogleMaps />
             }
+            <div className="flex flex-col w-[92dvw] h-fit absolute left-[4vw] bottom-[4dvh]">
+                <div className="flex flex-col gap-2 w-full justify-self-center self-center">
+                    {
+                        dropoffs &&
+                        <div className="flex flex-col absolute left-0 bottom-[100%] p-4 bg-white w-full">
+                            {
+                                dropoffs.map((dropoff) => (
+                                    <button onClick={() => setSelectedDropoff(dropoff)} key={dropoff.id} className="flex">
+                                        {dropoff.name}
+                                    </button>
+                                ))
+                            }
+                        </div>
+                    }
+                    <div className='w-full flex rounded-md gap-2 p-4 bg-background'>
+                        <div className='flex flex-col gap-0.5 justify-center items-center'>
+                            <MdSchool size={24} className='min-w-[20px]' />
+                            <CiMenuKebab />
+                            <label htmlFor='drop-off'>
+                                <MdPinDrop size={24} className='min-w-[20px] text-primary' />
+                            </label>
+                        </div>
 
+                        <div className='flex flex-col gap-2 w-full'>
 
-
-
-            <div className="flex flex-col gap-2 w-full p-4 justify-self-center self-center relative">
-                {
-                    dropoffs &&
-                    <div className="flex flex-col absolute left-0 bottom-[100%] p-4 bg-white w-full">
-                        {
-                            dropoffs.map((dropoff) => (
-                                <button onClick={() => setSelectedDropoff(dropoff)} key={dropoff.id} className="flex">
-                                    {dropoff.name}
-                                </button>
-                            ))
-                        }
+                            <Input
+                                className='text-muted-foreground text-ellipsis border-none shadow-none focus:border-none focus-visible:ring-0'
+                                value={'San Beda University - Rizal | Taytay'}
+                                readOnly
+                            />
+                            <SearchDropOff getFetchedDropoffs={getFetchedDropoffs} setDropoffs={setDropoffs}/>
+                        </div>
                     </div>
-                }
-                <div className='w-full flex rounded-md gap-2 bg-white'>
-                    <div className='flex flex-col gap-0.5 justify-center items-center'>
-                        <MdSchool size={24} className='min-w-[20px]' />
-                        <CiMenuKebab />
-                        <label htmlFor='drop-off'>
-                            <MdPinDrop size={24} className='min-w-[20px] text-primary' />
-                        </label>
-                    </div>
+                    <Button className='w-full focus:bg-primary/80'>
+                        Book
+                    </Button>
 
-                    <div className='flex flex-col gap-2 w-full'>
-
-                        <Input
-                            className='text-muted-foreground text-ellipsis border-none shadow-none focus:border-none focus-visible:ring-0'
-                            value={'San Beda University - Rizal | Taytay'}
-                            readOnly
-                        />
-                        <SearchDropOff getFetchedDropoffs={getFetchedDropoffs} />
-                    </div>
                 </div>
 
-                <Button className='w-full focus:bg-primary/80'>
-                    Book
-                </Button>
             </div>
-
         </div>
     )
 }
