@@ -7,9 +7,11 @@ export function middleware(request: NextRequest) {
         return NextResponse.next();
     }
 
-    if (!authCookie && !request.nextUrl.pathname.startsWith('/login')) return NextResponse.redirect(new URL('/login', request.url));
+    if (!authCookie && !request.nextUrl.pathname.startsWith('/login') && !request.nextUrl.pathname.startsWith('/register')) {
+        return NextResponse.redirect(new URL('/login', request.url));
+    }
 
-    if (authCookie && request.nextUrl.pathname.startsWith('/login')) {
+    if (authCookie && (request.nextUrl.pathname.startsWith('/login') || request.nextUrl.pathname.startsWith('/register'))) {
         return NextResponse.redirect(new URL('/', request.url));
     }
 

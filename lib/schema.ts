@@ -42,6 +42,15 @@ export const baseUserSchema = z.object({
     deletedAt: z.string().datetime().nullable(),
 })
 
+export const createUserSchema = baseUserSchema.omit({
+    id: true,
+    role: true,
+    roleId: true,
+    createdAt: true,
+    updatedAt: true,
+    deletedAt: true,
+})
+
 export const baseBookingSchema = z.object({
     id: z.coerce.number(),
     dropoffId: z.coerce.number(),
