@@ -39,7 +39,6 @@ export default async function RootLayout({
 
     if (!user) return children;
 
-    console.log(user)
     const decodedUser = jwt.decode(user?.value) as z.infer<typeof baseUserSchema>;
 
     switch (decodedUser.roleId) {

@@ -10,8 +10,6 @@ export async function POST(req: Request) {
         data.password = hashSync(data.password, genSaltSync(10))
         data.roleId = 3
 
-        console.log(data)
-
         const user = await prisma.user.create({
             data: data
 
