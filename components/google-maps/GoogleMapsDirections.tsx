@@ -18,7 +18,9 @@ export default function GoogleMapsDirections({ origin = { lat: 14.562339, lng: 1
 
     const mapOptions = {
         fullscreenControl: false,
-        zoomControl: true,
+        zoomControl: false,
+        maxZoom: 15,
+        minZoom: 14,
         streetViewControl: false,
         mapTypeControl: false,
         libraries: ['directions'],

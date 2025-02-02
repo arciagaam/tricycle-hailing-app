@@ -10,6 +10,10 @@ export async function GET(req: Request) {
             filters.name = { contains: searchParams.get('name') }
         }
 
+        if (searchParams.has('status')) {
+            filters.status = searchParams.get('status')
+        }
+
         const dropoffs = await prisma.dropOff.findMany({
             where: Object.keys(filters).length ? filters : undefined
         });

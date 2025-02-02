@@ -2,11 +2,8 @@ import { MainLayout } from '@/components/ui/main-layout';
 import React from 'react'
 import UserMenu from '../_components/UserMenu';
 
-type PassengerLayoutTypes = {
-    children: React.ReactNode;
-}
 
-export default function PassengerLayout({ children }: PassengerLayoutTypes) {
+export default function DriverLayout({ children }: { children: React.ReactNode }) {
     return (
         <MainLayout>
             {children}
