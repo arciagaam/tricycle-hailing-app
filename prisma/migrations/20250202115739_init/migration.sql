@@ -20,7 +20,7 @@ CREATE TABLE "Role" (
 );
 
 -- CreateTable
-CREATE TABLE "DropOff" (
+CREATE TABLE "Dropoff" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "name" TEXT NOT NULL,
     "address" TEXT NOT NULL,
@@ -35,23 +35,17 @@ CREATE TABLE "DropOff" (
 -- CreateTable
 CREATE TABLE "Booking" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "dropOffId" INTEGER NOT NULL,
-    "driverId" INTEGER NOT NULL,
+    "dropoffId" INTEGER NOT NULL,
+    "driverId" INTEGER,
     "passengerId" INTEGER NOT NULL,
     "status" TEXT NOT NULL,
-    "pickupTime" DATETIME NOT NULL,
-    "dropoffTime" DATETIME NOT NULL,
+    "pickupTime" DATETIME,
+    "dropoffTime" DATETIME,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT "Booking_dropOffId_fkey" FOREIGN KEY ("dropOffId") REFERENCES "DropOff" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT "Booking_driverId_fkey" FOREIGN KEY ("driverId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "Booking_dropoffId_fkey" FOREIGN KEY ("dropoffId") REFERENCES "Dropoff" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "Booking_driverId_fkey" FOREIGN KEY ("driverId") REFERENCES "User" ("id") ON DELETE SET NULL ON UPDATE CASCADE,
     CONSTRAINT "Booking_passengerId_fkey" FOREIGN KEY ("passengerId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
-
--- CreateIndex
-CREATE UNIQUE INDEX "User_roleId_key" ON "User"("roleId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Booking_dropOffId_key" ON "Booking"("dropOffId");

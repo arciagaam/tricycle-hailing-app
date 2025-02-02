@@ -6,7 +6,7 @@ import DropoffsTable from './_components/DropoffsTable';
 
 export default async function ManageDropoffs() {
 
-  const dropoffs = await prisma.dropOff.findMany();
+  const dropoffs = await prisma.dropoff.findMany();
 
   return (
     <div className="flex flex-col gap-5">

@@ -14,7 +14,7 @@ export async function GET(req: Request) {
             filters.status = searchParams.get('status')
         }
 
-        const dropoffs = await prisma.dropOff.findMany({
+        const dropoffs = await prisma.dropoff.findMany({
             where: Object.keys(filters).length ? filters : undefined
         });
 
@@ -35,7 +35,7 @@ export async function POST(req: Request) {
     try {
         const data = await req.json()
 
-        const dropoff = await prisma.dropOff.create({
+        const dropoff = await prisma.dropoff.create({
             data: { ...data, status: 'ACTIVE' }
         });
 

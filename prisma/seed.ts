@@ -38,6 +38,14 @@ async function main() {
         roleId: 2,
       },
       {
+        username: 'driver2',
+        password: hashSync('password', genSaltSync(10)),
+        firstName: 'Mang',
+        middleName: 'A',
+        lastName: 'Tsuper',
+        roleId: 2,
+      },
+      {
         username: 'passenger',
         password: hashSync('password', genSaltSync(10)),
         firstName: 'Alice',
@@ -45,8 +53,28 @@ async function main() {
         lastName: 'Smith',
         roleId: 3,
       },
+      {
+        username: 'passenger2',
+        password: hashSync('password', genSaltSync(10)),
+        firstName: 'Pass',
+        middleName: 'B',
+        lastName: 'Enger',
+        roleId: 3,
+      },
     ],
   });
+
+  await prisma.dropoff.createMany({
+    data: [
+      {
+        name: 'Villa Montserrat',
+        address: 'Villa Montserrat Havila Phase 1',
+        longitude: '121.15185416462482',
+        latitude: '14.56021890541903',
+        status: 'ACTIVE'
+      }
+    ]
+  })
 
   console.log('✅ Seeding completed!');
 }

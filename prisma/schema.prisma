@@ -21,7 +21,7 @@ model User {
   middleName          String
   lastName            String
   role                Role      @relation(fields: [roleId], references: [id])
-  roleId              Int       @unique
+  roleId              Int
   createdAt           DateTime  @default(now())
   updatedAt           DateTime? @updatedAt
   deletedAt           DateTime?
@@ -30,12 +30,12 @@ model User {
 }
 
 model Role {
-  id   Int    @id @default(autoincrement())
-  name String
-  user User?
+  id    Int    @id @default(autoincrement())
+  name  String
+  users User[]
 }
 
-model DropOff {
+model Dropoff {
   id        Int           @id @default(autoincrement())
   name      String
   address   String
@@ -50,18 +50,18 @@ model DropOff {
 
 model Booking {
   id        Int     @id @default(autoincrement())
-  dropOff   DropOff @relation(fields: [dropOffId], references: [id])
-  dropOffId Int     @unique
+  dropoff   Dropoff @relation(fields: [dropoffId], references: [id])
+  dropoffId Int
 
-  driver   User @relation(name: "DriverRelation", fields: [driverId], references: [id])
-  driverId Int
+  driver   User? @relation(name: "DriverRelation", fields: [driverId], references: [id])
+  driverId Int?
 
   passenger   User @relation(name: "PassengerRelation", fields: [passengerId], references: [id])
   passengerId Int
 
   status      BookingStatus
-  pickupTime  DateTime
-  dropoffTime DateTime
+  pickupTime  DateTime?
+  dropoffTime DateTime?
   createdAt   DateTime      @default(now())
 }
 
@@ -71,9 +71,9 @@ enum DropOffStatus {
 }
 
 enum BookingStatus {
-  BOOKING
-  ACCEPTED
-  ONGOING
-  COMPLETED
-  CANCELLED
+  BOOKING // Waiting kung may mabbook
+  ACCEPTED // Booking accepted and Driver is OTW (Cancellable)
+  ONGOING // Passenger picked up
+  COMPLETED // Passenger dropped off
+  CANCELLED // Cancelled
 }

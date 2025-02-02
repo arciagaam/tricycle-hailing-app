@@ -6,7 +6,7 @@ export async function PUT(req: Request) {
     try {
         const data = await req.json()
 
-        const dropoff = await prisma.dropOff.update({
+        const dropoff = await prisma.dropoff.update({
             where: {
                 id: data.id
             },

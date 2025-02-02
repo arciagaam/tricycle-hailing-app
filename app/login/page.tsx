@@ -7,6 +7,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { socket } from "@/socket";
 
 export default function Login() {
   const router = useRouter();
@@ -28,7 +29,7 @@ export default function Login() {
     if (res.ok) {
       router.push('/')
     }
-    
+
   }
 
   return (

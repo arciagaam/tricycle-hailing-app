@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-const dropOffStatusEnum = z.enum(['ACTIVE', 'DISABLED']);
+const dropoffStatusEnum = z.enum(['ACTIVE', 'DISABLED']);
 const bookingStatusEnum = z.enum(['PENDING', 'ACCEPTED', 'ONGOING', 'COMPLETED', 'CANCELLED'])
 
 export const baseDropOffSchema = z.object({
@@ -9,7 +9,7 @@ export const baseDropOffSchema = z.object({
     address: z.string().min(1, 'Required'),
     longitude: z.string().min(1, 'Required'),
     latitude: z.string().min(1, 'Required'),
-    status: dropOffStatusEnum.default("ACTIVE"),
+    status: dropoffStatusEnum.default("ACTIVE"),
     createdAt: z.string().datetime(),
     updatedAt: z.string().datetime().nullable(),
     deletedAt: z.string().datetime().nullable(),
@@ -44,8 +44,8 @@ export const baseUserSchema = z.object({
 
 export const baseBookingSchema = z.object({
     id: z.coerce.number(),
-    dropOffId: z.coerce.number(),
-    dropOff: baseDropOffSchema,
+    dropoffId: z.coerce.number(),
+    dropoff: baseDropOffSchema,
 
     driverId: z.number().int().positive(),
     driver: baseUserSchema,
@@ -65,7 +65,7 @@ export const userBookingRelationSchema = baseUserSchema.extend({
     bookingsAsPassenger: z.array(baseBookingSchema)
 })
 
-export const dropOffBookingRelationSchema = baseDropOffSchema.extend({
+export const dropoffBookingRelationSchema = baseDropOffSchema.extend({
     bookings: z.array(baseBookingSchema)
 })
 

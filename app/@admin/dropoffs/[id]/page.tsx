@@ -7,7 +7,7 @@ import GoogleMapsDirections from '@/components/google-maps/GoogleMapsDirections'
 export default async function ViewDropoff({ params }: { params: { id: string } }) {
     const { id } = await params;
 
-    const dropoff = await prisma.dropOff.findFirst({
+    const dropoff = await prisma.dropoff.findFirst({
         where: {
             id: parseInt(id)
         }

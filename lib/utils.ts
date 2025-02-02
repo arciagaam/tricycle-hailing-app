@@ -14,3 +14,4 @@ export const debounce = <T extends (...args: unknown[]) => void>(func: T, delay:
     }, delay);
   };
 };
+

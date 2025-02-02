@@ -1,35 +1,40 @@
-import GoogleMapsDirections from '@/components/google-maps/GoogleMapsDirections'
-import { Button } from '@/components/ui/button'
-import React from 'react'
+import { prisma } from '@/lib/prisma'
+import jwt from 'jsonwebtoken'
+import { baseUserSchema } from '@/lib/schema'
+import { z } from 'zod'
+import { cookies } from 'next/headers'
+import DriverBookingWrapper from './_components/DriverBookingWrapper'
 
-export default function DriverHomepage() {
-  return (
+export default async function DriverHomepage() {
 
-    <div className='bg-background w-full h-full flex flex-col gap-2 p-4 overflow-auto'>
-      <h2>Available Bookings</h2>
+  const cookiesStore = await cookies();
+  const user = cookiesStore.get('auth')
 
-      {[1, 2, 3, 4, 5, 6, 7].map(booking => (
-        <div key={booking} className="flex flex-col p-2 rounded-md border gap-5">
+  const decodedUser = jwt.decode(user!.value) as z.infer<typeof baseUserSchema>;
 
-          <div className="h-[300px] w-full">
-            <GoogleMapsDirections destination={{ lat: 14.56021890541903, lng: 121.15185416462482 }} />
-          </div>
+  const booking = await prisma.booking.findFirst({
+    where: {
+      status: { in: ['ACCEPTED', 'ONGOING'] },
+      driverId: decodedUser.id
+    },
+    include: {
+      dropoff: true,
+      passenger: true,
+      driver: true,
+    }
+  });
 
-          <div className="flex flex-col">
-            <div className="flex w-full justify-between">
-              <p>Dropoff</p>
-              <p>P50.00</p>
-            </div>
+  const bookings = await prisma.booking.findMany({
+    where: {
+      status: 'BOOKING',
+    },
+    include: {
+      dropoff: true,
+      passenger: true
+    }
+  })
 
-            <p>Passenger</p>
-          </div>
-
-          <Button className='ml-auto'>Accept Booking</Button>
+  return <DriverBookingWrapper booking={booking} bookings={bookings} user={decodedUser} />
 
 
-        </div>
-      ))}
-    </div>
-
-  )
 }
