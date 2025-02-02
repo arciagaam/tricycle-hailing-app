@@ -4,7 +4,12 @@ import { baseDropOffSchema } from '@/lib/schema';
 import React, { useEffect, useRef, useState } from 'react'
 import { z } from 'zod';
 
-export default function SearchDropOff({ getFetchedDropoffs }: { getFetchedDropoffs: (dropoffs: z.infer<typeof baseDropOffSchema>[]) => void }) {
+type TSearchDropOff = {
+    getFetchedDropoffs: (dropoffs: z.infer<typeof baseDropOffSchema>[]) => void; 
+    setDropoffs: React.Dispatch<React.SetStateAction<z.infer<typeof baseDropOffSchema>[]|null|undefined>>;
+}
+
+export default function SearchDropOff({ getFetchedDropoffs, setDropoffs }: TSearchDropOff) {
 
     const [value, setValue] = useState<string | null>(null)
 
@@ -21,22 +26,26 @@ export default function SearchDropOff({ getFetchedDropoffs }: { getFetchedDropof
     };
 
     useEffect(() => {
-        const getDropoffs = async () => {
+        if (value) {
+            const getDropoffs = async () => {
 
-            if (value) {
-                const res = await fetch(`api/dropoffs?name=${value}`)
+                if (value) {
+                    const res = await fetch(`api/dropoffs?name=${value}`)
 
-                if (res.ok) {
+                    if (res.ok) {
 
-                    const resDropoff = await res.json();
+                        const resDropoff = await res.json();
 
-                    getFetchedDropoffs(resDropoff.data)
+                        getFetchedDropoffs(resDropoff.data)
+                    }
+                    // console.log(dropoffs)
                 }
-                // console.log(dropoffs)
             }
-        }
 
-        getDropoffs();
+            getDropoffs();
+        } else {
+            setDropoffs(null)
+        }
     }, [value])
 
     return (
