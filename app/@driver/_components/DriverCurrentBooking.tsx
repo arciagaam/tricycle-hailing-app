@@ -1,9 +1,12 @@
 import GoogleMapsDirections from '@/components/google-maps/GoogleMapsDirections'
 import { Button } from '@/components/ui/button'
+import { ResponsiveProvider } from '@/hooks/useResponsive'
+import { baseBookingSchema } from '@/lib/schema'
 import { socket } from '@/socket'
 import React from 'react'
+import { z } from 'zod'
 
-export default function DriverCurrentBooking({ booking }: { booking: any }) {
+export default function DriverCurrentBooking({ booking }: { booking: z.infer<typeof baseBookingSchema> }) {
     const pickupPassenger = async () => {
         const res = await fetch('api/bookings', {
             method: 'PATCH',
@@ -14,7 +17,7 @@ export default function DriverCurrentBooking({ booking }: { booking: any }) {
             })
         })
 
-        if(res.ok) {
+        if (res.ok) {
             const booking = await res.json();
             socket.emit('pickup_passenger', booking.data)
         }
@@ -30,14 +33,16 @@ export default function DriverCurrentBooking({ booking }: { booking: any }) {
             })
         })
 
-        if(res.ok) {
+        if (res.ok) {
             const booking = await res.json();
             socket.emit('dropoff_passenger', booking.data)
         }
     }
     return (
         <div className="flex flex-col w-full h-full">
-            <GoogleMapsDirections destination={{ lat: parseFloat(booking.dropoff.latitude), lng: parseFloat(booking.dropoff.longitude) }} />
+            <ResponsiveProvider>
+                <GoogleMapsDirections destination={{ lat: parseFloat(booking.dropoff.latitude), lng: parseFloat(booking.dropoff.longitude) }} />
+            </ResponsiveProvider>
 
             <div className='flex flex-col w-[92dvw] h-fit absolute left-[4vw] bottom-[4dvh]'>
                 <div className="w-full flex flex-col bg-background rounded-md p-4 gap-5">

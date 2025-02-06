@@ -3,6 +3,7 @@ import Link from 'next/link';
 import React from 'react'
 import { FaChevronLeft } from "react-icons/fa";
 import GoogleMapsDirections from '@/components/google-maps/GoogleMapsDirections';
+import { ResponsiveProvider } from '@/hooks/useResponsive';
 
 export default async function ViewDropoff({ params }: { params: { id: string } }) {
     const { id } = await params;
@@ -26,7 +27,9 @@ export default async function ViewDropoff({ params }: { params: { id: string } }
 
             <div className="relative w-full rounded-md aspect-square">
                 {/* <GoogleMaps center={{ lat: parseFloat(dropoff.latitude), lng: parseFloat(dropoff.longitude) }} /> */}
-                <GoogleMapsDirections destination={{ lat: parseFloat(dropoff.latitude), lng: parseFloat(dropoff.longitude) }} />
+                <ResponsiveProvider>
+                    <GoogleMapsDirections destination={{ lat: parseFloat(dropoff.latitude), lng: parseFloat(dropoff.longitude) }} />
+                </ResponsiveProvider>
 
                 <div className="absolute flex gap-2 items-center bg-white py-1 px-3 w-fit rounded-full right-2 top-2">
                     <div className="size-2 bg-green-600 aspect-square rounded-full"></div>

@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from '@/components/ui/navigation-menu'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import { IconType } from 'react-icons/lib'
 import { MdClose, MdHome, MdList, MdLogout, MdMenu, MdPerson } from 'react-icons/md'
 
@@ -43,6 +43,10 @@ export default function PassengerMenu() {
         },
     ]
 
+    useEffect(() => {
+        setNavOpen(false)
+    }, [pathname])
+
     return (
         <div className={`relative h-full max-w-0`}>
             {!navOpen ? (
@@ -56,7 +60,7 @@ export default function PassengerMenu() {
                     <div className='absolute z-[9999] max-w-fit top-0 flex flex-col shadow-md border-t-muted min-h-dvh bg-background'>
 
                         <div className='flex gap-2 w-full p-4 items-center justify-between'>
-                            <h1 className='text-lg text-primary font-bold tracking-tighter'>IT MOVE</h1>
+                            <h1 className='text-lg text-primary font-bold tracking-tighter'>IT MOVE <span>RIDER</span></h1>
                             <Button onClick={() => setNavOpen(false)} type='button' className='!focus:text-primary bg-transparent hover:bg-muted shadow-none w-fit h-fit p-0.5'>
                                 <MdClose className='text-black/80 focus:text-primary text-[24px]' />
                             </Button>
