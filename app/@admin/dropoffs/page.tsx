@@ -3,25 +3,28 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { prisma } from '@/lib/prisma'
 import DropoffsTable from './_components/DropoffsTable';
+import PageTitle from '@/app/_components/PageTitle';
 
 export default async function ManageDropoffs() {
 
   const dropoffs = await prisma.dropoff.findMany();
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col">
+      <PageTitle title={
+        <p className='whitespace-nowrape'>Manage Dropoffs</p>
 
-      <div className="flex w-full justify-between">
-        <h1>Manage Dropoffs</h1>
-        <Link href={'/dropoffs/create'}>
-          <Button>
-            Create Dropoff
-          </Button>
-        </Link>
+      } />
+      <div className='w-full h-full p-4 gap-2'>
+        <div className='flex w-full justify-end items-center'>
+          <Link href={'/dropoffs/create'}>
+            <Button>
+              Create Dropoff
+            </Button>
+          </Link>
+        </div>
+        <DropoffsTable dropoffs={dropoffs} />
       </div>
-
-      <DropoffsTable dropoffs={dropoffs} />
-
     </div>
   )
 }
