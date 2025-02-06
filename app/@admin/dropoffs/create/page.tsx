@@ -11,6 +11,7 @@ import { z } from 'zod'
 import toast from 'react-hot-toast';
 import Link from 'next/link'
 import GoogleMaps from '@/components/google-maps/GoogleMaps'
+import PageTitle from '@/app/_components/PageTitle'
 
 export default function CreateDropoff() {
 
@@ -51,51 +52,52 @@ export default function CreateDropoff() {
 
     return (
 
-        <div className="flex flex-col gap-5 w-full">
+        <div className="flex flex-col w-full">
+            <PageTitle title="Create Dropoff" showBackButton returnUrl='/dropoffs'/>
 
-            <h1>Create Dropoff</h1>
-            
-            <div className="w-full h-[400px]">
-                <GoogleMaps onMapClick={handleMapClick} />
+            <div className='flex flex-col w-full h-full p-4 gap-5'>
+                <div className="w-full h-[400px]">
+                    <GoogleMaps onMapClick={handleMapClick} />
+                </div>
+
+                <Form {...createDropoffForm}>
+                    <form onSubmit={createDropoffForm.handleSubmit(onSubmit)} className='flex flex-col gap-5'>
+                        <FormField
+                            control={createDropoffForm.control}
+                            name="name"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Dropoff Name</FormLabel>
+                                    <FormControl>
+                                        <Input {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={createDropoffForm.control}
+                            name="address"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Address</FormLabel>
+                                    <FormControl>
+                                        <Input {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <div className="flex gap-1 ml-auto">
+                            <Link href={'..'} rel='path'>
+                                <Button type='button' variant={'destructive'}>Cancel</Button>
+                            </Link>
+                            <Button>Submit</Button>
+                        </div>
+                    </form>
+                </Form>
             </div>
-
-            <Form {...createDropoffForm}>
-                <form onSubmit={createDropoffForm.handleSubmit(onSubmit)} className='flex flex-col gap-5'>
-                    <FormField
-                        control={createDropoffForm.control}
-                        name="name"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Dropoff Name</FormLabel>
-                                <FormControl>
-                                    <Input {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={createDropoffForm.control}
-                        name="address"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Address</FormLabel>
-                                <FormControl>
-                                    <Input {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-
-                    <div className="flex gap-1 ml-auto">
-                        <Link href={'..'} rel='path'>
-                            <Button type='button' variant={'destructive'}>Cancel</Button>
-                        </Link>
-                        <Button>Submit</Button>
-                    </div>
-                </form>
-            </Form>
         </div>
     )
 }
