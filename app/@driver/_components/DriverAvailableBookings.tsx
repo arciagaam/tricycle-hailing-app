@@ -1,15 +1,17 @@
 'use client'
 
+import PageTitle from '@/app/_components/PageTitle'
 import GoogleMapsDirections from '@/components/google-maps/GoogleMapsDirections'
 import { Button } from '@/components/ui/button'
-import { baseUserSchema } from '@/lib/schema'
+import { ResponsiveProvider } from '@/hooks/useResponsive'
+import { baseBookingSchema, baseUserSchema } from '@/lib/schema'
 import { socket } from '@/socket'
 import React from 'react'
 import { z } from 'zod'
 
-export default function DriverAvailableBookings({ bookings, user }: { bookings: any, user: z.infer<typeof baseUserSchema> }) { 
+export default function DriverAvailableBookings({ bookings, user }: { bookings: z.infer<typeof baseBookingSchema>[], user: z.infer<typeof baseUserSchema> }) {
 
-    const acceptBooking = async (booking: any) => {
+    const acceptBooking = async (booking: z.infer<typeof baseBookingSchema>) => {
         const res = await fetch('api/bookings', {
             method: 'PATCH',
             body: JSON.stringify({
@@ -28,13 +30,15 @@ export default function DriverAvailableBookings({ bookings, user }: { bookings: 
     return (
 
         <div className='bg-background w-full h-full flex flex-col gap-2 p-4 overflow-auto'>
-            <h2>Available Bookings</h2>
+            <PageTitle title='Available Bookings'/>
 
             {bookings?.map(booking => (
                 <div key={booking.id} className="flex flex-col p-2 rounded-md border gap-5">
 
                     <div className="h-[300px] w-full">
-                        <GoogleMapsDirections destination={{ lat: parseFloat(booking.dropoff.latitude), lng: parseFloat(booking.dropoff.longitude) }} />
+                        <ResponsiveProvider>
+                            <GoogleMapsDirections destination={{ lat: parseFloat(booking.dropoff.latitude), lng: parseFloat(booking.dropoff.longitude) }} />
+                        </ResponsiveProvider>
                     </div>
 
                     <div className="flex flex-col">

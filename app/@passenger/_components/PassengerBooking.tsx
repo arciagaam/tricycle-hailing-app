@@ -7,7 +7,7 @@ import { MdPinDrop, MdSchool } from 'react-icons/md'
 import SearchDropOff from './SearchDropOff'
 import GoogleMaps from '@/components/google-maps/GoogleMaps'
 import GoogleMapsDirections from '@/components/google-maps/GoogleMapsDirections'
-import { baseDropOffSchema, baseUserSchema } from '@/lib/schema'
+import { baseBookingSchema, baseDropOffSchema, baseUserSchema } from '@/lib/schema'
 import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { $Enums } from '@prisma/client'
@@ -148,7 +148,7 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
     )
 }
 
-const GetCurrentStatusScreen = ({ booking }: { booking: any }) => {
+const GetCurrentStatusScreen = ({ booking }: { booking: z.infer<typeof baseBookingSchema> }) => {
     switch (booking.status.toLowerCase()) {
         case 'booking': return <BookingScreen booking={booking} />;
         case 'accepted': return <InProgressScreen booking={booking} />;
@@ -158,25 +158,55 @@ const GetCurrentStatusScreen = ({ booking }: { booking: any }) => {
 }
 
 
-const BookingScreen = ({ booking }: { booking: any }) => {
+const BookingScreen = ({ booking }: { booking: z.infer<typeof baseBookingSchema> }) => {
+    // const [loading, setLoading] = useState<boolean>(false);
+    // const [count, setCount] = useState<number>(0);
+
+    // useEffect(() => {
+    //     if (booking.status.toLowerCase() === 'booking') {
+    //         setLoading(true)
+    //     }
+    // }, [booking])
+
+
+    // useEffect(() => {
+    //     const animateLoading = () => {
+    //         while (loading) {
+    //             setTimeout(() => {
+    //                 setCount((prev) => prev + 1)
+    //                 if (count === 3) {
+    //                     setCount(0)
+    //                 }
+    //             }, 1000)
+    //         }
+    //     }
+
+    //     animateLoading();
+    // }, [])
+
 
     return (
         <div className="w-full flex flex-col rounded-md gap-2 p-4 bg-background">
-            <p>Ride Details</p>
+            <p className='text-muted-foreground'>Ride Details</p>
 
-            <p>Dropoff: <span>{booking?.dropoff?.address}</span></p>
-            <p>Fare: <span>P50.00</span></p>
+            <p>Dropoff to <span>{booking?.dropoff?.address}</span></p>
+            <p><span>P50.00</span></p>
 
             <hr />
 
-            Looking for drivers...
+            <div>
+                Looking for drivers . . .
+                {/* {count === 1 && <p>.</p>}
+                {count === 2 && <p>..</p>}
+                {count === 3 && <p>...</p>} */}
+            </div>
 
             <Button variant={'destructive'}>Cancel Booking</Button>
         </div>
     )
 }
 
-const InProgressScreen = ({ booking }: { booking: any }) => {
+const InProgressScreen = ({ booking }: { booking: z.infer<typeof baseBookingSchema> }) => {
     return (
 
         <div className="flex flex-col bg-background rounded-md p-4 gap-5">
