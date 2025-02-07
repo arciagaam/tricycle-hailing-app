@@ -6,7 +6,7 @@ import React from 'react'
 import jwt from 'jsonwebtoken'
 import { baseUserSchema } from '@/lib/schema'
 import { z } from 'zod'
-export default async function ActivityPage() {
+export default async function PassengerActivities() {
     const cookiesStore = await cookies();
     const user = cookiesStore.get('auth')
 
@@ -22,6 +22,7 @@ export default async function ActivityPage() {
             dropoff: true
         }
     })
+
 
     if (bookings)
         return (

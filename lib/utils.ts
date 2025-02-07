@@ -15,3 +15,8 @@ export const debounce = <T extends (...args: unknown[]) => void>(func: T, delay:
   };
 };
 
+export const handleFullName = (fullName: { firstName: string | undefined, middleName: string | undefined, lastName: string | undefined }) => {
+  const { firstName, middleName, lastName } = fullName;
+
+  return `${firstName}${middleName ? ` ${middleName} ` : ' '}${lastName}`
+}

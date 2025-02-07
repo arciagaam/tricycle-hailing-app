@@ -41,6 +41,7 @@ model Dropoff {
   address   String
   longitude String
   latitude  String
+  fare      String
   status    DropOffStatus @default(ACTIVE)
   createdAt DateTime      @default(now())
   updatedAt DateTime?     @updatedAt

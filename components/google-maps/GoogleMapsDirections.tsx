@@ -1,11 +1,11 @@
 'use client'
 
-import { useResponsive } from '@/hooks/useResponsive';
+import useScreenWidth from '@/hooks/useScreenWidth';
 import { DirectionsRenderer, DirectionsService, GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 import React, { useState } from 'react'
 
 export default function GoogleMapsDirections({ origin = { lat: 14.562339, lng: 121.150040 }, destination }: { origin?: { lat: number; lng: number }, destination: { lat: number; lng: number } }) {
-    const { isMobile } = useResponsive();
+    const { isMobile } = useScreenWidth();
 
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',

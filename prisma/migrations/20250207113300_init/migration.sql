@@ -29,7 +29,8 @@ CREATE TABLE "Dropoff" (
     "status" TEXT NOT NULL DEFAULT 'ACTIVE',
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME,
-    "deletedAt" DATETIME
+    "deletedAt" DATETIME,
+    "fare" TEXT NOT NULL
 );
 
 -- CreateTable

@@ -71,7 +71,8 @@ async function main() {
         address: 'Villa Montserrat Havila Phase 1',
         longitude: '121.15185416462482',
         latitude: '14.56021890541903',
-        status: 'ACTIVE'
+        status: 'ACTIVE',
+        fare: '150.00'
       }
     ]
   })

@@ -35,8 +35,6 @@ export async function POST(req: Request) {
     try {
         const data = await req.json()
 
-        console.log('post', data)
-
         const dropoff = await prisma.dropoff.create({
             data: { ...data, status: 'ACTIVE' }
         });
