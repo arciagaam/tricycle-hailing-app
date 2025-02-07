@@ -1,12 +1,11 @@
 'use client'
 import { Input } from '@/components/ui/input'
-import { baseDropOffSchema } from '@/lib/schema';
+import { Dropoff } from '@prisma/client';
 import React, { useEffect, useRef, useState } from 'react'
-import { z } from 'zod';
 
 type TSearchDropOff = {
-    getFetchedDropoffs: (dropoffs: z.infer<typeof baseDropOffSchema>[]) => void; 
-    setDropoffs: React.Dispatch<React.SetStateAction<z.infer<typeof baseDropOffSchema>[]|null|undefined>>;
+    getFetchedDropoffs: (dropoffs: Dropoff[]) => void;
+    setDropoffs: React.Dispatch<React.SetStateAction<Dropoff[] | null | undefined>>;
 }
 
 export default function SearchDropOff({ getFetchedDropoffs, setDropoffs }: TSearchDropOff) {

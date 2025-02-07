@@ -1,12 +1,12 @@
 import GoogleMapsDirections from '@/components/google-maps/GoogleMapsDirections'
 import { Button } from '@/components/ui/button'
 import { ResponsiveProvider } from '@/hooks/useResponsive'
-import { baseBookingSchema } from '@/lib/schema'
+import { BookingWithRelations } from '@/lib/types'
 import { socket } from '@/socket'
 import React from 'react'
-import { z } from 'zod'
 
-export default function DriverCurrentBooking({ booking }: { booking: z.infer<typeof baseBookingSchema> }) {
+
+export default function DriverCurrentBooking({ booking }: { booking: BookingWithRelations }) {
     const pickupPassenger = async () => {
         const res = await fetch('api/bookings', {
             method: 'PATCH',

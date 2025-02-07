@@ -7,12 +7,11 @@ import { MdPinDrop, MdSchool } from 'react-icons/md'
 import SearchDropOff from './SearchDropOff'
 import GoogleMaps from '@/components/google-maps/GoogleMaps'
 import GoogleMapsDirections from '@/components/google-maps/GoogleMapsDirections'
-import { baseBookingSchema, baseDropOffSchema, baseUserSchema } from '@/lib/schema'
-import { z } from 'zod'
 import { Button } from '@/components/ui/button'
-import { $Enums } from '@prisma/client'
 import { socket } from '@/socket'
 import { ResponsiveProvider } from '@/hooks/useResponsive'
+import { BookingWithRelations } from '@/lib/types'
+import { Dropoff, User } from '@prisma/client'
 
 
 const bookingStatuses = [
@@ -22,24 +21,15 @@ const bookingStatuses = [
 ]
 
 export default function PassengerBooking({ currentBooking, currentUser }: {
-    currentBooking: {
-        id: number;
-        status: $Enums.BookingStatus;
-        createdAt: Date;
-        dropoffId: number;
-        driverId: number;
-        passengerId: number;
-        pickupTime: Date;
-        dropoffTime: Date;
-    } | null,
-    currentUser: z.infer<typeof baseUserSchema>
+    currentBooking: BookingWithRelations | null,
+    currentUser: User
 }) {
 
     const [booking, setBooking] = useState(currentBooking);
-    const [selectedDropoff, setSelectedDropoff] = useState<z.infer<typeof baseDropOffSchema> | null>(currentBooking?.dropoff || null);
-    const [dropoffs, setDropoffs] = useState<z.infer<typeof baseDropOffSchema>[] | null>();
+    const [selectedDropoff, setSelectedDropoff] = useState<Dropoff | null>(currentBooking?.dropoff || null);
+    const [dropoffs, setDropoffs] = useState<Dropoff[] | null>();
 
-    const getFetchedDropoffs = (value: z.infer<typeof baseDropOffSchema>[]) => {
+    const getFetchedDropoffs = (value: Dropoff[]) => {
         setDropoffs(value);
     }
 
@@ -148,7 +138,7 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
     )
 }
 
-const GetCurrentStatusScreen = ({ booking }: { booking: z.infer<typeof baseBookingSchema> }) => {
+const GetCurrentStatusScreen = ({ booking }: { booking: BookingWithRelations }) => {
     switch (booking.status.toLowerCase()) {
         case 'booking': return <BookingScreen booking={booking} />;
         case 'accepted': return <InProgressScreen booking={booking} />;
@@ -158,7 +148,7 @@ const GetCurrentStatusScreen = ({ booking }: { booking: z.infer<typeof baseBooki
 }
 
 
-const BookingScreen = ({ booking }: { booking: z.infer<typeof baseBookingSchema> }) => {
+const BookingScreen = ({ booking }: { booking: BookingWithRelations }) => {
     // const [loading, setLoading] = useState<boolean>(false);
     // const [count, setCount] = useState<number>(0);
 
@@ -206,7 +196,7 @@ const BookingScreen = ({ booking }: { booking: z.infer<typeof baseBookingSchema>
     )
 }
 
-const InProgressScreen = ({ booking }: { booking: z.infer<typeof baseBookingSchema> }) => {
+const InProgressScreen = ({ booking }: { booking: BookingWithRelations }) => {
     return (
 
         <div className="flex flex-col bg-background rounded-md p-4 gap-5">

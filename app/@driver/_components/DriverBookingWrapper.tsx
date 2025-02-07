@@ -3,14 +3,14 @@
 import React, { useEffect, useState } from 'react'
 import DriverCurrentBooking from './DriverCurrentBooking'
 import DriverAvailableBookings from './DriverAvailableBookings'
-import { z } from 'zod';
-import { baseUserSchema } from '@/lib/schema';
 import { socket } from '@/socket';
+import { BookingWithRelations } from '@/lib/types';
+import { User } from '@prisma/client';
 
-export default function DriverBookingWrapper({ booking, bookings, user }: { booking: any, bookings: any, user: z.infer<typeof baseUserSchema> }) {
+export default function DriverBookingWrapper({ booking, bookings, user }: { booking: BookingWithRelations, bookings: BookingWithRelations[], user: User }) {
 
-    const [currentBooking, setCurrentBooking] = useState(booking);
-    const [currentBookings, setCurrentBookings] = useState(bookings);
+    const [currentBooking, setCurrentBooking] = useState<BookingWithRelations>(booking);
+    const [currentBookings, setCurrentBookings] = useState<BookingWithRelations[]>(bookings);
 
     useEffect(() => {
         socket.on('new_booking', (booking) => {
@@ -18,9 +18,9 @@ export default function DriverBookingWrapper({ booking, bookings, user }: { book
         })
 
         socket.on('accepted_booking', (booking) => {
-            setCurrentBooking(booking)
-            setCurrentBookings((prev) => ([...prev, prev.filter(prevFilter => prevFilter.id != booking.id)]))
-        })
+            setCurrentBooking(booking);
+            setCurrentBookings((prev) => prev.filter(prevFilter => prevFilter.id !== booking.id));
+        });
 
         socket.on('pickup_passenger', (booking) => {
             setCurrentBooking(booking)

@@ -5,8 +5,10 @@ import { FaChevronLeft } from "react-icons/fa";
 import GoogleMapsDirections from '@/components/google-maps/GoogleMapsDirections';
 import { ResponsiveProvider } from '@/hooks/useResponsive';
 
-export default async function ViewDropoff({ params }: { params: { id: string } }) {
-    const { id } = await params;
+
+export default async function ViewDropoff() {
+    // const { id } = params;
+    const id = '1'
 
     const dropoff = await prisma.dropoff.findFirst({
         where: {

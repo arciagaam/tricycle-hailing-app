@@ -4,14 +4,14 @@ import PageTitle from '@/app/_components/PageTitle'
 import GoogleMapsDirections from '@/components/google-maps/GoogleMapsDirections'
 import { Button } from '@/components/ui/button'
 import { ResponsiveProvider } from '@/hooks/useResponsive'
-import { baseBookingSchema, baseUserSchema } from '@/lib/schema'
+import { BookingWithRelations } from '@/lib/types'
 import { socket } from '@/socket'
+import { User } from '@prisma/client'
 import React from 'react'
-import { z } from 'zod'
 
-export default function DriverAvailableBookings({ bookings, user }: { bookings: z.infer<typeof baseBookingSchema>[], user: z.infer<typeof baseUserSchema> }) {
+export default function DriverAvailableBookings({ bookings, user }: { bookings: BookingWithRelations[], user: User}) {
 
-    const acceptBooking = async (booking: z.infer<typeof baseBookingSchema>) => {
+    const acceptBooking = async (booking: BookingWithRelations) => {
         const res = await fetch('api/bookings', {
             method: 'PATCH',
             body: JSON.stringify({
