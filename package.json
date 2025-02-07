@@ -5,9 +5,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "dev:socket": "NODE_OPTIONS='--loader ts-node/esm --trace-warnings --no-warnings' ts-node server.mts",
+    "dev:socket": "ts-node server.mts",
     "build": "next build",
-    "start": "NODE_ENV=production NODE_OPTIONS='--loader ts-node/esm --trace-warnings --no-warnings' ts-node server.mts",
+    "start": "ts-node server.mts",
     "lint": "next lint",
     "seed": "tsx prisma/seed.ts"
   },
