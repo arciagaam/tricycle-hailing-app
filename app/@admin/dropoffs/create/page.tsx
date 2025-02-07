@@ -22,6 +22,7 @@ export default function CreateDropoff() {
             address: '',
             longitude: '',
             latitude: '',
+            fare: ''
         }
     })
 
@@ -53,7 +54,7 @@ export default function CreateDropoff() {
     return (
 
         <div className="flex flex-col w-full">
-            <PageTitle title="Create Dropoff" showBackButton returnUrl='/dropoffs'/>
+            <PageTitle title="Create Dropoff" showBackButton returnUrl='/dropoffs' />
 
             <div className='flex flex-col w-full h-full p-4 gap-5'>
                 <div className="w-full h-[400px]">
@@ -62,6 +63,20 @@ export default function CreateDropoff() {
 
                 <Form {...createDropoffForm}>
                     <form onSubmit={createDropoffForm.handleSubmit(onSubmit)} className='flex flex-col gap-5'>
+                        <FormField
+                            control={createDropoffForm.control}
+                            name="fare"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Fare</FormLabel>
+                                    <FormControl>
+                                        <Input {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
                         <FormField
                             control={createDropoffForm.control}
                             name="name"

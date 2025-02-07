@@ -13,20 +13,37 @@ datasource db {
   url      = "file:./db/sbtha.db"
 }
 
+model SecurityQuestions {
+  id                     Int                     @id @default(autoincrement())
+  question               String                  @unique
+  usersSecurityQuestions UserSecurityQuestions[]
+}
+
 model User {
-  id                  Int       @id @default(autoincrement())
-  username            String    @unique
-  password            String
-  firstName           String
-  middleName          String
-  lastName            String
-  role                Role      @relation(fields: [roleId], references: [id])
-  roleId              Int
-  createdAt           DateTime  @default(now())
-  updatedAt           DateTime? @updatedAt
-  deletedAt           DateTime?
-  bookingsAsDriver    Booking[] @relation(name: "DriverRelation")
-  bookingsAsPassenger Booking[] @relation(name: "PassengerRelation")
+  id                    Int                     @id @default(autoincrement())
+  username              String                  @unique
+  password              String
+  firstName             String
+  middleName            String
+  lastName              String
+  role                  Role                    @relation(fields: [roleId], references: [id])
+  roleId                Int
+  createdAt             DateTime                @default(now())
+  updatedAt             DateTime?               @updatedAt
+  deletedAt             DateTime?
+  bookingsAsDriver      Booking[]               @relation(name: "DriverRelation")
+  bookingsAsPassenger   Booking[]               @relation(name: "PassengerRelation")
+  userSecurityQuestions UserSecurityQuestions[]
+}
+
+model UserSecurityQuestions {
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+
+  securityQuestion   SecurityQuestions @relation(fields: [securityQuestionId], references: [id])
+  securityQuestionId Int
+
+  @@id([userId, securityQuestionId])
 }
 
 model Role {

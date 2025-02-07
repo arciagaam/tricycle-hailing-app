@@ -10,6 +10,7 @@ export const baseDropOffSchema = z.object({
     longitude: z.string().min(1, 'Required'),
     latitude: z.string().min(1, 'Required'),
     status: dropoffStatusEnum.default("ACTIVE"),
+    fare: z.string().min(1, 'Required'),
     createdAt: z.string().datetime(),
     updatedAt: z.string().datetime().nullable(),
     deletedAt: z.string().datetime().nullable(),

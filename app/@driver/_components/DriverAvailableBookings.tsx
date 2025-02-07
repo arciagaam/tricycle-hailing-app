@@ -44,7 +44,7 @@ export default function DriverAvailableBookings({ bookings, user }: { bookings: 
                     <div className="flex flex-col">
                         <div className="flex w-full justify-between">
                             <p>Dropoff: <span>{booking.dropoff.address}</span></p>
-                            <p>Fare: <span>P50.00</span></p>
+                            <p>Fare: <span>P{Number(booking.dropoff.fare).toLocaleString()}</span></p>
                         </div>
 
                         <hr />

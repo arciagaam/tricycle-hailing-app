@@ -1,4 +1,10 @@
 -- CreateTable
+CREATE TABLE "SecurityQuestions" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "question" TEXT NOT NULL
+);
+
+-- CreateTable
 CREATE TABLE "User" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "username" TEXT NOT NULL,
@@ -14,6 +20,16 @@ CREATE TABLE "User" (
 );
 
 -- CreateTable
+CREATE TABLE "UserSecurityQuestions" (
+    "userId" INTEGER NOT NULL,
+    "securityQuestionId" INTEGER NOT NULL,
+
+    PRIMARY KEY ("userId", "securityQuestionId"),
+    CONSTRAINT "UserSecurityQuestions_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "UserSecurityQuestions_securityQuestionId_fkey" FOREIGN KEY ("securityQuestionId") REFERENCES "SecurityQuestions" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+-- CreateTable
 CREATE TABLE "Role" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "name" TEXT NOT NULL
@@ -26,11 +42,11 @@ CREATE TABLE "Dropoff" (
     "address" TEXT NOT NULL,
     "longitude" TEXT NOT NULL,
     "latitude" TEXT NOT NULL,
+    "fare" TEXT NOT NULL,
     "status" TEXT NOT NULL DEFAULT 'ACTIVE',
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME,
-    "deletedAt" DATETIME,
-    "fare" TEXT NOT NULL
+    "deletedAt" DATETIME
 );
 
 -- CreateTable
@@ -47,6 +63,9 @@ CREATE TABLE "Booking" (
     CONSTRAINT "Booking_driverId_fkey" FOREIGN KEY ("driverId") REFERENCES "User" ("id") ON DELETE SET NULL ON UPDATE CASCADE,
     CONSTRAINT "Booking_passengerId_fkey" FOREIGN KEY ("passengerId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "SecurityQuestions_question_key" ON "SecurityQuestions"("question");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
