@@ -1,6 +1,6 @@
 import GoogleMapsDirections from '@/components/google-maps/GoogleMapsDirections'
 import { Button } from '@/components/ui/button'
-import { Drawer, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer'
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer'
 import { ResponsiveProvider } from '@/hooks/useResponsive'
 import { BookingWithRelations } from '@/lib/types'
 import { socket } from '@/socket'
