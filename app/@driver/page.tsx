@@ -34,7 +34,5 @@ export default async function DriverHomepage() {
     }
   })
 
-  if (booking && bookings) return <DriverBookingWrapper booking={booking as BookingWithRelations} bookings={bookings as BookingWithRelations[]} user={decodedUser} />
-
-
+  return <DriverBookingWrapper booking={booking as BookingWithRelations} bookings={bookings as BookingWithRelations[]} user={decodedUser} />
 }
