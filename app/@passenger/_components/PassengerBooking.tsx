@@ -12,6 +12,7 @@ import { socket } from '@/socket'
 import { ResponsiveProvider } from '@/hooks/useResponsive'
 import { BookingWithRelations } from '@/lib/types'
 import { Dropoff, User } from '@prisma/client'
+import { Drawer, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer'
 
 
 const bookingStatuses = [
@@ -34,7 +35,7 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
     }
 
     useEffect(() => {
-        if(booking) {
+        if (booking) {
             socket.emit('reconnect', booking)
         }
 
@@ -91,7 +92,7 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
             </ResponsiveProvider>
 
 
-            <div className="flex flex-col w-[92dvw] h-fit absolute left-[4vw] bottom-[4dvh]">
+            <div className="flex flex-col w-full h-fit absolute bottom-0">
                 {
                     booking && bookingStatuses.includes(booking?.status.toLowerCase()) && <GetCurrentStatusScreen booking={booking} />
                 }
@@ -180,43 +181,76 @@ const BookingScreen = ({ booking }: { booking: BookingWithRelations }) => {
 
 
     return (
-        <div className="w-full flex flex-col rounded-md gap-2 p-4 bg-background">
-            <p className='text-muted-foreground'>Ride Details</p>
+        <Drawer>
+            <DrawerTrigger asChild>
+                {/* //TODO: ALLEN DITO MO LAGAY YUNG ANIMATION, TAS LAGYAN MO TEXT NG CURRENT STATUS  */}
 
-            <p>Dropoff to <span>{booking?.dropoff?.address}</span></p>
-            <p><span>P50.00</span></p>
+                <Button className='flex flex-col h-fit py-6 rounded-b-none'>
+                    <p>ANIMATION</p>
+                    <p>Looking for riders...</p>
+                    <p>Click to view details</p>
+                </Button>
+            </DrawerTrigger>
+            <DrawerContent>
+                <DrawerHeader>
+                    <DrawerTitle> Looking for drivers . . .</DrawerTitle>
+                </DrawerHeader>
 
-            <hr />
+                <div className="w-full flex flex-col rounded-md gap-2 p-4 bg-background">
+                    <p className='text-muted-foreground'>Ride Details</p>
 
-            <div>
-                Looking for drivers . . .
-                {/* {count === 1 && <p>.</p>}
+                    <p>Dropoff to <span>{booking?.dropoff?.address}</span></p>
+                    <p><span>P50.00</span></p>
+
+                    <hr />
+
+                    <div>
+
+                        {/* {count === 1 && <p>.</p>}
                 {count === 2 && <p>..</p>}
                 {count === 3 && <p>...</p>} */}
-            </div>
+                    </div>
 
-            <Button variant={'destructive'}>Cancel Booking</Button>
-        </div>
+                </div>
+
+                <DrawerFooter>
+                    <Button variant={'destructive'}>Cancel Booking</Button>
+                </DrawerFooter>
+            </DrawerContent>
+        </Drawer>
+
     )
 }
 
 const InProgressScreen = ({ booking }: { booking: BookingWithRelations }) => {
     return (
+        <Drawer>
+            <DrawerTrigger asChild>
+                {/* //TODO: ALLEN DITO MO LAGAY YUNG ANIMATION, TAS LAGYAN MO TEXT NG CURRENT STATUS  */}
 
-        <div className="flex flex-col bg-background rounded-md p-4 gap-5">
-            <h1>{booking.status.toLowerCase() == 'accepted' ? 'Driver is on its way to your pickup point' : 'You are on your way to your destination'}</h1>
+                <Button className='flex flex-col h-fit py-6 rounded-b-none'>
+                    <p>ANIMATION</p>
+                    <h1>{booking.status.toLowerCase() == 'accepted' ? 'Driver is on its way to your pickup point' : 'You are on your way to your destination'}</h1>
+                    <p>Click to view details</p>
+                </Button>
+            </DrawerTrigger>
+            <DrawerContent>
+                <DrawerHeader>
+                    <DrawerTitle>
+                        {booking.status.toLowerCase() == 'accepted' ? 'Driver is on its way to your pickup point' : 'You are on your way to your destination'}
+                    </DrawerTitle>
+                </DrawerHeader>
 
-            <hr />
+                <div className="w-full flex flex-col  gap-2  ">
+                    <p>Ride Details</p>
+                    <p>Dropoff: <span>{booking.dropoff.address}</span></p>
+                    <p>Fare: <span>P50.00</span></p>
 
-            <div className="w-full flex flex-col  gap-2  ">
-                <p>Ride Details</p>
-                <p>Dropoff: <span>{booking.dropoff.address}</span></p>
-                <p>Fare: <span>P50.00</span></p>
-
-                <hr />
-                <p>Driver Details</p>
-                <p>Rider: <span>{booking.driver.firstName}</span></p>
-            </div>
-        </div>
+                    <hr />
+                    <p>Driver Details</p>
+                    <p>Rider: <span>{booking.driver.firstName}</span></p>
+                </div>
+            </DrawerContent>
+        </Drawer>
     )
 }
