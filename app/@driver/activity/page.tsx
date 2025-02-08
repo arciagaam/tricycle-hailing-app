@@ -27,7 +27,7 @@ export default async function DriverActivities() {
     console.log(bookings)
 
     return (
-        <div className='bg-background w-full h-full'>
+        <div className='bg-background min-w-full h-full'>
             <div className='px-16 py-5 flex items-center'>
                 <h1 className='text-lg font-bold px-4'>Activity History</h1>
             </div>

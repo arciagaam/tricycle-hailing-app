@@ -51,14 +51,13 @@ export default async function PassengerActivities() {
                                     </span>
                                 </div>
                             )) : (
-                                <div className={`flex h-dvh w-dvw items-center justify-center`}>
+                                <div className={`flex h-full w-dvw items-center justify-center`}>
                                     <p className='text-lg font-bold text-muted-foreground'>
                                         No activities to show.
                                     </p>
                                 </div>
                             )
                         }
-
 
                     </div>
                 </div>

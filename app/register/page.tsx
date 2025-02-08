@@ -5,10 +5,12 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { createUserSchema } from '@/lib/schema';
 import { zodResolver } from '@hookform/resolvers/zod';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React from 'react'
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import HeroTitle from '../_components/HeroTitle';
 
 export default function Register() {
     const router = useRouter();
@@ -36,7 +38,8 @@ export default function Register() {
 
     }
     return (
-        <div className="flex flex-col p-10">
+        <div className="flex flex-col p-10 gap-4 w-full lg:max-w-[70dvw]">
+            <HeroTitle />
             <Form {...registerForm}>
                 <form onSubmit={registerForm.handleSubmit(onSubmit)} className="flex flex-col gap-5">
                     <FormField
@@ -110,6 +113,9 @@ export default function Register() {
                     <Button type="submit">Submit</Button>
                 </form>
             </Form>
+            <Link href="/login" className="flex items-center justify-center text-center w-full text-muted-foreground text-xs hover:text-primary/80">
+                {"Already have an account?"}
+            </Link>
         </div>
     )
 }

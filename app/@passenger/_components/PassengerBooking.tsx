@@ -97,7 +97,7 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
             </ResponsiveProvider>
 
 
-            <div className="flex flex-col w-[92dvw] h-fit absolute left-[4vw] bottom-[4dvh]">
+            <div className="flex flex-col w-full lg:max-w-full h-fit absolute px-8 bottom-[4dvh]">
                 {
                     booking && bookingStatuses.includes(booking?.status.toLowerCase()) && <GetCurrentStatusScreen booking={booking} />
                 }
@@ -126,7 +126,7 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
                                 </label>
                             </div>
 
-                            <div className='flex flex-col gap-2 w-full'>
+                            <div className='flex flex-col gap-2 w-full max-w-full'>
 
                                 <Input
                                     className='text-muted-foreground text-ellipsis border-none shadow-none focus:border-none focus-visible:ring-0'
