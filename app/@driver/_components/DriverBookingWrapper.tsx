@@ -13,6 +13,10 @@ export default function DriverBookingWrapper({ booking, bookings, user }: { book
     const [currentBookings, setCurrentBookings] = useState<BookingWithRelations[]>(bookings);
 
     useEffect(() => {
+        if (currentBooking) {
+            socket.emit('reconnect', booking)
+        }
+        
         socket.on('new_booking', (booking) => {
             setCurrentBookings((prev) => ([...prev, booking]))
         })

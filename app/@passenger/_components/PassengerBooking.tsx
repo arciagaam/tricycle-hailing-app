@@ -34,6 +34,10 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
     }
 
     useEffect(() => {
+        if(booking) {
+            socket.emit('reconnect', booking)
+        }
+
         socket.on('new_booking', (booking) => {
             if (currentUser.id == booking.passenger.id) {
                 setBooking(booking)
