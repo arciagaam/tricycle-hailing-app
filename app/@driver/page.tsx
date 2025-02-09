@@ -1,16 +1,16 @@
 import { prisma } from '@/lib/prisma'
 import jwt from 'jsonwebtoken'
-import { baseUserSchema } from '@/lib/schema'
-import { z } from 'zod'
 import { cookies } from 'next/headers'
 import DriverBookingWrapper from './_components/DriverBookingWrapper'
+import { User } from '@prisma/client'
+import { BookingWithRelations } from '@/lib/types'
 
 export default async function DriverHomepage() {
 
   const cookiesStore = await cookies();
   const user = cookiesStore.get('auth')
 
-  const decodedUser = jwt.decode(user!.value) as z.infer<typeof baseUserSchema>;
+  const decodedUser = jwt.decode(user!.value) as User;
 
   const booking = await prisma.booking.findFirst({
     where: {
@@ -34,7 +34,5 @@ export default async function DriverHomepage() {
     }
   })
 
-  return <DriverBookingWrapper booking={booking} bookings={bookings} user={decodedUser} />
-
-
+  return <DriverBookingWrapper booking={booking as BookingWithRelations} bookings={bookings as BookingWithRelations[]} user={decodedUser} />
 }

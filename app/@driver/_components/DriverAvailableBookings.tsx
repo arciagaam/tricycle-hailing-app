@@ -4,15 +4,14 @@ import PageTitle from '@/app/_components/PageTitle'
 import GoogleMapsDirections from '@/components/google-maps/GoogleMapsDirections'
 import { Button } from '@/components/ui/button'
 import { ResponsiveProvider } from '@/hooks/useResponsive'
-import { baseBookingSchema, baseUserSchema } from '@/lib/schema'
+import { BookingWithRelations } from '@/lib/types'
 import { socket } from '@/socket'
-import React, { useEffect, useState } from 'react'
-import { FaMotorcycle } from 'react-icons/fa'
-import { z } from 'zod'
+import { User } from '@prisma/client'
+import React from 'react'
 
-export default function DriverAvailableBookings({ bookings, user }: { bookings: z.infer<typeof baseBookingSchema>[], user: z.infer<typeof baseUserSchema> }) {
-    const [move, setMove] = useState<boolean>(false)
-    const acceptBooking = async (booking: z.infer<typeof baseBookingSchema>) => {
+export default function DriverAvailableBookings({ bookings, user }: { bookings: BookingWithRelations[], user: User}) {
+
+    const acceptBooking = async (booking: BookingWithRelations) => {
         const res = await fetch('api/bookings', {
             method: 'PATCH',
             body: JSON.stringify({
@@ -53,11 +52,11 @@ export default function DriverAvailableBookings({ bookings, user }: { bookings: 
                             </ResponsiveProvider>
                         </div>
 
-                        <div className="flex flex-col">
-                            <div className="flex w-full justify-between">
-                                <p>Dropoff: <span>{booking.dropoff.address}</span></p>
-                                <p>Fare: <span>P50.00</span></p>
-                            </div>
+                    <div className="flex flex-col">
+                        <div className="flex w-full justify-between">
+                            <p>Dropoff: <span>{booking.dropoff.address}</span></p>
+                            <p>Fare: <span>P{Number(booking.dropoff.fare).toLocaleString()}</span></p>
+                        </div>
 
                             <hr />
 
