@@ -34,7 +34,7 @@ export default function Login() {
   }
 
   return (
-    <div className="flex flex-col p-10 gap-4 w-full lg:max-w-[70dvw]">
+    <div className="flex flex-col p-10 gap-4 w-full lg:max-w-[70dvw] 2xl:max-w-[1400px]">
       <HeroTitle />
       <Form {...loginForm}>
         <form onSubmit={loginForm.handleSubmit(onSubmit)} className="flex flex-col gap-5">

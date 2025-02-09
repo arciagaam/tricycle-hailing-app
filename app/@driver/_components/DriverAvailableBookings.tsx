@@ -77,7 +77,7 @@ export default function DriverAvailableBookings({ bookings, user }: { bookings: 
                         <span className='text-lg font-bold text-muted-foreground relative'>
                             <div className='absolute -top-10 left-0 bg-background z-10 min-w-10 h-10' />
                             <div className='absolute -top-10 right-0 bg-background z-10 min-w-10 h-10' />
-                            <FaMotorcycle className={`text-2xl absolute -top-6 ${move ? 'right-[0px] duration-1000 transition-all' : 'transition-all right-[170px] duration-1000'}`} />
+                            <FaMotorcycle className={`text-2xl absolute -top-6 right-0 ${move ? 'right-[0px] duration-1000 transition-all' : 'right-[170px] transition-all duration-1000'}`} />
                             No Available bookings.
                         </span>
                     </div>

@@ -38,7 +38,7 @@ export default function Register() {
 
     }
     return (
-        <div className="flex flex-col p-10 gap-4 w-full lg:max-w-[70dvw]">
+        <div className="flex flex-col p-10 gap-4 w-full lg:max-w-[70dvw] 2xl:max-w-[1400px]">
             <HeroTitle />
             <Form {...registerForm}>
                 <form onSubmit={registerForm.handleSubmit(onSubmit)} className="flex flex-col gap-5">
