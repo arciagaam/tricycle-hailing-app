@@ -73,7 +73,12 @@ const DropoffRow = ({ row }: {
     return (
         <TableRow>
             <TableCell className="font-medium">{dropoff.name}</TableCell>
-            <TableCell>{dropoff.status.toLowerCase()}</TableCell>
+            <TableCell>
+                <div className="flex gap-2 items-center bg-white py-1 px-3 w-fit rounded-full">
+                    <div className={`size-2 ${dropoff.status == 'ACTIVE' ? 'bg-green-600' : 'bg-red-600'} aspect-square rounded-full`}></div>
+                    <p className='text-sm'>{dropoff.status}</p>
+                </div>
+            </TableCell>
             <TableCell>
                 <DropdownMenu>
                     <DropdownMenuTrigger><LucideMenu size={18} /></DropdownMenuTrigger>

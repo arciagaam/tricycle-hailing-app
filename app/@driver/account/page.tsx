@@ -3,7 +3,7 @@ import React from 'react'
 
 export default function DriverAccount() {
   return (
-    <div className='bg-background w-full h-full'>
+    <div className='bg-background min-w-full h-full'>
         <PageTitle title='Account' />
     </div>
   )

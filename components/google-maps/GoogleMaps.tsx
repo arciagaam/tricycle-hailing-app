@@ -28,6 +28,53 @@ export default function GoogleMaps({ onMapClick, center }: GoogleMapsProps) {
         zoomControl: true,
         streetViewControl: false,
         mapTypeControl: false,
+        clickableIcons: false,
+        styles: [
+            {
+                featureType: 'all',
+                elementType: 'geometry',
+                stylers: [
+                    {
+                        color: '#dfdfdf', // Grey for everything except roads
+                    },
+                ],
+            },
+            {
+                featureType: 'landscape',
+                elementType: 'geometry',
+                stylers: [
+                    {
+                        color: '#efefef', // Light grey for landscape
+                    },
+                ],
+            },
+            {
+                featureType: 'transit',
+                stylers: [
+                    {
+                        visibility: 'off', // Hide transit lines
+                    },
+                ],
+            },
+            {
+                featureType: 'road',
+                elementType: 'geometry',
+                stylers: [
+                    {
+                        color: '#ffffff', // White for roads
+                    },
+                ],
+            },
+            // {
+            //     featureType: 'road',
+            //     elementType: 'labels.icon',
+            //     stylers: [
+            //         {
+            //             visibility: 'off', // Hide road labels/icons
+            //         },
+            //     ],
+            // },
+        ]
     }
 
 
@@ -61,7 +108,7 @@ export default function GoogleMaps({ onMapClick, center }: GoogleMapsProps) {
                 options={mapOptions}
                 onClick={handleMapClick}
             >
-                {center && <Marker position={{ lat: center.lat, lng: center.lng }} />}
+                {(!point && center) && <Marker position={{ lat: center.lat, lng: center.lng }} />}
 
                 {point && <Marker position={point} />}
 

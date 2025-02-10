@@ -13,6 +13,9 @@ import { ResponsiveProvider } from '@/hooks/useResponsive'
 import { BookingWithRelations } from '@/lib/types'
 import { Dropoff, User } from '@prisma/client'
 import { Drawer, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer'
+import { FaMotorcycle, FaSchool } from 'react-icons/fa'
+import { Spinner } from '@/app/_components/Spinner'
+import toast from 'react-hot-toast'
 
 
 const bookingStatuses = [
@@ -27,12 +30,25 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
 }) {
 
     const [booking, setBooking] = useState(currentBooking);
-    const [selectedDropoff, setSelectedDropoff] = useState<Dropoff | null>(currentBooking?.dropoff || null);
+    const [selectedDropoff, setSelectedDropoff] = useState<Dropoff | null>();
     const [dropoffs, setDropoffs] = useState<Dropoff[] | null>();
+    const [selectDropoffOpen, setSelectDropoffOpen] = useState(false)
+    const [isLoading, setIsLoading] = useState(false);
 
     const getFetchedDropoffs = (value: Dropoff[]) => {
         setDropoffs(value);
+        setSelectDropoffOpen(true)
     }
+
+    useEffect(() => {
+        if (currentBooking) {
+            if (currentBooking.status == 'BOOKING' || currentBooking.status == 'ONGOING' || currentBooking.status != 'ACCEPTED') {
+                setSelectedDropoff(currentBooking.dropoff)
+            }
+
+            setSelectedDropoff(null)
+        }
+    }, [currentBooking])
 
     useEffect(() => {
         if (booking) {
@@ -66,7 +82,14 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
         }
     }, [])
 
+    const handleSelectDropoff = (dropoff: Dropoff) => {
+        setSelectDropoffOpen(false)
+        setSelectedDropoff(dropoff)
+    }
+
     const onBookingSubmit = async () => {
+        if(!selectedDropoff) return toast('Select a dropoff')
+        setIsLoading(true);
 
         const res = await fetch('api/bookings', {
             method: 'POST',
@@ -80,66 +103,88 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
             const booking = await res.json();
             socket.emit('new_booking', booking.data)
         }
+
+        setIsLoading(false)
     }
 
 
     return (
-        <div className='h-full relative flex flex-col'>
-            <ResponsiveProvider>
-                {
-                    selectedDropoff ? <GoogleMapsDirections destination={{ lat: parseFloat(selectedDropoff.latitude), lng: parseFloat(selectedDropoff.longitude) }} /> : <GoogleMaps />
-                }
-            </ResponsiveProvider>
 
-
-            <div className="flex flex-col w-full h-fit absolute bottom-0">
-                {
-                    booking && bookingStatuses.includes(booking?.status.toLowerCase()) && <GetCurrentStatusScreen booking={booking} />
-                }
-
-                {
-                    (!booking || (booking && !bookingStatuses.includes(booking?.status.toLowerCase()))) &&
-                    <div className="flex flex-col gap-2 w-full justify-self-center self-center">
-                        {
-                            dropoffs &&
-                            <div className="flex flex-col absolute left-0 bottom-[100%] p-4 bg-background w-full">
-                                {
-                                    dropoffs.map((dropoff) => (
-                                        <button onClick={() => setSelectedDropoff(dropoff)} key={dropoff.id} className="flex">
-                                            {dropoff.name}
-                                        </button>
-                                    ))
-                                }
-                            </div>
-                        }
-                        <div className='w-full flex rounded-md gap-2 p-4 bg-background'>
-                            <div className='flex flex-col gap-0.5 justify-center items-center'>
-                                <MdSchool size={24} className='min-w-[20px]' />
-                                <CiMenuKebab />
-                                <label htmlFor='drop-off'>
-                                    <MdPinDrop size={24} className='min-w-[20px] text-primary' />
-                                </label>
-                            </div>
-
-                            <div className='flex flex-col gap-2 w-full'>
-
-                                <Input
-                                    className='text-muted-foreground text-ellipsis border-none shadow-none focus:border-none focus-visible:ring-0'
-                                    value={'San Beda University - Rizal | Taytay'}
-                                    readOnly
-                                />
-                                <SearchDropOff getFetchedDropoffs={getFetchedDropoffs} setDropoffs={setDropoffs} />
-                            </div>
-                        </div>
-                        <Button onClick={onBookingSubmit} className='w-full focus:bg-primary/80'>
-                            Book
-                        </Button>
-
+        <>
+            {isLoading &&
+                <div className='absolute z-[999] bg-black/10 inset-0 flex flex-col items-center justify-center'>
+                    <div className="flex flex-col rounded-md bg-white p-8">
+                        <Spinner/>
                     </div>
-                }
-            </div>
+                </div>
+            }
 
-        </div>
+            <div className='h-full relative flex flex-col'>
+                <ResponsiveProvider>
+                    {
+                        selectedDropoff ? <GoogleMapsDirections destination={{ lat: parseFloat(selectedDropoff.latitude), lng: parseFloat(selectedDropoff.longitude) }} /> : <GoogleMaps />
+                    }
+                </ResponsiveProvider>
+
+
+                <div className={`flex flex-col w-full h-fit absolute ${(booking && bookingStatuses.includes(booking?.status.toLowerCase())) ? 'bottom-0' : 'bottom-4'}`}>
+                    {
+                        booking && bookingStatuses.includes(booking?.status.toLowerCase()) && <GetCurrentStatusScreen booking={booking} />
+                    }
+
+                    {
+                        (!booking || (booking && !bookingStatuses.includes(booking?.status.toLowerCase()))) &&
+                        <div className="flex flex-col gap-2 w-[90%] justify-self-center self-center items-center">
+                            {
+                                (selectDropoffOpen && dropoffs) &&
+
+                                <div className="flex flex-col absolute  bottom-[105%] p-4 bg-background w-[90%] rounded-md gap-2">
+                                    <p className='text-black/50 text-sm'>Select dropoff</p>
+                                    <div className="flex flex-col">
+                                        {
+                                            dropoffs?.map((dropoff) => (
+                                                <button onClick={() => handleSelectDropoff(dropoff)} key={dropoff.id} className="flex flex-col items-start text-left">
+                                                    <span>
+                                                        {dropoff.name}
+                                                    </span>
+                                                    <span className='text-sm text-black/50'>
+                                                        {dropoff.address}
+                                                    </span>
+                                                </button>
+                                            ))
+                                        }
+                                    </div>
+                                </div>
+                            }
+                            <div className='w-full flex rounded-md gap-2 p-4 bg-background'>
+                                <div className='flex flex-col gap-0.5 justify-center items-center'>
+                                    <MdSchool size={24} className='min-w-[20px]' />
+                                    <CiMenuKebab />
+                                    <label htmlFor='drop-off'>
+                                        <MdPinDrop size={24} className='min-w-[20px] text-primary' />
+                                    </label>
+                                </div>
+
+                                <div className='flex flex-col gap-2 w-full max-w-full'>
+
+                                    <Input
+                                        className='text-muted-foreground text-ellipsis border-none shadow-none focus:border-none focus-visible:ring-0'
+                                        value={'San Beda University - Rizal | Taytay'}
+                                        readOnly
+                                    />
+                                    <SearchDropOff getFetchedDropoffs={getFetchedDropoffs} setDropoffs={setDropoffs} onFocus={() => setSelectDropoffOpen(true)} />
+                                </div>
+                            </div>
+                            <Button onClick={onBookingSubmit} className='w-full focus:bg-primary/80'>
+                                Book
+                            </Button>
+
+                        </div>
+                    }
+                </div>
+
+            </div>
+        </>
     )
 }
 
@@ -227,9 +272,12 @@ const InProgressScreen = ({ booking }: { booking: BookingWithRelations }) => {
         <Drawer>
             <DrawerTrigger asChild>
                 {/* //TODO: ALLEN DITO MO LAGAY YUNG ANIMATION, TAS LAGYAN MO TEXT NG CURRENT STATUS  */}
-
                 <Button className='flex flex-col h-fit py-6 rounded-b-none'>
-                    <p>ANIMATION</p>
+                    <div className='flex flex-row items-center justify-between relative p-2 w-[180px] pb-4'>
+                        <FaSchool className='absolute left-0 animate-in text-lg' />
+                        <FaMotorcycle className='absolute left-0 animate-moveRight text-lg' />
+                        <MdPinDrop className='absolute right-0 animate-bounce text-lg' />
+                    </div>
                     <h1>{booking.status.toLowerCase() == 'accepted' ? 'Driver is on its way to your pickup point' : 'You are on your way to your destination'}</h1>
                     <p>Click to view details</p>
                 </Button>
@@ -241,7 +289,7 @@ const InProgressScreen = ({ booking }: { booking: BookingWithRelations }) => {
                     </DrawerTitle>
                 </DrawerHeader>
 
-                <div className="w-full flex flex-col  gap-2  ">
+                <div className="w-full flex flex-col bg-background rounded-md p-4 gap-5">
                     <p>Ride Details</p>
                     <p>Dropoff: <span>{booking.dropoff.address}</span></p>
                     <p>Fare: <span>P50.00</span></p>

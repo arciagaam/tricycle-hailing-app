@@ -5,7 +5,8 @@ import { handleFullName } from '@/lib/utils';
 import { notFound } from 'next/navigation';
 import React from 'react'
 
-export default async function PassengerActivity({ params }: { params: { id: string } }) {
+export default async function PassengerActivity(props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const { id } = params;
 
   const activity = await prisma.booking.findFirst({

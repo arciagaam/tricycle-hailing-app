@@ -1,11 +1,10 @@
 'use client'
 
-import useScreenWidth from '@/hooks/useScreenWidth';
 import { DirectionsRenderer, DirectionsService, GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 import React, { useState } from 'react'
 
 export default function GoogleMapsDirections({ origin = { lat: 14.562339, lng: 121.150040 }, destination }: { origin?: { lat: number; lng: number }, destination: { lat: number; lng: number } }) {
-    const { isMobile } = useScreenWidth();
+
 
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
@@ -20,12 +19,50 @@ export default function GoogleMapsDirections({ origin = { lat: 14.562339, lng: 1
 
     const mapOptions = {
         fullscreenControl: false,
-        zoomControl: isMobile && false,
+        zoomControl: false,
         maxZoom: 15,
         minZoom: 14,
         streetViewControl: false,
         mapTypeControl: false,
         libraries: ['directions'],
+        styles: [
+            {
+                featureType: 'all',
+                elementType: 'geometry',
+                stylers: [
+                    {
+                        color: '#dfdfdf', // Grey for everything except roads
+                    },
+                ],
+            },
+            {
+                featureType: 'landscape',
+                elementType: 'geometry',
+                stylers: [
+                    {
+                        color: '#efefef', // Light grey for landscape
+                    },
+                ],
+            },
+            {
+                featureType: 'transit',
+                stylers: [
+                    {
+                        visibility: 'off', // Hide transit lines
+                    },
+                ],
+            },
+            {
+                featureType: 'road',
+                elementType: 'geometry',
+                stylers: [
+                    {
+                        color: '#ffffff', // White for roads
+                    },
+                ],
+            },
+
+        ]
     }
 
 

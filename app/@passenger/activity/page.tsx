@@ -6,6 +6,7 @@ import React from 'react'
 import jwt from 'jsonwebtoken'
 import { baseUserSchema } from '@/lib/schema'
 import { z } from 'zod'
+import PageTitle from '@/app/_components/PageTitle'
 export default async function PassengerActivities() {
     const cookiesStore = await cookies();
     const user = cookiesStore.get('auth')
@@ -27,9 +28,7 @@ export default async function PassengerActivities() {
     if (bookings)
         return (
             <div className='bg-background w-full h-full'>
-                <div className='px-16 py-5 flex items-center'>
-                    <h1 className='text-lg font-bold px-4'>Activity History</h1>
-                </div>
+                <PageTitle title='Activity History'/>
                 <div className='flex flex-col items-start justify-center'>
                     <div className='flex flex-col gap-2 w-full px-4'>
                         {
@@ -51,14 +50,13 @@ export default async function PassengerActivities() {
                                     </span>
                                 </div>
                             )) : (
-                                <div className={`flex h-dvh w-dvw items-center justify-center`}>
+                                <div className={`flex h-full w-dvw items-center justify-center`}>
                                     <p className='text-lg font-bold text-muted-foreground'>
                                         No activities to show.
                                     </p>
                                 </div>
                             )
                         }
-
 
                     </div>
                 </div>

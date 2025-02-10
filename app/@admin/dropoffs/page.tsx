@@ -11,11 +11,9 @@ export default async function ManageDropoffs() {
 
   return (
     <div className="flex flex-col">
-      <PageTitle title={
-        <p className='whitespace-nowrape'>Manage Dropoffs</p>
+      <PageTitle title={"Manage Dropoffs"} />
 
-      } />
-      <div className='w-full h-full p-4 gap-2'>
+      <div className='w-full h-full p-4 gap-2 flex flex-col'>
         <div className='flex w-full justify-end items-center'>
           <Link href={'/dropoffs/create'}>
             <Button>

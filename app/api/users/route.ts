@@ -14,8 +14,44 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  const data = await req.json();
-  data.password =  hashSync(data.password, genSaltSync(10))
-  const newUser = await prisma.user.create(data);
-  return NextResponse.json(newUser, { status: 201 });
+
+  try {
+    const data = await req.json();
+
+
+    data.password = hashSync(data.username, genSaltSync(10))
+    const newUser = await prisma.user.create({ data: data });
+
+    return NextResponse.json(newUser, { status: 201 });
+
+  } catch (error) {
+    if (error instanceof Error) {
+      return NextResponse.json({ message: error.message }, { status: 400 });
+    }
+
+    return NextResponse.json({ message: 'Something went wrong while creating user' }, { status: 400 });
+  }
+
+
+}
+
+export async function PATCH(req: Request) {
+  try {
+    const data = await req.json()
+
+    const dropoff = await prisma.user.update({
+      where: {
+        id: data.id,
+      },
+      data: { ...data },
+    });
+
+    return NextResponse.json({ message: 'User successfully updated', data: dropoff }, { status: 200 });
+  } catch (error) {
+    if (error instanceof Error) {
+      return NextResponse.json({ message: error.message }, { status: 400 });
+    }
+
+    return NextResponse.json({ message: 'Something went wrong while updating user' }, { status: 400 });
+  }
 }

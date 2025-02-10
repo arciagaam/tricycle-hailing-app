@@ -24,6 +24,13 @@ export const createDropoffSchema = baseDropOffSchema.omit({
     deletedAt: true,
 })
 
+export const editDropoffSchema = baseDropOffSchema.omit({
+    createdAt: true,
+    updatedAt: true,
+    deletedAt: true,
+})
+
+
 export const roleSchema = z.object({
     id: z.coerce.number(),
     name: z.string(),
@@ -43,10 +50,27 @@ export const baseUserSchema = z.object({
     deletedAt: z.string().datetime().nullable(),
 })
 
-export const createUserSchema = baseUserSchema.omit({
+export const registerUserSchema = baseUserSchema.omit({
     id: true,
     role: true,
     roleId: true,
+    createdAt: true,
+    updatedAt: true,
+    deletedAt: true,
+})
+
+export const createUserSchema = baseUserSchema.omit({
+    id: true,
+    role: true,
+    password: true,
+    createdAt: true,
+    updatedAt: true,
+    deletedAt: true,
+})
+
+export const editUserSchema = baseUserSchema.omit({
+    password: true,
+    role: true,
     createdAt: true,
     updatedAt: true,
     deletedAt: true,

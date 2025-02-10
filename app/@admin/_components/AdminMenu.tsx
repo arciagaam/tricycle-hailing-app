@@ -12,7 +12,7 @@ export default function AdminMenu() {
     const router = useRouter()
 
     const handleLogout = async () => {
-        await fetch('api/auth/logout')
+        await fetch('/api/auth/logout')
         router.refresh()
     }
 
@@ -52,6 +52,7 @@ export default function AdminMenu() {
             ) : (
                 <>
                     <div onClick={() => setNavOpen(false)} className='min-w-[100dvw] min-h-dvh z-[9998] bg-black/30 absolute left-0 top-0' />
+                        
                     <div className='absolute z-[9999] max-w-fit top-0 flex flex-col shadow-md border-t-muted min-h-dvh bg-background'>
 
                         <div className='flex gap-2 w-full p-4 items-center justify-between'>
