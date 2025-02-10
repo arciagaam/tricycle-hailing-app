@@ -104,7 +104,7 @@ export default function GoogleMaps({ onMapClick, center }: GoogleMapsProps) {
             <GoogleMap
                 mapContainerStyle={containerStyle}
                 zoom={16}
-                center={point || center || { lat: 14.562339, lng: 121.150040 }}
+                center={ center || { lat: 14.562339, lng: 121.150040 }}
                 options={mapOptions}
                 onClick={handleMapClick}
             >
