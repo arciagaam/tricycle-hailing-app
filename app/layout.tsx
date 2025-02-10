@@ -53,7 +53,9 @@ export default async function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Toaster />
-        {renderPageByRole()}
+        <div className="flex items-center justify-center">
+          {renderPageByRole()}
+        </div>
       </body>
     </html>
   );
