@@ -13,6 +13,7 @@ import { ResponsiveProvider } from '@/hooks/useResponsive'
 import { BookingWithRelations } from '@/lib/types'
 import { Dropoff, User } from '@prisma/client'
 import { Drawer, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer'
+import { FaMotorcycle, FaSchool } from 'react-icons/fa'
 
 
 const bookingStatuses = [
@@ -121,7 +122,7 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
                                 </label>
                             </div>
 
-                            <div className='flex flex-col gap-2 w-full'>
+                            <div className='flex flex-col gap-2 w-full max-w-full'>
 
                                 <Input
                                     className='text-muted-foreground text-ellipsis border-none shadow-none focus:border-none focus-visible:ring-0'
@@ -227,9 +228,12 @@ const InProgressScreen = ({ booking }: { booking: BookingWithRelations }) => {
         <Drawer>
             <DrawerTrigger asChild>
                 {/* //TODO: ALLEN DITO MO LAGAY YUNG ANIMATION, TAS LAGYAN MO TEXT NG CURRENT STATUS  */}
-
                 <Button className='flex flex-col h-fit py-6 rounded-b-none'>
-                    <p>ANIMATION</p>
+                    <div className='flex flex-row items-center justify-between relative p-2 w-[180px] pb-4'>
+                        <FaSchool className='absolute left-0 animate-in text-lg'/>
+                        <FaMotorcycle className='absolute left-0 animate-moveRight text-lg'/>
+                        <MdPinDrop className='absolute right-0 animate-bounce text-lg'/>
+                    </div>
                     <h1>{booking.status.toLowerCase() == 'accepted' ? 'Driver is on its way to your pickup point' : 'You are on your way to your destination'}</h1>
                     <p>Click to view details</p>
                 </Button>
@@ -241,7 +245,7 @@ const InProgressScreen = ({ booking }: { booking: BookingWithRelations }) => {
                     </DrawerTitle>
                 </DrawerHeader>
 
-                <div className="w-full flex flex-col  gap-2  ">
+                <div className="w-full flex flex-col bg-background rounded-md p-4 gap-5">
                     <p>Ride Details</p>
                     <p>Dropoff: <span>{booking.dropoff.address}</span></p>
                     <p>Fare: <span>P50.00</span></p>

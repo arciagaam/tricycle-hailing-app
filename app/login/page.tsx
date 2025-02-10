@@ -8,6 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import Link from "next/link";
+import HeroTitle from "../_components/HeroTitle";
 
 export default function Login() {
   const router = useRouter();
@@ -39,7 +41,8 @@ export default function Login() {
   }
 
   return (
-    <div className="flex flex-col p-10">
+    <div className="flex flex-col p-10 gap-4 w-full lg:max-w-[70dvw] 2xl:max-w-[1400px]">
+      <HeroTitle />
       <Form {...loginForm}>
         <form onSubmit={loginForm.handleSubmit(onSubmit)} className="flex flex-col gap-5">
           <FormField
@@ -73,6 +76,9 @@ export default function Login() {
           <Button type="submit">Submit</Button>
         </form>
       </Form>
+      <Link href="/register" className="flex items-center justify-center text-center w-full text-muted-foreground text-xs hover:text-primary/80">
+          {"Don't have an account yet?"}
+      </Link>
     </div>
   );
 }

@@ -6,6 +6,7 @@ import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import PageTitle from '@/app/_components/PageTitle';
 
 export default async function DriverActivities() {
     const cookiesStore = await cookies();
@@ -27,10 +28,8 @@ export default async function DriverActivities() {
     console.log(bookings)
 
     return (
-        <div className='bg-background w-full h-full'>
-            <div className='px-16 py-5 flex items-center'>
-                <h1 className='text-lg font-bold px-4'>Activity History</h1>
-            </div>
+        <div className='bg-background min-w-full h-full'>
+            <PageTitle title='Activity History'/>
             <div className='flex flex-col items-start justify-center'>
                 <div className='flex flex-col gap-2 w-full px-4'>
                     {
