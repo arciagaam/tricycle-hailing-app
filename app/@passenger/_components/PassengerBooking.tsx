@@ -34,6 +34,7 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
     const [dropoffs, setDropoffs] = useState<Dropoff[] | null>();
     const [selectDropoffOpen, setSelectDropoffOpen] = useState(false)
     const [isLoading, setIsLoading] = useState(false);
+    const [passengerDroppedOff, setPassengerDroppedOff] = useState(false);
 
     const getFetchedDropoffs = (value: Dropoff[]) => {
         setDropoffs(value);
@@ -72,6 +73,7 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
         socket.on('dropoff_passenger', (booking) => {
             setBooking(booking)
             setSelectedDropoff(null)
+            setPassengerDroppedOff(true)
         })
 
         return () => {
@@ -88,7 +90,7 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
     }
 
     const onBookingSubmit = async () => {
-        if(!selectedDropoff) return toast('Select a dropoff')
+        if (!selectedDropoff) return toast('Select a dropoff')
         setIsLoading(true);
 
         const res = await fetch('api/bookings', {
@@ -114,7 +116,7 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
             {isLoading &&
                 <div className='absolute z-[999] bg-black/10 inset-0 flex flex-col items-center justify-center'>
                     <div className="flex flex-col rounded-md bg-white p-8">
-                        <Spinner/>
+                        <Spinner />
                     </div>
                 </div>
             }
@@ -128,6 +130,11 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
 
 
                 <div className={`flex flex-col w-full h-fit absolute ${(booking && bookingStatuses.includes(booking?.status.toLowerCase())) ? 'bottom-0' : 'bottom-4'}`}>
+
+                    {
+                        (booking?.status == 'COMPLETED' && passengerDroppedOff) && <CompletedScreen booking={booking} />
+                    }
+                    
                     {
                         booking && bookingStatuses.includes(booking?.status.toLowerCase()) && <GetCurrentStatusScreen booking={booking} />
                     }
@@ -189,6 +196,7 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
 }
 
 const GetCurrentStatusScreen = ({ booking }: { booking: BookingWithRelations }) => {
+
     switch (booking.status.toLowerCase()) {
         case 'booking': return <BookingScreen booking={booking} />;
         case 'accepted': return <InProgressScreen booking={booking} />;
@@ -300,5 +308,14 @@ const InProgressScreen = ({ booking }: { booking: BookingWithRelations }) => {
                 </div>
             </DrawerContent>
         </Drawer>
+    )
+}
+
+const CompletedScreen = ({ booking }: { booking: BookingWithRelations }) => {
+
+    return (
+        <div className="fixed inset-0 overflow-auto bg-red-500">
+            {/* TODO: allen design here */}
+        </div>
     )
 }
