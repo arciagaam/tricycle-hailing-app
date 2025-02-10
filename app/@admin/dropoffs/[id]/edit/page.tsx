@@ -4,8 +4,10 @@ import React from 'react'
 import EditDropoffForm from './_components/EditDropoffForm';
 import { notFound } from 'next/navigation';
 
-export default async function EditDropoff({ params }: { params: { id: string } }) {
-    const { id } = await params;
+export default async function EditDropoff(props: { params: Promise<{ id: string }> }) {
+    const params = await props.params;
+    const { id } = params;
+
 
     const dropoff = await prisma.dropoff.findFirst({
         where: {

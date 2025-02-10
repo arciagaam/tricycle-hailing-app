@@ -6,7 +6,8 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import React from 'react'
 
-export default async function ViewUser({ params }: { params: { id: string } }) {
+export default async function ViewUser(props: { params: Promise<{ id: string }> }) {
+    const params = await props.params;
     const { id } = params;
 
     const userId = parseInt(id, 10);

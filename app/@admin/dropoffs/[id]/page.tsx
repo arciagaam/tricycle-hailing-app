@@ -8,7 +8,8 @@ import HandleDropoffStatusChange from './edit/_components/HandleDropoffStatusCha
 import { notFound } from 'next/navigation';
 
 
-export default async function ViewDropoff({ params }: { params: { id: string } }) {    
+export default async function ViewDropoff(props: { params: Promise<{ id: string }> }) {
+    const params = await props.params;
     const { id } = params;
 
     const dropoff = await prisma.dropoff.findFirst({
