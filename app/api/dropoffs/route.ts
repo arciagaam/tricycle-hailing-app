@@ -7,7 +7,22 @@ export async function GET(req: Request) {
         const filters: Record<string, unknown> = {};
 
         if (searchParams.has('name')) {
-            filters.name = { contains: searchParams.get('name') }
+
+            filters.OR = [
+                {
+                    name: {
+                        contains: searchParams.get('name'),
+                        mode: 'insensitive'
+                    }
+                },
+                {
+                    address: {
+                        contains: searchParams.get('name'),
+                        mode: 'insensitive'
+
+                    }
+                }
+            ]
         }
 
         if (searchParams.has('status')) {
@@ -15,10 +30,11 @@ export async function GET(req: Request) {
         }
 
         const dropoffs = await prisma.dropoff.findMany({
-            where: Object.keys(filters).length ? filters : undefined
+            where: Object.keys(filters).length ? filters : undefined,
+            take: 5
         });
 
-        return NextResponse.json({ message: 'Dropoff successfully created', data: dropoffs }, { status: 200 });
+        return NextResponse.json({ message: 'Dropoff successfully fetched', data: dropoffs }, { status: 200 });
 
 
     } catch (error) {
@@ -50,4 +66,25 @@ export async function POST(req: Request) {
 
     }
 
+}
+
+export async function PATCH(req: Request) {
+    try {
+        const data = await req.json()
+
+        const dropoff = await prisma.dropoff.update({
+            where: {
+                id: data.id,
+            },
+            data: { ...data },
+        });
+
+        return NextResponse.json({ message: 'Dropoff successfully updated', data: dropoff }, { status: 201 });
+    } catch (error) {
+        if (error instanceof Error) {
+            return NextResponse.json({ message: error.message }, { status: 400 });
+        }
+
+        return NextResponse.json({ message: 'Something went wrong while updating dropoff' }, { status: 400 });
+    }
 }

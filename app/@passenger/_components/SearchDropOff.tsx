@@ -6,12 +6,13 @@ import React, { useEffect, useRef, useState } from 'react'
 type TSearchDropOff = {
     getFetchedDropoffs: (dropoffs: Dropoff[]) => void;
     setDropoffs: React.Dispatch<React.SetStateAction<Dropoff[] | null | undefined>>;
+    onFocus?: () => void;
+    onBlur?: () => void
 }
 
-export default function SearchDropOff({ getFetchedDropoffs, setDropoffs }: TSearchDropOff) {
+export default function SearchDropOff({ getFetchedDropoffs, setDropoffs, onFocus, onBlur, }: TSearchDropOff) {
 
-    const [value, setValue] = useState<string | null>(null)
-
+    const [value, setValue] = useState<string | null>()
 
     const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
 
@@ -27,6 +28,7 @@ export default function SearchDropOff({ getFetchedDropoffs, setDropoffs }: TSear
     useEffect(() => {
         if (value) {
             const getDropoffs = async () => {
+
 
                 if (value) {
                     const res = await fetch(`api/dropoffs?name=${value}`)
@@ -54,6 +56,8 @@ export default function SearchDropOff({ getFetchedDropoffs, setDropoffs }: TSear
             className='shadow-none focus:!border focus:border-primary focus-visible:ring-0 overflow-ellipsis'
             onChange={debounceSearch}
             placeholder="Select drop off location"
+            onFocus={onFocus}
+            onBlur={onBlur}
         />
 
     )

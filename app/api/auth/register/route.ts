@@ -3,13 +3,15 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
 export async function POST(req: Request) {
+    
 
     try {
         const data = await req.json();
 
         data.password = hashSync(data.password, genSaltSync(10))
         data.roleId = 3
-
+    
+        console.log(data)
         const user = await prisma.user.create({
             data: data
 

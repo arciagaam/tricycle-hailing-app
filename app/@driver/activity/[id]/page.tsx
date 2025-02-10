@@ -1,8 +1,8 @@
 import PageTitle from '@/app/_components/PageTitle';
-import notFound from '@/app/not-found';
 import GoogleMapsDirections from '@/components/google-maps/GoogleMapsDirections';
 import { prisma } from '@/lib/prisma';
 import { handleFullName } from '@/lib/utils';
+import { notFound } from 'next/navigation';
 import React from 'react'
 
 export default async function DriverActivity({ params }: { params: { id: string } }) {

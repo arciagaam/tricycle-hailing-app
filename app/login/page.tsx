@@ -73,7 +73,7 @@ export default function Login() {
             )}
           />
 
-          <Button type="submit">Submit</Button>
+          <Button type="submit">Login</Button>
         </form>
       </Form>
       <Link href="/register" className="flex items-center justify-center text-center w-full text-muted-foreground text-xs hover:text-primary/80">
