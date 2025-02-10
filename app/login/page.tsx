@@ -7,6 +7,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function Login() {
   const router = useRouter();
@@ -20,15 +21,21 @@ export default function Login() {
   })
 
   const onSubmit = async (values: z.infer<typeof loginSchema>) => {
+
     const res = await fetch('/api/auth/login', {
       method: 'POST',
       body: JSON.stringify(values)
     })
 
-    if (res.ok) {
-      router.push('/')
+    if (!res.ok) {
+      const { message } = await res.json();
+      return toast.error(message)
+
     }
 
+    toast.success('Succesfully logged in')
+    router.push('/')
+    router.refresh()
   }
 
   return (

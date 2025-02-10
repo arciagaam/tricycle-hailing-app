@@ -11,7 +11,7 @@ export async function POST(req: Request) {
     try {
         const { username, password: inputPassword } = await req.json();
 
-        const user = await prisma.user.findUniqueOrThrow({
+        const user = await prisma.user.findUnique({
             where: {
                 username: username
             },
@@ -24,6 +24,8 @@ export async function POST(req: Request) {
                 role: true
             }
         });
+
+        if (!user) throw new Error('Invalid username or password');
 
         const passwordCheck = compareSync(inputPassword, user.password);
 
