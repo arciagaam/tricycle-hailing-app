@@ -1,5 +1,6 @@
 'use client'
 
+import { Spinner } from '@/app/_components/Spinner'
 import GoogleMaps from '@/components/google-maps/GoogleMaps'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
@@ -9,7 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Dropoff } from '@prisma/client'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { z } from 'zod'
@@ -17,6 +18,8 @@ import { z } from 'zod'
 export default function EditDropoffForm({ dropoff }: { dropoff: Dropoff }) {
 
     const router = useRouter();
+
+    const [isLoading, setIsLoading] = useState(false)
 
     const editDropoffForm = useForm<z.infer<typeof editDropoffSchema>>({
         resolver: zodResolver(editDropoffSchema),
@@ -41,7 +44,7 @@ export default function EditDropoffForm({ dropoff }: { dropoff: Dropoff }) {
     }
 
     const onSubmit = async (values: z.infer<typeof editDropoffSchema>) => {
-
+        setIsLoading(true)
         const res = await fetch('/api/dropoffs', {
             method: 'PATCH',
             body: JSON.stringify(values)
@@ -49,6 +52,7 @@ export default function EditDropoffForm({ dropoff }: { dropoff: Dropoff }) {
 
         const data = await res.json();
 
+        setIsLoading(false)
         if (res.ok) {
             editDropoffForm.reset()
             toast.success(data.message)
@@ -59,6 +63,14 @@ export default function EditDropoffForm({ dropoff }: { dropoff: Dropoff }) {
 
     return (
         <>
+            {isLoading &&
+                <div className='fixed z-[999] bg-black/10 inset-0 flex flex-col items-center justify-center'>
+                    <div className="flex flex-col rounded-md bg-white p-8">
+                        <Spinner />
+                    </div>
+                </div>
+            }
+            
             <div className="w-full h-[400px]">
                 <GoogleMaps onMapClick={handleMapClick} center={{ lat: parseFloat(dropoff.latitude), lng: parseFloat(dropoff.longitude) }} />
             </div>

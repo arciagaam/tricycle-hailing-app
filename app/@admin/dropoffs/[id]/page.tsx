@@ -25,7 +25,7 @@ export default async function ViewDropoff(props: { params: Promise<{ id: string 
     if (dropoff) return (
         <div className="flex flex-col gap-5">
 
-            <PageTitle title={dropoff.name} showBackButton={true} />f
+            <PageTitle title={dropoff.name} showBackButton={true} />
 
 
             <div className="relative w-full rounded-md aspect-square">

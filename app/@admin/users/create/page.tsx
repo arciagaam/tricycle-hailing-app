@@ -1,6 +1,7 @@
 'use client'
 
 import PageTitle from '@/app/_components/PageTitle'
+import { Spinner } from '@/app/_components/Spinner';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -18,6 +19,8 @@ export default function CreateUser() {
     const router = useRouter();
 
     const [roles, setRoles] = useState<Role[]>();
+
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
         const getRoles = async () => {
@@ -45,11 +48,14 @@ export default function CreateUser() {
     })
 
     const onSubmit = async (values: z.infer<typeof createUserSchema>) => {
+        setIsLoading(true)
         const res = await fetch('/api/users', {
             method: 'POST',
             body: JSON.stringify(values)
         });
 
+
+        setIsLoading(false)
 
         if (res.ok) {
             const user = await res.json();
@@ -61,104 +67,114 @@ export default function CreateUser() {
 
     }
     return (
-        <div className="flex flex-col gap-5">
-            <PageTitle title={'Create User'} showBackButton={true} />
+        <>
+            {isLoading &&
+                <div className='fixed z-[999] bg-black/10 inset-0 flex flex-col items-center justify-center'>
+                    <div className="flex flex-col rounded-md bg-white p-8">
+                        <Spinner />
+                    </div>
+                </div>
+            }
+            
+            <div className="flex flex-col gap-5">
+                <PageTitle title={'Create User'} showBackButton={true} />
 
-            <div className="flex flex-col gap-5 p-4">
-                <Form {...createUserForm}>
-                    <form onSubmit={createUserForm.handleSubmit(onSubmit)} className="flex flex-col gap-5">
+                <div className="flex flex-col gap-5 p-4">
+                    <Form {...createUserForm}>
+                        <form onSubmit={createUserForm.handleSubmit(onSubmit)} className="flex flex-col gap-5">
 
-                        <FormField
-                            control={createUserForm.control}
-                            name="username"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Username</FormLabel>
-                                    <FormDescription> {"The username will be this user's default password."}</FormDescription>
-                                    <FormControl>
-                                        <Input {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                            <FormField
+                                control={createUserForm.control}
+                                name="username"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Username</FormLabel>
+                                        <FormDescription> {"The username will be this user's default password."}</FormDescription>
+                                        <FormControl>
+                                            <Input {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
 
-                        <FormField
-                            control={createUserForm.control}
-                            name="firstName"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>First Name</FormLabel>
-                                    <FormControl>
-                                        <Input {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={createUserForm.control}
-                            name="middleName"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Middle Name</FormLabel>
-                                    <FormControl>
-                                        <Input {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={createUserForm.control}
-                            name="lastName"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Last Name</FormLabel>
-                                    <FormControl>
-                                        <Input {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                            <FormField
+                                control={createUserForm.control}
+                                name="firstName"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>First Name</FormLabel>
+                                        <FormControl>
+                                            <Input {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={createUserForm.control}
+                                name="middleName"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Middle Name</FormLabel>
+                                        <FormControl>
+                                            <Input {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={createUserForm.control}
+                                name="lastName"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Last Name</FormLabel>
+                                        <FormControl>
+                                            <Input {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
 
-                        <hr />
+                            <hr />
 
-                        <FormField
-                            control={createUserForm.control}
-                            name="roleId"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Role</FormLabel>
+                            <FormField
+                                control={createUserForm.control}
+                                name="roleId"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Role</FormLabel>
 
-                                    {
-                                        roles &&
+                                        {
+                                            roles &&
 
-                                        <Select onValueChange={field.onChange} defaultValue={String(0)} >
-                                            <FormControl>
-                                                <SelectTrigger>
-                                                    <SelectValue />
-                                                </SelectTrigger>
-                                            </FormControl>
-                                            <SelectContent>
-                                                {
-                                                    roles?.map(role => (
-                                                        <SelectItem key={role.id} value={String(role.id)}>{role.name}</SelectItem>
-                                                    ))
-                                                }
-                                            </SelectContent>
-                                        </Select>
-                                    }
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                                            <Select onValueChange={field.onChange} defaultValue={String(0)} >
+                                                <FormControl>
+                                                    <SelectTrigger>
+                                                        <SelectValue />
+                                                    </SelectTrigger>
+                                                </FormControl>
+                                                <SelectContent>
+                                                    {
+                                                        roles?.map(role => (
+                                                            <SelectItem key={role.id} value={String(role.id)}>{role.name}</SelectItem>
+                                                        ))
+                                                    }
+                                                </SelectContent>
+                                            </Select>
+                                        }
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
 
-                        <Button type="submit">Create User</Button>
-                    </form>
-                </Form>
+                            <Button type="submit">Create User</Button>
+                        </form>
+                    </Form>
+                </div>
             </div>
-        </div>
+        </>
     )
 }

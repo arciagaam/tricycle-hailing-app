@@ -47,7 +47,7 @@ export default function DriverAvailableBookings({ bookings, user }: { bookings: 
     return (
         <>
             {isLoading &&
-                <div className='absolute z-[999] bg-black/10 inset-0 flex flex-col items-center justify-center'>
+                <div className='fixed z-[999] bg-black/10 inset-0 flex flex-col items-center justify-center'>
                     <div className="flex flex-col rounded-md bg-white p-8">
                         <Spinner />
                     </div>
