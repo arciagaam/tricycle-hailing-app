@@ -48,7 +48,7 @@ export default function PassengerMenu() {
     }, [pathname])
 
     return (
-        <div className={`relative h-full max-w-0`}>
+        <div className={`relative h-full`}>
             {!navOpen ? (
                 <Button className={`${!navOpen ? 'block' : 'hidden'} absolute left-4 top-4 z-[999]`} onClick={() => setNavOpen(true)}>
                     <MdMenu size={24} />
@@ -56,7 +56,7 @@ export default function PassengerMenu() {
 
             ) : (
                 <>
-                    <div onClick={() => setNavOpen(false)} className='min-w-[100dvw] lg:min-w-[70dvw] lg:max-w-full min-h-full z-[9998] bg-black/30 absolute left-0 top-0' />
+                    <div onClick={() => setNavOpen(false)} className='w-[100dvw] lg:max-w-[70dvw] 2xl:max-w-[1400px] min-h-full z-[9998] bg-black/50 absolute left-0 top-0' />
                     <div className='absolute z-[9999] max-w-fit top-0 flex flex-col shadow-md border-t-muted min-h-dvh bg-background'>
 
                         <div className='flex gap-2 w-full p-4 items-center justify-between'>

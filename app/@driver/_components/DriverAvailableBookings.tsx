@@ -7,10 +7,12 @@ import { ResponsiveProvider } from '@/hooks/useResponsive'
 import { BookingWithRelations } from '@/lib/types'
 import { socket } from '@/socket'
 import { User } from '@prisma/client'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { FaBuilding, FaMotorcycle, FaSchool } from 'react-icons/fa'
+import { MdPinDrop } from 'react-icons/md'
 
-export default function DriverAvailableBookings({ bookings, user }: { bookings: BookingWithRelations[], user: User}) {
-
+export default function DriverAvailableBookings({ bookings, user }: { bookings: BookingWithRelations[], user: User }) {
+    const [move, setMove] = useState<boolean>(false)
     const acceptBooking = async (booking: BookingWithRelations) => {
         const res = await fetch('api/bookings', {
             method: 'PATCH',
@@ -52,11 +54,11 @@ export default function DriverAvailableBookings({ bookings, user }: { bookings: 
                             </ResponsiveProvider>
                         </div>
 
-                    <div className="flex flex-col">
-                        <div className="flex w-full justify-between">
-                            <p>Dropoff: <span>{booking.dropoff.address}</span></p>
-                            <p>Fare: <span>P{Number(booking.dropoff.fare).toLocaleString()}</span></p>
-                        </div>
+                        <div className="flex flex-col">
+                            <div className="flex w-full justify-between">
+                                <p>Dropoff: <span>{booking.dropoff.address}</span></p>
+                                <p>Fare: <span>P{Number(booking.dropoff.fare).toLocaleString()}</span></p>
+                            </div>
 
                             <hr />
 
@@ -72,13 +74,14 @@ export default function DriverAvailableBookings({ bookings, user }: { bookings: 
 
                     </div>
                 )) :
-                    <div className={`flex h-full w-dvw items-center justify-center`}>
-                        <span className='text-lg font-bold text-muted-foreground relative'>
-                            <div className='absolute -top-10 left-0 bg-background z-10 min-w-10 h-10' />
-                            <div className='absolute -top-10 right-0 bg-background z-10 min-w-10 h-10' />
-                            <FaMotorcycle className={`text-2xl absolute -top-6 right-0 ${move ? 'right-[0px] duration-1000 transition-all' : 'right-[170px] transition-all duration-1000'}`} />
-                            No Available bookings.
+                    <div className={`flex  flex-col h-full w-dvw items-center justify-center`}>
+                        <span className='flex items-center text-lg w-[180px] font-bold text-muted-foreground relative'>
+                            <FaMotorcycle className='absolute left-[80px] text-lg z-10 text-primary' />
+                            <FaBuilding  className='absolute right-0 animate-building-movement delay-0'/>
+                            <FaBuilding  className='absolute -right-[50px] animate-building-movement delay-500'/>
+                            <FaBuilding  className='absolute -right-[150px] animate-building-movement delay-1000'/>
                         </span>
+                        <p className='text-lg text-muted-foreground font-bold'>No Bookings Available</p>
                     </div>
                 }
             </div>
