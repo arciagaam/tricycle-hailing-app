@@ -37,7 +37,7 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
     const [dropoffs, setDropoffs] = useState<Dropoff[] | null>();
     const [selectDropoffOpen, setSelectDropoffOpen] = useState(false)
     const [isLoading, setIsLoading] = useState(false);
-    const [passengerDroppedOff, setPassengerDroppedOff] = useState(false);
+    const [passengerDroppedOff, setPassengerDroppedOff] = useState(true);
     const [selectedFareType, setSelectedFareType] = useState<'specialFare' | 'multipleFare' | null>(null);
 
     const getFetchedDropoffs = (value: Dropoff[]) => {
@@ -190,7 +190,7 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
 
                                     <div className='flex flex-col gap-2 w-full max-w-full'>
                                         <Input
-                                            className='text-muted-foreground text-ellipsis border-none shadow-none focus:border-none focus-visible:ring-0'
+                                            className='text-inactive text-ellipsis border-none shadow-none focus:border-none focus-visible:ring-0'
                                             value={'San Beda University - Rizal | Taytay'}
                                             readOnly
                                         />
@@ -277,14 +277,10 @@ const BookingScreen = ({ booking }: { booking: BookingWithRelations }) => {
                 </DrawerHeader>
 
                 <div className="w-full flex flex-col rounded-md gap-2 p-4 bg-background">
-                    <p className='text-muted-foreground'>Ride Details</p>
+                    <p className='text-inactive'>Ride Details</p>
 
                     <p>Dropoff to <span>{booking?.dropoff?.address}</span></p>
-
-                    <div className="flex w-full justify-between">
-                        <p>{booking.fareType == "MULTIPLE" ? '3 Person Up' : 'Special Ride'}</p>
-                        <p><span>{booking.fareType == "MULTIPLE" ? `P${booking.fare} each` : `P${booking.fare}`}</span></p>
-                    </div>
+                    <p><span>P50.00</span></p>
 
                     <hr />
 
@@ -324,8 +320,8 @@ const InProgressScreen = ({ booking }: { booking: BookingWithRelations }) => {
 
                 <div className="w-full flex flex-col bg-background rounded-md p-4 gap-5">
                     <p>Ride Details</p>
-                    <p>Dropoff: <span>{booking.dropoff.address}</span></p>
-                    <p>Fare: <span>P50.00</span></p>
+                    <p>Dropoff to <span>{booking.dropoff.address}</span></p>
+                    <p>Fare: <span>P{Number(booking.dropoff.fare).toLocaleString()}</span></p>
 
                     <hr />
                     <p>Driver Details</p>

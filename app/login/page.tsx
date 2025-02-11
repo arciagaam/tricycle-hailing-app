@@ -37,6 +37,7 @@ export default function Login() {
 
     if (!res.ok) {
       const { message } = await res.json();
+      setIsLoading(false)
       return toast.error(message)
 
     }
@@ -94,7 +95,7 @@ export default function Login() {
             <Button type="submit">Login</Button>
           </form>
         </Form>
-        <Link href="/register" className="flex items-center justify-center text-center w-full text-muted-foreground text-xs hover:text-primary/80">
+        <Link href="/register" className="flex items-center justify-center text-center w-full text-inactive text-xs hover:text-primary/80">
           {"Don't have an account yet?"}
         </Link>
       </div>

@@ -15,21 +15,21 @@ export default function UserMenu() {
             <NavigationMenuList className='w-full flex flex-1 justify-evenly gap-4'>
                 <NavigationMenuItem>
                     <Link href={"/"} legacyBehavior passHref>
-                        <NavigationMenuLink active className={`flex flex-col items-center leading-tight ${pathname === '/' ? 'text-primary' : 'text-muted-foreground'}`}>
+                        <NavigationMenuLink active className={`flex flex-col items-center leading-tight ${pathname === '/' ? 'text-primary' : 'text-inactive'}`}>
                             <MdHome size={24} /> Home
                         </NavigationMenuLink>
                     </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                     <Link href={"/activity"} legacyBehavior passHref>
-                        <NavigationMenuLink className={`flex flex-col items-center leading-tight ${pathname === '/activity' ? 'text-primary' : 'text-muted-foreground'}`}>
+                        <NavigationMenuLink className={`flex flex-col items-center leading-tight ${pathname === '/activity' ? 'text-primary' : 'text-inactive'}`}>
                             <MdList size={24} /> Activity
                         </NavigationMenuLink>
                     </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                     <Link href={"/account"} legacyBehavior passHref>
-                        <NavigationMenuLink className={`flex flex-col items-center leading-tight ${pathname === '/account' ? 'text-primary' : 'text-muted-foreground'}`}>
+                        <NavigationMenuLink className={`flex flex-col items-center leading-tight ${pathname === '/account' ? 'text-primary' : 'text-inactive'}`}>
                             <MdPerson size={24} /> Account
                         </NavigationMenuLink>
                     </Link>

@@ -101,7 +101,7 @@ export default function DriverCurrentBooking({ booking }: { booking: BookingWith
                                     <div className="w-full flex flex-col bg-background rounded-md p-4 gap-5">
                                         <p>Ride Details</p>
                                         <p>Dropoff: <span>{booking.dropoff.address}</span></p>
-                                        <p>Fare: <span>P50.00</span></p>
+                                        <p>Fare: <span>P{Number(booking.dropoff.fare).toLocaleString()}</span></p>
                                         <hr />
                                         <p>Passenger Details</p>
                                         <p>Rider: <span>{booking.passenger.firstName}</span></p>

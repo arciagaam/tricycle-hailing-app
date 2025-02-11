@@ -131,7 +131,7 @@ export default function Register() {
                         <Button type="submit">Register</Button>
                     </form>
                 </Form>
-                <Link href="/login" className="flex items-center justify-center text-center w-full text-muted-foreground text-xs hover:text-primary/80">
+                <Link href="/login" className="flex items-center justify-center text-center w-full text-inactive text-xs hover:text-primary/80">
                     {"Already have an account?"}
                 </Link>
             </div>
