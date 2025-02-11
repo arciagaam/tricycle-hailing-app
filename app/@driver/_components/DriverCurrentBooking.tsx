@@ -8,6 +8,8 @@ import { ResponsiveProvider } from '@/hooks/useResponsive'
 import { BookingWithRelations } from '@/lib/types'
 import { socket } from '@/socket'
 import React, { useState } from 'react'
+import { FaMotorcycle, FaSchool } from 'react-icons/fa'
+import { MdPinDrop } from 'react-icons/md'
 
 
 export default function DriverCurrentBooking({ booking }: { booking: BookingWithRelations }) {
@@ -80,9 +82,14 @@ export default function DriverCurrentBooking({ booking }: { booking: BookingWith
                         <div className='flex flex-col w-full h-fit absolute bottom-0'>
                             <Drawer>
                                 <DrawerTrigger asChild>
-
                                     <Button className='flex flex-col h-fit py-6 rounded-b-none'>
-                                        <p>ANIMATION</p>
+                                        <p>{booking.status}</p>
+                                        <div className={`flex flex-row items-center justify-between relative p-2 w-[180px] pb-4 ${booking.status.toLowerCase() === 'accepted' ? '-scale-x-100' : ''}`}>
+                                            <MdPinDrop className={`absolute ${booking.status.toLowerCase() === 'accepted' ? 'left-0' : 'right-0 animate-bounce'} text-lg`} />
+                                            <FaMotorcycle className='absolute left-0 animate-moveRight text-lg' />
+                                            <FaSchool className={`absolute ${booking.status.toLowerCase() === 'accepted' ? ' animate-bounce right-0' : 'left-0'} text-lg`} />
+                                        </div>
+                                        <h1>{booking.status.toLowerCase() == 'accepted' ? 'You are on your way to the pickup point' : 'You are on your way to your destination'}</h1>
                                         <p>Click to view details</p>
                                     </Button>
                                 </DrawerTrigger>
