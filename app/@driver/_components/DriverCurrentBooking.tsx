@@ -128,6 +128,7 @@ export default function DriverCurrentBooking({ booking }: { booking: BookingWith
 }
 
 const CompletedScreen = ({ booking }: { booking: BookingWithRelations }) => {
+    console.log(booking)
 
     return (
         <div className="fixed inset-0 overflow-auto bg-red-500">

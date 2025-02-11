@@ -289,6 +289,8 @@ const InProgressScreen = ({ booking }: { booking: BookingWithRelations }) => {
 
 const CompletedScreen = ({ booking }: { booking: BookingWithRelations }) => {
 
+    console.log(booking)
+
     return (
         <div className="fixed inset-0 overflow-auto bg-red-500">
             {/* TODO: allen design here */}
