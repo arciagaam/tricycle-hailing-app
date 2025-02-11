@@ -11,11 +11,27 @@ export default function AccountPage() {
             <div className='flex flex-col pt-[80px] p-4 w-full h-fit gap-5'>
                 <div className='flex flex-col p-4 rounded-md border border-muted gap-5'>
                     <span className='text-primary font-bold flex gap-2 items-center'>
-                        <MdPerson className='text-2xl'/>
+                        <MdPerson className='text-2xl' />
                         Personal Information
                     </span>
-                    <p>Passenger Name</p>
-                    <p>Other Info...</p>
+                    <form className='flex flex-col gap-5'>
+                        <div className='flex flex-col'>
+                            <label>Username</label>
+                            <p>SAMPLE USERNAME</p>
+                        </div>
+                        <div className='flex flex-col'>
+                            <label>First Name</label>
+                            <Input id="first-name" placeholder='First Name' />
+                        </div>
+                        <div className='flex flex-col'>
+                            <label>Middle Name</label>
+                            <Input id="middle-name" placeholder='Middle Name' />
+                        </div>
+                        <div className='flex flex-col'>
+                            <label>Last Name</label>
+                            <Input id="last-name" placeholder='Last Name' />
+                        </div>
+                    </form>
                     <hr></hr>
                     <span className='text-primary font-bold flex gap-2 items-center'>
                         <MdKey className='text-2xl' />

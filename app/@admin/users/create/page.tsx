@@ -79,7 +79,7 @@ export default function CreateUser() {
             <div className="flex flex-col gap-5">
                 <PageTitle title={'Create User'} showBackButton={true} />
 
-                <div className="flex flex-col gap-5 p-4">
+                <div className="flex flex-col gap-5 p-4 pt-[80px]">
                     <Form {...createUserForm}>
                         <form onSubmit={createUserForm.handleSubmit(onSubmit)} className="flex flex-col gap-5">
 

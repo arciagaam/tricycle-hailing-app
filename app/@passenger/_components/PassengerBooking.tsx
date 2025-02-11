@@ -280,11 +280,7 @@ const BookingScreen = ({ booking }: { booking: BookingWithRelations }) => {
                     <p className='text-inactive'>Ride Details</p>
 
                     <p>Dropoff to <span>{booking?.dropoff?.address}</span></p>
-
-                    <div className="flex w-full justify-between">
-                        <p>{booking.fareType == "MULTIPLE" ? '3 Person Up' : 'Special Ride'}</p>
-                        <p><span>{booking.fareType == "MULTIPLE" ? `P${booking.fare} each` : `P${booking.fare}`}</span></p>
-                    </div>
+                    <p><span>P50.00</span></p>
 
                     <hr />
 

@@ -6,6 +6,7 @@ import GoogleMapsDirections from '@/components/google-maps/GoogleMapsDirections'
 import { Button } from '@/components/ui/button'
 import { ResponsiveProvider } from '@/hooks/useResponsive'
 import { BookingWithRelations } from '@/lib/types'
+import { handleFullName } from '@/lib/utils'
 import { socket } from '@/socket'
 import { User } from '@prisma/client'
 import React, { useEffect, useState } from 'react'
@@ -54,7 +55,7 @@ export default function DriverAvailableBookings({ bookings, user }: { bookings: 
                 </div>
             }
 
-            <div className='bg-background w-full h-fit flex flex-col gap-2'>
+            <div className='bg-background w-full h-fit flex flex-col items-start gap-2'>
                 <PageTitle title='Available Bookings' />
 
                 <div className='flex flex-col pt-[80px] p-4 w-full h-fit gap-5'>
@@ -70,14 +71,19 @@ export default function DriverAvailableBookings({ bookings, user }: { bookings: 
                             <div className="flex flex-col gap-2">
                                 <div className="flex w-full justify-between font-bold text-muted-fore">
                                     <p>Dropoff to <span>{booking.dropoff.address}</span></p>
-                                    <p><span>P{Number(booking.dropoff.fare).toLocaleString()}</span></p>
+                                    <p><span>P{Number(booking.dropoff.specialFare || booking.dropoff.multipleFare).toLocaleString()}</span></p>
                                 </div>
 
                                 <hr />
 
                                 <div className="flex flex-col">
                                     <p>Passenger Details</p>
-                                    <p>Name: <span>{booking.passenger.firstName}</span></p>
+                                    <p>Name: <span>{
+                                        handleFullName({
+                                            firstName: booking.passenger.firstName,
+                                            middleName: booking.passenger.middleName,
+                                            lastName: booking.passenger.lastName
+                                        })}</span></p>
                                 </div>
                             </div>
 
