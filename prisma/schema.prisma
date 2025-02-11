@@ -56,17 +56,18 @@ model Role {
 }
 
 model Dropoff {
-  id        Int           @id @default(autoincrement())
-  name      String
-  address   String
-  longitude String
-  latitude  String
-  fare      String
-  status    DropOffStatus @default(ACTIVE)
-  createdAt DateTime      @default(now())
-  updatedAt DateTime?     @updatedAt
-  deletedAt DateTime?
-  bookings  Booking[]
+  id           Int           @id @default(autoincrement())
+  name         String
+  address      String
+  longitude    String
+  latitude     String
+  specialFare  String
+  multipleFare String
+  status       DropOffStatus @default(ACTIVE)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime?     @updatedAt
+  deletedAt    DateTime?
+  bookings     Booking[]
 }
 
 model Booking {
@@ -81,9 +82,16 @@ model Booking {
   passengerId Int
 
   status      BookingStatus
+  fare        String?
+  fareType    FareTypes?
   pickupTime  DateTime?
   dropoffTime DateTime?
   createdAt   DateTime      @default(now())
+}
+
+enum FareTypes {
+  SPECIAL
+  MULTIPLE
 }
 
 enum DropOffStatus {

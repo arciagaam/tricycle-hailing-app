@@ -16,6 +16,8 @@ import { Drawer, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle, DrawerT
 import { FaMotorcycle, FaSchool } from 'react-icons/fa'
 import { Spinner } from '@/app/_components/Spinner'
 import toast from 'react-hot-toast'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { Label } from '@/components/ui/label'
 
 
 const bookingStatuses = [
@@ -35,6 +37,7 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
     const [selectDropoffOpen, setSelectDropoffOpen] = useState(false)
     const [isLoading, setIsLoading] = useState(false);
     const [passengerDroppedOff, setPassengerDroppedOff] = useState(false);
+    const [selectedFareType, setSelectedFareType] = useState<'specialFare' | 'multipleFare' | null>(null);
 
     const getFetchedDropoffs = (value: Dropoff[]) => {
         setDropoffs(value);
@@ -89,15 +92,24 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
         setSelectedDropoff(dropoff)
     }
 
+    const handleFareTypeSelect = (type: 'specialFare' | 'multipleFare') => {
+        setSelectedFareType(type)
+    }
+
     const onBookingSubmit = async () => {
         if (!selectedDropoff) return toast('Select a dropoff')
+        if (!selectedFareType) return toast('Select a fare type')
+
         setIsLoading(true);
 
+        console.log(selectedFareType)
         const res = await fetch('api/bookings', {
             method: 'POST',
             body: JSON.stringify({
                 dropoffId: selectedDropoff?.id,
-                passengerId: currentUser.id
+                passengerId: currentUser.id,
+                fare: selectedFareType == 'multipleFare' ? selectedDropoff.multipleFare : selectedDropoff.specialFare,
+                fareType: selectedFareType == 'multipleFare' ? 'MULTIPLE' : 'SPECIAL'
             })
         })
 
@@ -163,24 +175,56 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
                                     </div>
                                 </div>
                             }
-                            <div className='w-full flex rounded-md gap-2 p-4 bg-background'>
-                                <div className='flex flex-col gap-0.5 justify-center items-center'>
-                                    <MdSchool size={24} className='min-w-[20px]' />
-                                    <CiMenuKebab />
-                                    <label htmlFor='drop-off'>
-                                        <MdPinDrop size={24} className='min-w-[20px] text-primary' />
-                                    </label>
+                            <div className='w-full flex flex-col rounded-md gap-2 p-4 bg-background'>
+
+                                <div className="flex gap-2">
+
+                                    <div className='flex flex-col gap-0.5 justify-center items-center'>
+                                        <MdSchool size={24} className='min-w-[20px]' />
+                                        <CiMenuKebab />
+                                        <label htmlFor='drop-off'>
+                                            <MdPinDrop size={24} className='min-w-[20px] text-primary' />
+                                        </label>
+                                    </div>
+
+                                    <div className='flex flex-col gap-2 w-full max-w-full'>
+                                        <Input
+                                            className='text-muted-foreground text-ellipsis border-none shadow-none focus:border-none focus-visible:ring-0'
+                                            value={'San Beda University - Rizal | Taytay'}
+                                            readOnly
+                                        />
+
+                                        <SearchDropOff getFetchedDropoffs={getFetchedDropoffs} setDropoffs={setDropoffs} onFocus={() => setSelectDropoffOpen(true)} />
+
+                                    </div>
                                 </div>
 
-                                <div className='flex flex-col gap-2 w-full max-w-full'>
+                                {
+                                    selectedDropoff &&
+                                    <div className="flex flex-col mt-5 gap-3">
+                                        <p className='text-sm'>Select Fare Type</p>
+                                        <RadioGroup onValueChange={handleFareTypeSelect}>
+                                            {
+                                                selectedDropoff.specialFare &&
+                                                <div className="flex items-center gap-2 w-full">
+                                                    <RadioGroupItem value="specialFare" id="specialFare" />
+                                                    <Label htmlFor="specialFare">Special (1-2 Person)</Label>
+                                                    <p className='ml-auto text-sm'>P{Number(selectedDropoff.specialFare).toLocaleString()}</p>
+                                                </div>
+                                            }
 
-                                    <Input
-                                        className='text-muted-foreground text-ellipsis border-none shadow-none focus:border-none focus-visible:ring-0'
-                                        value={'San Beda University - Rizal | Taytay'}
-                                        readOnly
-                                    />
-                                    <SearchDropOff getFetchedDropoffs={getFetchedDropoffs} setDropoffs={setDropoffs} onFocus={() => setSelectDropoffOpen(true)} />
-                                </div>
+                                            {
+                                                selectedDropoff.multipleFare &&
+                                                <div className="flex items-center gap-2">
+                                                    <RadioGroupItem value="multipleFare" id="multipleFare" />
+                                                    <Label htmlFor="multipleFare">3 Person Up</Label>
+                                                    <p className='ml-auto text-sm'>P{Number(selectedDropoff.multipleFare).toLocaleString()} each</p>
+                                                </div>
+                                            }
+                                        </RadioGroup>
+                                    </div>
+                                }
+
                             </div>
                             <Button onClick={onBookingSubmit} className='w-full focus:bg-primary/80'>
                                 Book
@@ -235,7 +279,11 @@ const BookingScreen = ({ booking }: { booking: BookingWithRelations }) => {
                     <p className='text-muted-foreground'>Ride Details</p>
 
                     <p>Dropoff to <span>{booking?.dropoff?.address}</span></p>
-                    <p><span>P50.00</span></p>
+
+                    <div className="flex w-full justify-between">
+                        <p>{booking.fareType == "MULTIPLE" ? '3 Person Up' : 'Special Ride'}</p>
+                        <p><span>{booking.fareType == "MULTIPLE" ? `P${booking.fare} each` : `P${booking.fare}`}</span></p>
+                    </div>
 
                     <hr />
 

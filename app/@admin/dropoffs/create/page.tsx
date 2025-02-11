@@ -28,7 +28,8 @@ export default function CreateDropoff() {
             address: '',
             longitude: '',
             latitude: '',
-            fare: ''
+            specialFare: '',
+            multipleFare: ''
         }
     })
 
@@ -44,7 +45,7 @@ export default function CreateDropoff() {
 
     const onSubmit = async (values: z.infer<typeof createDropoffSchema>) => {
 
-        if(!createDropoffForm.getValues('longitude')) return toast('Select a location')
+        if (!createDropoffForm.getValues('longitude')) return toast('Select a location')
         setIsLoading(true)
         const res = await fetch('/api/dropoffs', {
             method: 'POST',
@@ -54,7 +55,7 @@ export default function CreateDropoff() {
         const data = await res.json();
 
         setIsLoading(false)
-        
+
         if (res.ok) {
             createDropoffForm.reset()
             toast.success(data.message)
@@ -84,10 +85,24 @@ export default function CreateDropoff() {
                         <form onSubmit={createDropoffForm.handleSubmit(onSubmit)} className='flex flex-col gap-5'>
                             <FormField
                                 control={createDropoffForm.control}
-                                name="fare"
+                                name="specialFare"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Fare</FormLabel>
+                                        <FormLabel>Special Fare (1-2 Persons)</FormLabel>
+                                        <FormControl>
+                                            <Input {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+
+                            <FormField
+                                control={createDropoffForm.control}
+                                name="multipleFare"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>3 Person Up Fare</FormLabel>
                                         <FormControl>
                                             <Input {...field} />
                                         </FormControl>
