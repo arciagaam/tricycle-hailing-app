@@ -1,7 +1,7 @@
 'use client'
 
 import { Input } from '@/components/ui/input'
-import React, { useEffect, useState } from 'react'
+import React, { SetStateAction, useEffect, useState } from 'react'
 import { CiMenuKebab } from 'react-icons/ci'
 import { MdPinDrop, MdSchool, MdSearch } from 'react-icons/md'
 import SearchDropOff from './SearchDropOff'
@@ -19,7 +19,6 @@ import toast from 'react-hot-toast'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Label } from '@/components/ui/label'
 import { handleFullName } from '@/lib/utils'
-import { useRouter } from 'next/navigation'
 
 
 const bookingStatuses = [
@@ -146,7 +145,7 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
                 <div className={`flex flex-col w-full h-fit absolute ${(booking && bookingStatuses.includes(booking?.status.toLowerCase())) ? 'bottom-0' : 'bottom-4'}`}>
 
                     {
-                        (booking?.status == 'COMPLETED' && passengerDroppedOff) && <CompletedScreen booking={booking} />
+                        (booking?.status == 'COMPLETED' && passengerDroppedOff) && <CompletedScreen booking={booking} setPassengerDroppedOff={setPassengerDroppedOff} />
                     }
 
                     {
@@ -228,7 +227,7 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
                                 }
 
                             </div>
-                            <Button onClick={() => setPassengerDroppedOff(false)} className='w-full focus:bg-primary/80'>
+                            <Button onClick={onBookingSubmit} className='w-full focus:bg-primary/80'>
                                 Book
                             </Button>
 
@@ -337,11 +336,7 @@ const InProgressScreen = ({ booking }: { booking: BookingWithRelations }) => {
     )
 }
 
-const CompletedScreen = ({ booking }: { booking: BookingWithRelations }) => {
-    const router = useRouter()
-
-    console.log(booking)
-
+const CompletedScreen = ({ booking, setPassengerDroppedOff }: { booking: BookingWithRelations, setPassengerDroppedOff: React.Dispatch<SetStateAction<boolean>> }) => {
     return (
         <div className="fixed inset-0 overflow-auto bg-black/50 z-[999] flex flex-col items-center justify-center">
 
@@ -390,9 +385,9 @@ const CompletedScreen = ({ booking }: { booking: BookingWithRelations }) => {
                     <p>{handleFullName({ firstName: booking?.driver?.firstName, middleName: booking?.driver?.middleName, lastName: booking?.driver?.lastName })}</p>
                 </div>
 
-          
-                    <Button onClick={() => router.refresh()} className='w-full mt-auto'>Back to Home</Button>
-           
+
+                <Button onClick={() => setPassengerDroppedOff(false)} className='w-full mt-auto'>Back to Home</Button>
+
             </div>
             {/* TODO: allen design here */}
         </div>
