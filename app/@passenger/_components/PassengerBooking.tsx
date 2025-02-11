@@ -1,7 +1,7 @@
 'use client'
 
 import { Input } from '@/components/ui/input'
-import React, { useEffect, useState } from 'react'
+import React, { SetStateAction, useEffect, useState } from 'react'
 import { CiMenuKebab } from 'react-icons/ci'
 import { MdPinDrop, MdSchool, MdSearch } from 'react-icons/md'
 import SearchDropOff from './SearchDropOff'
@@ -18,6 +18,7 @@ import { Spinner } from '@/app/_components/Spinner'
 import toast from 'react-hot-toast'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Label } from '@/components/ui/label'
+import { handleFullName } from '@/lib/utils'
 
 
 const bookingStatuses = [
@@ -144,8 +145,7 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
                 <div className={`flex flex-col w-full h-fit absolute ${(booking && bookingStatuses.includes(booking?.status.toLowerCase())) ? 'bottom-0' : 'bottom-4'}`}>
 
                     {
-                        (booking?.status == 'COMPLETED' && passengerDroppedOff) && 
-                        <CompletedScreen booking={booking} />
+                        (booking?.status == 'COMPLETED' && passengerDroppedOff) && <CompletedScreen booking={booking} setPassengerDroppedOff={setPassengerDroppedOff} />
                     }
 
                     {
@@ -332,12 +332,59 @@ const InProgressScreen = ({ booking }: { booking: BookingWithRelations }) => {
     )
 }
 
-const CompletedScreen = ({ booking }: { booking: BookingWithRelations }) => {
-
-    console.log(booking)
-
+const CompletedScreen = ({ booking, setPassengerDroppedOff }: { booking: BookingWithRelations, setPassengerDroppedOff: React.Dispatch<SetStateAction<boolean>> }) => {
     return (
-        <div className="fixed inset-0 overflow-auto bg-red-500">
+        <div className="fixed inset-0 overflow-auto bg-black/50 z-[999] flex flex-col items-center justify-center">
+
+            <div className="bg-white p-6 w-full h-full flex flex-col items-center rounded-lg gap-5">
+                <p className='uppercase'>Completed</p>
+
+                <hr className='w-full' />
+
+                <div className="flex flex-col items-start gap-3 w-full">
+
+                    <div className="flex gap-2">
+                        <MdSchool size={24} className='min-w-[20px]' />
+                        <p className='text-sm font-medium'>San Beda University - Rizal | Taytay</p>
+                    </div>
+
+                    <CiMenuKebab className='ml-1' />
+
+                    <div className='flex gap-2 justify-center items-start'>
+                        <MdPinDrop size={24} className='min-w-[20px] text-primary' />
+                        <div className="flex flex-col gap-1">
+                            <p className='text-sm font-medium'>{booking.dropoff.name}</p>
+                            <p className='text-sm'>{booking.dropoff.address}</p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <hr className='w-full' />
+
+                <div className="flex flex-col w-full gap-5">
+                    <div className="flex flex-col ">
+                        <p className='text-sm font-medium'>Fare Type</p>
+                        <p>{booking.fareType == 'MULTIPLE' ? '3 Person Up' : 'Special'}</p>
+                    </div>
+
+                    <div className="flex flex-col">
+                        <p className='text-sm font-medium'>Fare</p>
+                        <p>{booking.fareType == 'MULTIPLE' ? `${booking.fare} each` : `${booking.fare}`}</p>
+                    </div>
+                </div>
+
+                <hr className='w-full' />
+
+                <div className="flex flex-col w-full">
+                    <p className='text-sm font-medium'>Driver</p>
+                    <p>{handleFullName({ firstName: booking?.driver?.firstName, middleName: booking?.driver?.middleName, lastName: booking?.driver?.lastName })}</p>
+                </div>
+
+
+                <Button onClick={() => setPassengerDroppedOff(false)} className='w-full mt-auto'>Back to Home</Button>
+
+            </div>
             {/* TODO: allen design here */}
         </div>
     )
