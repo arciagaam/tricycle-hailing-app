@@ -68,9 +68,15 @@ export default function DriverAvailableBookings({ bookings, user }: { bookings: 
                             </div>
 
                             <div className="flex flex-col gap-2">
-                                <div className="flex w-full justify-between font-bold text-muted-fore">
-                                    <p>Dropoff to <span>{booking.dropoff.address}</span></p>
-                                    <p><span>P{Number(booking.dropoff.fare).toLocaleString()}</span></p>
+                                <div className="flex flex-col">
+                                    <div className="flex w-full justify-between font-bold text-muted-fore">
+                                        <p>Dropoff to <span>{booking.dropoff.address}</span></p>
+                                        <p><span>P{Number(booking.fareType == 'MULTIPLE' ? booking.dropoff.multipleFare : booking.dropoff.specialFare).toLocaleString()}</span> {booking.fareType == 'MULTIPLE' && 'each'}</p>
+                                    </div>
+
+                                    <p className='fonr-medium self-end ml-auto'>{booking.fareType == 'MULTIPLE' ? '3 Person Up' : 'Special'}</p>
+
+
                                 </div>
 
                                 <hr />
