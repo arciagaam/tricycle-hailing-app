@@ -9,7 +9,7 @@ import { BookingWithRelations } from '@/lib/types'
 import { socket } from '@/socket'
 import { User } from '@prisma/client'
 import React, { useEffect, useState } from 'react'
-import { FaBuilding, FaMotorcycle } from 'react-icons/fa'
+import { FaMotorcycle } from 'react-icons/fa'
 
 export default function DriverAvailableBookings({ bookings, user }: { bookings: BookingWithRelations[], user: User }) {
     const [isLoading, setIsLoading] = useState(false)
@@ -54,12 +54,12 @@ export default function DriverAvailableBookings({ bookings, user }: { bookings: 
                 </div>
             }
 
-            <div className='bg-background w-full h-full flex flex-col gap-2 overflow-auto'>
+            <div className='bg-background w-full h-full flex flex-col gap-2'>
                 <PageTitle title='Available Bookings' />
 
-                <div className='flex flex-col p-4 w-full h-full gap-5'>
+                <div className='flex flex-col pt-[80px] p-4 w-full h-fit gap-5'>
                     {bookings.length > 0 ? bookings?.map(booking => (
-                        <div key={booking.id} className="flex flex-col p-2 rounded-md border gap-5">
+                        <div key={booking.id} className="flex flex-col p-4 rounded-md border gap-5">
 
                             <div className="h-[300px] w-full">
                                 <ResponsiveProvider>
@@ -67,10 +67,10 @@ export default function DriverAvailableBookings({ bookings, user }: { bookings: 
                                 </ResponsiveProvider>
                             </div>
 
-                            <div className="flex flex-col">
-                                <div className="flex w-full justify-between">
-                                    <p>Dropoff: <span>{booking.dropoff.address}</span></p>
-                                    <p>Fare: <span>P{Number(booking.dropoff.fare).toLocaleString()}</span></p>
+                            <div className="flex flex-col gap-2">
+                                <div className="flex w-full justify-between font-bold text-muted-fore">
+                                    <p>Dropoff to <span>{booking.dropoff.address}</span></p>
+                                    <p><span>P{Number(booking.dropoff.fare).toLocaleString()}</span></p>
                                 </div>
 
                                 <hr />
@@ -89,10 +89,7 @@ export default function DriverAvailableBookings({ bookings, user }: { bookings: 
                     )) :
                         <div className={`flex  flex-col h-full w-dvw items-center justify-center`}>
                             <span className='flex items-center text-lg w-[180px] font-bold text-muted-foreground relative'>
-                                <FaMotorcycle className='absolute left-[80px] text-lg z-10 text-primary' />
-                                <FaBuilding className='absolute right-0 animate-building-movement delay-0' />
-                                <FaBuilding className='absolute -right-[50px] animate-building-movement delay-500' />
-                                <FaBuilding className='absolute -right-[150px] animate-building-movement delay-1000' />
+                                <FaMotorcycle className='absolute left-[80px] text-lg z-10 text-primary animate-bounce' />
                             </span>
                             <p className='text-lg text-muted-foreground font-bold'>No Bookings Available</p>
                         </div>

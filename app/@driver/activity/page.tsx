@@ -28,10 +28,10 @@ export default async function DriverActivities() {
     console.log(bookings)
 
     return (
-        <div className='bg-background min-w-full h-full'>
-            <PageTitle title='Activity History'/>
-            <div className='flex flex-col items-start justify-center'>
-                <div className='flex flex-col gap-2 w-full px-4'>
+        <>
+            <PageTitle title='Activity History' />
+            <div className='bg-background min-w-full h-fit'>
+                <div className='flex flex-col p-4 w-full h-fit gap-5'>
                     {
                         bookings.length > 0 ? bookings?.map(booking => (
                             <div key={booking.id} className={`border border-collapse border-gray-300 rounded-md flex flex-col gap-2 h-full min-w-dvw p-4`}>
@@ -62,6 +62,6 @@ export default async function DriverActivities() {
 
                 </div>
             </div>
-        </div>
+        </>
     )
 }
