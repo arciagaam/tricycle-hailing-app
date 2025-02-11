@@ -50,7 +50,7 @@ export default function PassengerMenu() {
     return (
         <div className={`relative h-full`}>
             {!navOpen ? (
-                <Button className={`${!navOpen ? 'block' : 'hidden'} absolute left-4 top-4 z-[999]`} onClick={() => setNavOpen(true)}>
+                <Button className={`${!navOpen ? 'block' : 'hidden'} fixed left-4 top-4 z-[999]`} onClick={() => setNavOpen(true)}>
                     <MdMenu size={24} />
                 </Button>
 

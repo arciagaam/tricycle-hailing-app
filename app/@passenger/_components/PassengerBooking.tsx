@@ -3,7 +3,7 @@
 import { Input } from '@/components/ui/input'
 import React, { useEffect, useState } from 'react'
 import { CiMenuKebab } from 'react-icons/ci'
-import { MdPinDrop, MdSchool } from 'react-icons/md'
+import { MdPinDrop, MdSchool, MdSearch } from 'react-icons/md'
 import SearchDropOff from './SearchDropOff'
 import GoogleMaps from '@/components/google-maps/GoogleMaps'
 import GoogleMapsDirections from '@/components/google-maps/GoogleMapsDirections'
@@ -34,6 +34,7 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
     const [dropoffs, setDropoffs] = useState<Dropoff[] | null>();
     const [selectDropoffOpen, setSelectDropoffOpen] = useState(false)
     const [isLoading, setIsLoading] = useState(false);
+    const [passengerDroppedOff, setPassengerDroppedOff] = useState(false);
 
     const getFetchedDropoffs = (value: Dropoff[]) => {
         setDropoffs(value);
@@ -72,6 +73,7 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
         socket.on('dropoff_passenger', (booking) => {
             setBooking(booking)
             setSelectedDropoff(null)
+            setPassengerDroppedOff(true)
         })
 
         return () => {
@@ -88,7 +90,7 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
     }
 
     const onBookingSubmit = async () => {
-        if(!selectedDropoff) return toast('Select a dropoff')
+        if (!selectedDropoff) return toast('Select a dropoff')
         setIsLoading(true);
 
         const res = await fetch('api/bookings', {
@@ -114,7 +116,7 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
             {isLoading &&
                 <div className='absolute z-[999] bg-black/10 inset-0 flex flex-col items-center justify-center'>
                     <div className="flex flex-col rounded-md bg-white p-8">
-                        <Spinner/>
+                        <Spinner />
                     </div>
                 </div>
             }
@@ -128,6 +130,11 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
 
 
                 <div className={`flex flex-col w-full h-fit absolute ${(booking && bookingStatuses.includes(booking?.status.toLowerCase())) ? 'bottom-0' : 'bottom-4'}`}>
+
+                    {
+                        (booking?.status == 'COMPLETED' && passengerDroppedOff) && <CompletedScreen booking={booking} />
+                    }
+
                     {
                         booking && bookingStatuses.includes(booking?.status.toLowerCase()) && <GetCurrentStatusScreen booking={booking} />
                     }
@@ -189,6 +196,7 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
 }
 
 const GetCurrentStatusScreen = ({ booking }: { booking: BookingWithRelations }) => {
+
     switch (booking.status.toLowerCase()) {
         case 'booking': return <BookingScreen booking={booking} />;
         case 'accepted': return <InProgressScreen booking={booking} />;
@@ -199,46 +207,28 @@ const GetCurrentStatusScreen = ({ booking }: { booking: BookingWithRelations }) 
 
 
 const BookingScreen = ({ booking }: { booking: BookingWithRelations }) => {
-    // const [loading, setLoading] = useState<boolean>(false);
-    // const [count, setCount] = useState<number>(0);
-
-    // useEffect(() => {
-    //     if (booking.status.toLowerCase() === 'booking') {
-    //         setLoading(true)
-    //     }
-    // }, [booking])
-
-
-    // useEffect(() => {
-    //     const animateLoading = () => {
-    //         while (loading) {
-    //             setTimeout(() => {
-    //                 setCount((prev) => prev + 1)
-    //                 if (count === 3) {
-    //                     setCount(0)
-    //                 }
-    //             }, 1000)
-    //         }
-    //     }
-
-    //     animateLoading();
-    // }, [])
-
-
     return (
         <Drawer>
             <DrawerTrigger asChild>
                 {/* //TODO: ALLEN DITO MO LAGAY YUNG ANIMATION, TAS LAGYAN MO TEXT NG CURRENT STATUS  */}
 
                 <Button className='flex flex-col h-fit py-6 rounded-b-none'>
-                    <p>ANIMATION</p>
+                    <p>{booking.status}</p>
+                    <div className='flex flex-row items-center justify-between relative p-2 w-[180px] pb-4'>
+                        <MdSearch className='text-lg animate-moveRight' />
+                    </div>
                     <p>Looking for riders...</p>
                     <p>Click to view details</p>
                 </Button>
             </DrawerTrigger>
             <DrawerContent>
                 <DrawerHeader>
-                    <DrawerTitle> Looking for drivers . . .</DrawerTitle>
+                    <DrawerTitle>
+                        Looking for drivers
+                        <span className='animate-fade-in-out'>.</span>
+                        <span className='animate-fade-in-out delay-300'>.</span>
+                        <span className='animate-fade-in-out delay-700'>.</span>
+                    </DrawerTitle>
                 </DrawerHeader>
 
                 <div className="w-full flex flex-col rounded-md gap-2 p-4 bg-background">
@@ -248,13 +238,6 @@ const BookingScreen = ({ booking }: { booking: BookingWithRelations }) => {
                     <p><span>P50.00</span></p>
 
                     <hr />
-
-                    <div>
-
-                        {/* {count === 1 && <p>.</p>}
-                {count === 2 && <p>..</p>}
-                {count === 3 && <p>...</p>} */}
-                    </div>
 
                 </div>
 
@@ -273,10 +256,11 @@ const InProgressScreen = ({ booking }: { booking: BookingWithRelations }) => {
             <DrawerTrigger asChild>
                 {/* //TODO: ALLEN DITO MO LAGAY YUNG ANIMATION, TAS LAGYAN MO TEXT NG CURRENT STATUS  */}
                 <Button className='flex flex-col h-fit py-6 rounded-b-none'>
-                    <div className='flex flex-row items-center justify-between relative p-2 w-[180px] pb-4'>
-                        <FaSchool className='absolute left-0 animate-in text-lg' />
+                    <p>{booking.status}</p>
+                    <div className={`flex flex-row items-center justify-between relative p-2 w-[180px] pb-4 ${booking.status.toLowerCase() === 'accepted' ? '-scale-x-100' : ''}`}>
+                        <MdPinDrop className={`absolute ${booking.status.toLowerCase() === 'accepted' ? 'left-0' : 'right-0 animate-bounce'} text-lg`} />
                         <FaMotorcycle className='absolute left-0 animate-moveRight text-lg' />
-                        <MdPinDrop className='absolute right-0 animate-bounce text-lg' />
+                        <FaSchool className={`absolute ${booking.status.toLowerCase() === 'accepted' ? ' animate-bounce right-0' : 'left-0'} text-lg`} />
                     </div>
                     <h1>{booking.status.toLowerCase() == 'accepted' ? 'Driver is on its way to your pickup point' : 'You are on your way to your destination'}</h1>
                     <p>Click to view details</p>
@@ -300,5 +284,14 @@ const InProgressScreen = ({ booking }: { booking: BookingWithRelations }) => {
                 </div>
             </DrawerContent>
         </Drawer>
+    )
+}
+
+const CompletedScreen = ({ booking }: { booking: BookingWithRelations }) => {
+
+    return (
+        <div className="fixed inset-0 overflow-auto bg-red-500">
+            {/* TODO: allen design here */}
+        </div>
     )
 }

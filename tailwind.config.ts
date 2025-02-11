@@ -11,12 +11,15 @@ export default {
 	],
 	theme: {
 		extend: {
+			fontFamily: {
+				'red-hat': ['var(--font-red-hat)'],
+			},
 			keyframes: {
 				'building-movement': {
-					'0%': { transform: 'translateX(0px)', opacity: '0'},
-					'50%': { opacity: '1'},
-					'90%' : { transform: 'translateX(-100px)'},
-					'100%' : { opacity: '0', transition: 'ease-in-out'},
+					'0%': { transform: 'translateX(0px)', opacity: '0' },
+					'50%': { opacity: '1' },
+					'90%': { transform: 'translateX(-100px)' },
+					'100%': { opacity: '0', transition: 'ease-in-out' },
 				},
 				moveRight: {
 					'0%': { transform: 'translateX(20px)', opacity: '0' },
@@ -24,10 +27,16 @@ export default {
 					'90%': { transform: 'translateX(140px)', opacity: '0' },
 					'100%': { opacity: '0', transition: 'ease-in-out' }, // Reset instantly
 				},
+				'fade-in-out': {
+					'0%': { opacity: '0.1' },
+					'50%': { opacity: '1' },
+					'100%': { opacity: '0.1', transition: 'ease-in-out' }
+				}
 			},
 			animation: {
 				moveRight: 'moveRight 5s infinite',
-				'building-movement': 'building-movement 6s infinite'
+				'building-movement': 'building-movement 6s infinite',
+				'fade-in-out': 'fade-in-out 2s infinite'
 			},
 
 			colors: {
