@@ -33,7 +33,7 @@ export default async function PassengerActivity(props: { params: Promise<{ id: s
         <div className='flex flex-col gap-2'>
           <div className='flex justify-between'>
             <p>Ride to {activity.dropoff.address}</p>
-            <p className='text-muted-foreground'>P{Number(activity.dropoff.fare).toLocaleString()}</p>
+            <p className='text-inactive'>P{Number(activity.dropoff.fare).toLocaleString()}</p>
           </div>
           <p>Pickup time: <span>{new Date(String(activity.pickupTime)).toLocaleString()}</span></p>
           <p>Drop off time: <span>{new Date(String(activity.dropoffTime)).toLocaleString()}</span></p>

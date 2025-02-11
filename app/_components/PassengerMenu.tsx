@@ -72,7 +72,7 @@ export default function PassengerMenu() {
                                     <NavigationMenuItem key={i} className='w-full hover:bg-muted px-4 py-2'>
                                         <Link href={route.href} legacyBehavior passHref>
                                             <NavigationMenuLink
-                                                className={`flex gap-2 items-center leading-tight ${pathname === route.href ? 'text-primary' : 'text-muted-foreground'}`}>
+                                                className={`flex gap-2 items-center leading-tight ${pathname === route.href ? 'text-primary' : 'text-inactive'}`}>
                                                 {route.icon} {route.label}
                                             </NavigationMenuLink>
                                         </Link>

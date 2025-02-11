@@ -13,7 +13,7 @@ export default async function ManageDropoffs() {
     <div className="flex flex-col">
       <PageTitle title={"Manage Dropoffs"} />
 
-      <div className='w-full h-full p-4 gap-2 flex flex-col'>
+      <div className='w-full h-full pt-[80px] p-4 gap-2 flex flex-col'>
         <div className='flex w-full justify-end items-center'>
           <Link href={'/dropoffs/create'}>
             <Button>

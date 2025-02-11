@@ -8,7 +8,7 @@ export default function DriverAccount() {
     <div className='bg-background min-w-full h-full'>
       <PageTitle title='Account' />
       <div className='flex flex-col pt-[80px] p-4 w-full h-fit gap-5'>
-        <div className='flex flex-col p-4 rounded-md border border-muted-foreground gap-5'>
+        <div className='flex flex-col p-4 rounded-md border border-muted gap-5'>
           <p className='text-primary font-bold'>Personal Information</p>
           <p>Driver Name</p>
           <p>Other Info...</p>

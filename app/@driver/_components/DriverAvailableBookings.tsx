@@ -54,7 +54,7 @@ export default function DriverAvailableBookings({ bookings, user }: { bookings: 
                 </div>
             }
 
-            <div className='bg-background w-full h-full flex flex-col gap-2'>
+            <div className='bg-background w-full h-fit flex flex-col gap-2'>
                 <PageTitle title='Available Bookings' />
 
                 <div className='flex flex-col pt-[80px] p-4 w-full h-fit gap-5'>
@@ -87,11 +87,9 @@ export default function DriverAvailableBookings({ bookings, user }: { bookings: 
 
                         </div>
                     )) :
-                        <div className={`flex  flex-col h-full w-dvw items-center justify-center`}>
-                            <span className='flex items-center text-lg w-[180px] font-bold text-muted-foreground relative'>
-                                <FaMotorcycle className='absolute left-[80px] text-lg z-10 text-primary animate-bounce' />
-                            </span>
-                            <p className='text-lg text-muted-foreground font-bold'>No Bookings Available</p>
+                        <div className={`flex flex-col h-[50dvh] w-full items-center justify-center`}>
+                            <FaMotorcycle className='text-2xl text-primary animate-bounce' />
+                            <p className='text-lg text-inactive font-bold'>No bookings available.</p>
                         </div>
                     }
                 </div>
