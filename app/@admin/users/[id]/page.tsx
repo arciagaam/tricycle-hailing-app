@@ -28,10 +28,10 @@ export default async function ViewUser(props: { params: Promise<{ id: string }> 
     if (!user) return notFound()
 
     if (user) return (
-        <div className="flex flex-col gap-5">
-            <PageTitle title={user.username} showBackButton={true} returnUrl='/users'/>
+        <>
+            <PageTitle title={user.username} showBackButton={true} returnUrl={`/users`}/>
 
-            <div className="flex flex-col gap-5 p-4">
+            <div className="flex flex-col pt-[80px] gap-5 p-4">
                 <div className="flex flex-col">
                     <p className='text-xs font-medium text-black/80'>Full Name</p>
                     <p>{handleFullName({ firstName: user.firstName, middleName: user.middleName, lastName: user.lastName })}</p>
@@ -60,6 +60,6 @@ export default async function ViewUser(props: { params: Promise<{ id: string }> 
                 </div>
             </div>
 
-        </div>
+        </>
     )
 }

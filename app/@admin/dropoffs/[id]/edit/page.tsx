@@ -18,12 +18,14 @@ export default async function EditDropoff(props: { params: Promise<{ id: string 
     if (!dropoff) return notFound()
 
     return (
-        <div className="flex flex-col w-full">
-            <PageTitle title="Edit Dropoff" showBackButton />
+        <>
+            <PageTitle title="Edit Dropoff" showBackButton returnUrl={`/dropoffs/${id}`} />
+            <div className="flex flex-col pt-[80px] lg:pt-[100px] p-4 lg:p-8 gap-5">
 
-            <div className='flex flex-col w-full h-full p-4 gap-5'>
-                <EditDropoffForm dropoff={dropoff} />
+                <div className='flex flex-col w-full h-full p-4 gap-5'>
+                    <EditDropoffForm dropoff={dropoff} />
+                </div>
             </div>
-        </div>
+        </>
     )
 }

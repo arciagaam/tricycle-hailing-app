@@ -3,7 +3,7 @@
 import { Input } from '@/components/ui/input'
 import React, { SetStateAction, useEffect, useState } from 'react'
 import { CiMenuKebab } from 'react-icons/ci'
-import { MdPinDrop, MdSchool, MdSearch } from 'react-icons/md'
+import { MdCheckCircle, MdPinDrop, MdSchool, MdSearch } from 'react-icons/md'
 import SearchDropOff from './SearchDropOff'
 import GoogleMaps from '@/components/google-maps/GoogleMaps'
 import GoogleMapsDirections from '@/components/google-maps/GoogleMapsDirections'
@@ -18,7 +18,8 @@ import { Spinner } from '@/app/_components/Spinner'
 import toast from 'react-hot-toast'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Label } from '@/components/ui/label'
-import { handleFullName } from '@/lib/utils'
+import { handleFullName, toTitleCase } from '@/lib/utils'
+import ElipsisLoading from '@/app/_components/ElipsisLoading'
 
 
 const bookingStatuses = [
@@ -202,15 +203,15 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
 
                                 {
                                     selectedDropoff &&
-                                    <div className="flex flex-col mt-5 gap-3">
-                                        <p className='text-sm'>Select Fare Type</p>
+                                    <div className="flex flex-col mt-5 gap-2">
+                                        <p className='text-sm text-inactive'>Select Fare Type</p>
                                         <RadioGroup onValueChange={handleFareTypeSelect}>
                                             {
                                                 selectedDropoff.specialFare &&
                                                 <div className="flex items-center gap-2 w-full">
                                                     <RadioGroupItem value="specialFare" id="specialFare" />
                                                     <Label htmlFor="specialFare">Special (1-2 Person)</Label>
-                                                    <p className='ml-auto text-sm'>P{Number(selectedDropoff.specialFare).toLocaleString()}</p>
+                                                    <p className='ml-auto text-sm'>P {Number(selectedDropoff.specialFare).toLocaleString()}</p>
                                                 </div>
                                             }
 
@@ -219,7 +220,7 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
                                                 <div className="flex items-center gap-2">
                                                     <RadioGroupItem value="multipleFare" id="multipleFare" />
                                                     <Label htmlFor="multipleFare">3 Person Up</Label>
-                                                    <p className='ml-auto text-sm'>P{Number(selectedDropoff.multipleFare).toLocaleString()} each</p>
+                                                    <p className='ml-auto text-sm'>P {Number(selectedDropoff.multipleFare).toLocaleString()} each</p>
                                                 </div>
                                             }
                                         </RadioGroup>
@@ -257,33 +258,47 @@ const BookingScreen = ({ booking }: { booking: BookingWithRelations }) => {
             <DrawerTrigger asChild>
                 {/* //TODO: ALLEN DITO MO LAGAY YUNG ANIMATION, TAS LAGYAN MO TEXT NG CURRENT STATUS  */}
 
-                <Button className='flex flex-col h-fit py-6 rounded-b-none'>
-                    <p>{booking.status}</p>
+                <Button className='flex flex-col justify-center h-fit py-6 rounded-b-none'>
+                    <p className='text-lg'>{toTitleCase(booking.status)}</p>
                     <div className='flex flex-row items-center justify-between relative p-2 w-[180px] pb-4'>
                         <MdSearch className='text-lg animate-moveRight' />
                     </div>
-                    <p>Looking for riders...</p>
+                    <span className='flex'>
+                        Looking for riders
+                        <ElipsisLoading />
+                    </span>
                     <p>Click to view details</p>
                 </Button>
             </DrawerTrigger>
             <DrawerContent>
                 <DrawerHeader>
                     <DrawerTitle>
-                        Looking for drivers
-                        <span className='animate-fade-in-out'>.</span>
-                        <span className='animate-fade-in-out delay-300'>.</span>
-                        <span className='animate-fade-in-out delay-700'>.</span>
+                        Looking for riders
+                        <ElipsisLoading />
                     </DrawerTitle>
                 </DrawerHeader>
 
                 <div className="w-full flex flex-col rounded-md gap-2 p-4 bg-background">
-                    <p className='text-inactive'>Ride Details</p>
-
-                    <p>Dropoff to <span>{booking?.dropoff?.address}</span></p>
-                    <p><span>P50.00</span></p>
-
+                    <div className='flex gap-2 items-center'>
+                        <MdPinDrop className="text-4xl text-primary" />
+                        <span className='flex flex-col'>
+                            <p className='text-sm text-inactive'>Dropoff</p>
+                            <p>{booking?.dropoff?.name}</p>
+                        </span>
+                    </div>
                     <hr />
-
+                    <div className='flex flex-col'>
+                        <p className='text-sm text-inactive'>Dropoff Address</p>
+                        <p >{toTitleCase(String(booking?.dropoff?.address))}</p>
+                    </div>
+                    <div className='flex flex-col'>
+                        <p className='text-sm text-inactive'>Fare</p>
+                        <p>P {booking.fareType == 'MULTIPLE' ? Number(booking.fare).toLocaleString() + 'each' : Number(booking.fare).toLocaleString()}</p>
+                    </div>
+                    <div className='flex flex-col'>
+                        <p className='text-sm text-inactive'>Fare Type</p>
+                        <p >{toTitleCase(String(booking.fareType))}</p>
+                    </div>
                 </div>
 
                 <DrawerFooter>
@@ -301,7 +316,7 @@ const InProgressScreen = ({ booking }: { booking: BookingWithRelations }) => {
             <DrawerTrigger asChild>
                 {/* //TODO: ALLEN DITO MO LAGAY YUNG ANIMATION, TAS LAGYAN MO TEXT NG CURRENT STATUS  */}
                 <Button className='flex flex-col h-fit py-6 rounded-b-none'>
-                    <p>{booking.status}</p>
+                    <p className='text-xl'>{toTitleCase(booking.status)}</p>
                     <div className={`flex flex-row items-center justify-between relative p-2 w-[180px] pb-4 ${booking.status.toLowerCase() === 'accepted' ? '-scale-x-100' : ''}`}>
                         <MdPinDrop className={`absolute ${booking.status.toLowerCase() === 'accepted' ? 'left-0' : 'right-0 animate-bounce'} text-lg`} />
                         <FaMotorcycle className='absolute left-0 animate-moveRight text-lg' />
@@ -321,7 +336,7 @@ const InProgressScreen = ({ booking }: { booking: BookingWithRelations }) => {
                 <div className="w-full flex flex-col bg-background rounded-md p-4 gap-5">
                     <p>Ride Details</p>
                     <p>Dropoff to <span>{booking.dropoff.address}</span></p>
-                    <p>Fare: <span>P{Number(booking.dropoff.fare).toLocaleString()}</span></p>
+                    <p>Fare: <span>P{Number(booking.fare).toLocaleString()}</span></p>
 
                     <hr />
                     <p>Driver Details</p>
@@ -334,27 +349,30 @@ const InProgressScreen = ({ booking }: { booking: BookingWithRelations }) => {
 
 const CompletedScreen = ({ booking, setPassengerDroppedOff }: { booking: BookingWithRelations, setPassengerDroppedOff: React.Dispatch<SetStateAction<boolean>> }) => {
     return (
-        <div className="fixed inset-0 overflow-auto bg-black/50 z-[999] flex flex-col items-center justify-center">
+        <div className="fixed w-full inset-0 overflow-auto bg-black/50 z-[999] flex flex-col items-center justify-center lg:py-2">
 
-            <div className="bg-white p-6 w-full h-full flex flex-col items-center rounded-lg gap-5">
-                <p className='uppercase'>Completed</p>
+            <div className="bg-white p-6 lg:px-16 lg:max-w-[70dvw] 2xl:max-w-[1400px] w-full h-full flex flex-col items-center rounded-lg gap-5">
+                <span className='uppercase font-bold flex gap-2 text-lg items-center'>
+                    <MdCheckCircle size={24} className='text-green-500 text-2xl' />
+                    Completed
+                </span>
 
                 <hr className='w-full' />
 
-                <div className="flex flex-col items-start gap-3 w-full">
+                <div className="flex flex-col items-start gap-1 w-full">
 
-                    <div className="flex gap-2">
-                        <MdSchool size={24} className='min-w-[20px]' />
-                        <p className='text-sm font-medium'>San Beda University - Rizal | Taytay</p>
+                    <div className="flex gap-2 items-center">
+                        <MdSchool className='min-w-[20px] text-2xl' />
+                        <p className='font-medium text'>San Beda University - Rizal | Taytay</p>
                     </div>
 
                     <CiMenuKebab className='ml-1' />
 
                     <div className='flex gap-2 justify-center items-start'>
-                        <MdPinDrop size={24} className='min-w-[20px] text-primary' />
+                        <MdPinDrop className='min-w-[20px] text-primary text-2xl' />
                         <div className="flex flex-col gap-1">
-                            <p className='text-sm font-medium'>{booking.dropoff.name}</p>
-                            <p className='text-sm'>{booking.dropoff.address}</p>
+                            <p className='font-medium'>{booking.dropoff.name}</p>
+                            <p className='text-sm text-inactive'>{booking.dropoff.address}</p>
                         </div>
                     </div>
 
@@ -364,20 +382,20 @@ const CompletedScreen = ({ booking, setPassengerDroppedOff }: { booking: Booking
 
                 <div className="flex flex-col w-full gap-5">
                     <div className="flex flex-col ">
-                        <p className='text-sm font-medium'>Fare Type</p>
+                        <p className='text-sm font-medium text-inactive'>Fare Type</p>
                         <p>{booking.fareType == 'MULTIPLE' ? '3 Person Up' : 'Special'}</p>
                     </div>
 
                     <div className="flex flex-col">
-                        <p className='text-sm font-medium'>Fare</p>
-                        <p>{booking.fareType == 'MULTIPLE' ? `${booking.fare} each` : `${booking.fare}`}</p>
+                        <p className='text-sm font-medium text-inactive'>Fare</p>
+                        <p>P {booking.fareType == 'MULTIPLE' ? `${booking.fare} each` : `${booking.fare}`}</p>
                     </div>
                 </div>
 
                 <hr className='w-full' />
 
                 <div className="flex flex-col w-full">
-                    <p className='text-sm font-medium'>Driver</p>
+                    <p className='text-sm font-medium text-inactive'>Driver</p>
                     <p>{handleFullName({ firstName: booking?.driver?.firstName, middleName: booking?.driver?.middleName, lastName: booking?.driver?.lastName })}</p>
                 </div>
 
