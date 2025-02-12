@@ -15,7 +15,7 @@ export default async function ManageUsers() {
 
   return (
     <div className="flex flex-col">
-      <PageTitle title={"Manage Users"} />
+      <PageTitle title={"Manage Users"}/>
 
       <div className='w-full h-full pt-[80px] p-4 gap-2 flex flex-col'>
         <div className='flex w-full justify-end items-center'>

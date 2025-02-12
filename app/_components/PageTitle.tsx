@@ -13,7 +13,7 @@ type TPageTitle = {
 export default function PageTitle({ title, showBackButton = false, returnUrl }: TPageTitle) {
     return (
         <>
-            <div className='px-16 py-5 flex items-center w-dvw mx-auto left-1 top-0 fixed bg-background z-[10]'>
+            <div className='px-16 py-5 flex items-center w-dvw lg:min-w-[70dvw] 2xl:max-w-[1400px] top-0 fixed bg-background z-[10]'>
                 <span className='text-lg font-bold flex items-center gap-2 px-4 w-full'>
                     {showBackButton &&
                         <Link href={`${returnUrl || '..'}`} rel={returnUrl ? '' : 'path'}>

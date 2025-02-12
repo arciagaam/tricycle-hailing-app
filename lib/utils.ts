@@ -20,3 +20,11 @@ export const handleFullName = (fullName: { firstName: string | undefined, middle
 
   return `${firstName}${middleName ? ` ${middleName} ` : ' '}${lastName}`
 }
+
+export const toTitleCase = (text: string) => {
+  return text
+    .trim()
+    .split(' ')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+};

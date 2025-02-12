@@ -71,7 +71,7 @@ export default function EditDropoffForm({ dropoff }: { dropoff: Dropoff }) {
                 </div>
             }
             
-            <div className="w-full h-[400px]">
+            <div className="w-full h-[400px] sm:max-h-[40dvh]">
                 <GoogleMaps onMapClick={handleMapClick} center={{ lat: parseFloat(dropoff.latitude), lng: parseFloat(dropoff.longitude) }} />
             </div>
 
@@ -119,7 +119,7 @@ export default function EditDropoffForm({ dropoff }: { dropoff: Dropoff }) {
                     />
 
                     <div className="flex gap-1 ml-auto">
-                        <Link href={'..'} rel='path'>
+                        <Link href={`/dropoffs/${dropoff.id}`} rel='path'>
                             <Button type='button' variant={'destructive'}>Cancel</Button>
                         </Link>
 

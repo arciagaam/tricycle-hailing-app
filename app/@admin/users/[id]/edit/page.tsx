@@ -21,7 +21,7 @@ export default async function EditUser(props: { params: Promise<{ id: string }> 
 
     return (
         <div className="flex flex-col w-full">
-            <PageTitle title="Edit User" showBackButton />
+            <PageTitle title="Edit User" showBackButton returnUrl={`/users/${id}`}/>
 
             <div className='flex flex-col w-full pt-[80px] h-full p-4 gap-5'>
                 <EditUserForm user={user} />

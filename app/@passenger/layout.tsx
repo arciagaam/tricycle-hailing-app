@@ -10,7 +10,12 @@ type PassengerLayoutTypes = {
 export default function PassengerLayout({ children }: PassengerLayoutTypes) {
     return (
         <MainLayout>
-            <PassengerMenu />
+            <PassengerMenu appName={
+                <span className='flex flex-col'>
+                    SBU Toda Tracker
+                    <span className='text-xs leading-none'>Passenger</span>
+                </span>
+            } />
             {children}
         </MainLayout>
     )

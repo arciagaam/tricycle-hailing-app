@@ -23,55 +23,60 @@ export default async function ViewDropoff(props: { params: Promise<{ id: string 
 
 
     if (dropoff) return (
-        <div className="flex flex-col gap-5">
-
+        <>
             <PageTitle title={dropoff.name} showBackButton={true} />
+            <div className="flex flex-col pt-[80px] lg:pt-[100px] p-4 lg:p-8 gap-5">
+
+                <div className="relative w-full rounded-md sm:max-h-[40dvh] aspect-square ">
+                    <GoogleMaps center={{ lat: parseFloat(dropoff.latitude), lng: parseFloat(dropoff.longitude) }} />
+
+                    {/* <GoogleMapsDirections destination={{ lat: parseFloat(dropoff.latitude), lng: parseFloat(dropoff.longitude) }} /> */}
 
 
-            <div className="relative w-full rounded-md aspect-square">
-                <GoogleMaps center={{ lat: parseFloat(dropoff.latitude), lng: parseFloat(dropoff.longitude) }} />
-
-                {/* <GoogleMapsDirections destination={{ lat: parseFloat(dropoff.latitude), lng: parseFloat(dropoff.longitude) }} /> */}
-
-
-                <div className="absolute flex gap-2 items-center bg-white py-1 px-3 w-fit rounded-full right-2 top-2">
-                    <div className={`size-2 ${dropoff.status == 'ACTIVE' ? 'bg-green-600' : 'bg-red-600'} aspect-square rounded-full`}></div>
-                    <p className='text-sm'>{dropoff.status}</p>
+                    <div className="absolute flex gap-2 items-center bg-white py-1 px-3 w-fit rounded-full right-2 top-2">
+                        <div className={`size-2 ${dropoff.status == 'ACTIVE' ? 'bg-green-600' : 'bg-red-600'} aspect-square rounded-full`}></div>
+                        <p className='text-sm'>{dropoff.status}</p>
+                    </div>
                 </div>
+
+
+                <div className="flex flex-col gap-5 p-4">
+                    <div className="flex flex-col">
+                        <p className='text-xs font-medium text-black/80'>Dropoff Name</p>
+                        <p>{dropoff.name}</p>
+                    </div>
+
+                    <div className="flex flex-col">
+                        <p className='text-xs font-medium text-black/80'>Address</p>
+                        <p>{dropoff.address}</p>
+                    </div>
+
+                    <div className="flex flex-col">
+                        <p className='text-xs font-medium text-black/80'>Special Fare {"(1-2 person)"}</p>
+                        <p>{dropoff.specialFare}</p>
+                    </div>
+
+                    <div className="flex flex-col">
+                        <p className='text-xs font-medium text-black/80'>Multiple Fare {"(3 person above)"}</p>
+                        <p>{dropoff.multipleFare} each</p>
+                    </div>
+
+                    <hr />
+                    <p>Actions</p>
+
+
+                    <div className="flex flex-col gap-1">
+                        <Link href={`/dropoffs/${dropoff.id}/edit`}>
+                            <Button className='w-fit'>
+                                Edit Dropoff
+                            </Button>
+                        </Link>
+
+                        <HandleDropoffStatusChange dropoff={dropoff} />
+                    </div>
+                </div>
+
             </div>
-
-
-            <div className="flex flex-col gap-5 p-4">
-                <div className="flex flex-col">
-                    <p className='text-xs font-medium text-black/80'>Dropoff Name</p>
-                    <p>{dropoff.name}</p>
-                </div>
-
-                <div className="flex flex-col">
-                    <p className='text-xs font-medium text-black/80'>Address</p>
-                    <p>{dropoff.address}</p>
-                </div>
-
-                <div className="flex flex-col">
-                    <p className='text-xs font-medium text-black/80'>Fare</p>
-                    <p>{dropoff.fare}</p>
-                </div>
-
-                <hr />
-                <p>Actions</p>
-
-
-                <div className="flex flex-col gap-1">
-                    <Link href={`/dropoffs/${dropoff.id}/edit`}>
-                        <Button className='w-fit'>
-                            Edit Dropoff
-                        </Button>
-                    </Link>
-
-                    <HandleDropoffStatusChange dropoff={dropoff}/>
-                </div>
-            </div>
-
-        </div>
+        </>
     )
 }
