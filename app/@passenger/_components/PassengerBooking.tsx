@@ -159,20 +159,22 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
                             {
                                 (selectDropoffOpen && dropoffs) &&
 
-                                <div className="flex flex-col absolute  bottom-[105%] p-4 bg-background w-[90%] rounded-md gap-2">
-                                    <p className='text-black/50 text-sm'>Select dropoff</p>
+                                <div className="flex flex-col absolute bottom-[105%] bg-background w-[90%] rounded-md">
+                                    <p className='text-black/50 text-sm p-4'>Select dropoff</p>
                                     <div className="flex flex-col">
                                         {
-                                            dropoffs?.map((dropoff) => (
-                                                <button onClick={() => handleSelectDropoff(dropoff)} key={dropoff.id} className="flex flex-col items-start text-left">
+                                            dropoffs.length > 0 ? dropoffs?.map((dropoff) => (
+                                                <button onClick={() => handleSelectDropoff(dropoff)} key={dropoff.id} className="flex flex-col items-start text-left hover:bg-muted py-2 px-4">
                                                     <span>
                                                         {dropoff.name}
                                                     </span>
-                                                    <span className='text-sm text-black/50'>
+                                                    <span className='text-sm text-inactive'>
                                                         {dropoff.address}
                                                     </span>
                                                 </button>
-                                            ))
+                                            )) : (
+                                                <span className='text-inactive p-4'>No results</span>
+                                            )
                                         }
                                     </div>
                                 </div>
@@ -196,7 +198,7 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
                                             readOnly
                                         />
 
-                                        <SearchDropOff getFetchedDropoffs={getFetchedDropoffs} setDropoffs={setDropoffs} onFocus={() => setSelectDropoffOpen(true)} />
+                                        <SearchDropOff getFetchedDropoffs={getFetchedDropoffs} setDropoffs={setDropoffs} onFocus={() => setSelectDropoffOpen(true)} selectedDropoff={selectedDropoff || null} />
 
                                     </div>
                                 </div>
@@ -220,7 +222,7 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
                                                 <div className="flex items-center gap-2">
                                                     <RadioGroupItem value="multipleFare" id="multipleFare" />
                                                     <Label htmlFor="multipleFare">3 Person Up</Label>
-                                                    <p className='ml-auto text-sm'>P {Number(selectedDropoff.multipleFare).toLocaleString()} each</p>
+                                                    <p className='ml-auto text-sm'>P {Number(selectedDropoff.multipleFare).toLocaleString() + " each"} </p>
                                                 </div>
                                             }
                                         </RadioGroup>
@@ -293,7 +295,7 @@ const BookingScreen = ({ booking }: { booking: BookingWithRelations }) => {
                     </div>
                     <div className='flex flex-col'>
                         <p className='text-sm text-inactive'>Fare</p>
-                        <p>P {booking.fareType == 'MULTIPLE' ? Number(booking.fare).toLocaleString() + 'each' : Number(booking.fare).toLocaleString()}</p>
+                        <p>P {booking.fareType == 'MULTIPLE' ? Number(booking.fare).toLocaleString() + ' each' : Number(booking.fare).toLocaleString()}</p>
                     </div>
                     <div className='flex flex-col'>
                         <p className='text-sm text-inactive'>Fare Type</p>
@@ -329,18 +331,48 @@ const InProgressScreen = ({ booking }: { booking: BookingWithRelations }) => {
             <DrawerContent>
                 <DrawerHeader>
                     <DrawerTitle>
-                        {booking.status.toLowerCase() == 'accepted' ? 'Driver is on its way to your pickup point' : 'You are on your way to your destination'}
+                        <>
+                            {booking.status.toLowerCase() == 'accepted' ? 'Driver is on its way to your pickup point' : 'You are on your way to your destination'}
+                            <ElipsisLoading />
+                        </>
                     </DrawerTitle>
                 </DrawerHeader>
 
                 <div className="w-full flex flex-col bg-background rounded-md p-4 gap-5">
-                    <p>Ride Details</p>
-                    <p>Dropoff to <span>{booking.dropoff.address}</span></p>
-                    <p>Fare: <span>P{Number(booking.fare).toLocaleString()}</span></p>
+                    <div className='flex gap-2 items-center'>
+                        <MdPinDrop className="text-4xl text-primary" />
+                        <span className='flex flex-col'>
+                            <p className='text-sm text-inactive'>Dropoff</p>
+                            <p>{booking?.dropoff?.name}</p>
+                        </span>
+                    </div>
 
                     <hr />
-                    <p>Driver Details</p>
-                    <p>Rider: <span>{booking.driver.firstName}</span></p>
+
+                    <div className='flex flex-col'>
+                        <p className='text-sm text-inactive'>Dropoff Address</p>
+                        <p >{toTitleCase(String(booking?.dropoff?.address))}</p>
+                    </div>
+                    <div className='flex flex-col'>
+                        <p className='text-sm text-inactive'>Fare</p>
+                        <p>P {booking.fareType == 'MULTIPLE' ? Number(booking.fare).toLocaleString() + ' each' : Number(booking.fare).toLocaleString()}</p>
+                    </div>
+                    <div className='flex flex-col'>
+                        <p className='text-sm text-inactive'>Fare Type</p>
+                        <p >{toTitleCase(String(booking.fareType))}</p>
+                    </div>
+
+                    <hr />
+                    <div className='flex flex-col'>
+                        <p className='text-sm text-inactive'>Driver Name</p>
+                        <span>{
+                            handleFullName({
+                                firstName: booking.driver.firstName,
+                                middleName: booking.driver.middleName,
+                                lastName: booking.driver.lastName
+                            })}
+                        </span>
+                    </div>
                 </div>
             </DrawerContent>
         </Drawer>
@@ -388,7 +420,7 @@ const CompletedScreen = ({ booking, setPassengerDroppedOff }: { booking: Booking
 
                     <div className="flex flex-col">
                         <p className='text-sm font-medium text-inactive'>Fare</p>
-                        <p>P {booking.fareType == 'MULTIPLE' ? `${booking.fare} each` : `${booking.fare}`}</p>
+                        <p>P {booking.fareType == 'MULTIPLE' ? `${Number(booking.fare).toLocaleString()} each` : `${Number(booking.fare).toLocaleString()}`}</p>
                     </div>
                 </div>
 

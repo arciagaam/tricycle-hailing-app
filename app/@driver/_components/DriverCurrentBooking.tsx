@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer'
 import { ResponsiveProvider } from '@/hooks/useResponsive'
 import { BookingWithRelations } from '@/lib/types'
-import { handleFullName } from '@/lib/utils'
+import { handleFullName, toTitleCase } from '@/lib/utils'
 import { socket } from '@/socket'
 import React, { SetStateAction, useState } from 'react'
 import { CiMenuKebab } from 'react-icons/ci'
@@ -102,12 +102,40 @@ export default function DriverCurrentBooking({ booking }: { booking: BookingWith
                                     </DrawerHeader>
 
                                     <div className="w-full flex flex-col bg-background rounded-md p-4 gap-5">
-                                        <p>Ride Details</p>
-                                        <p>Dropoff: <span>{booking.dropoff.address}</span></p>
-                                        <p>Fare: <span>P {Number(booking.fare).toLocaleString()}</span></p>
+                                        <div className='flex gap-2 items-center'>
+                                            <MdPinDrop className="text-4xl text-primary" />
+                                            <span className='flex flex-col'>
+                                                <p className='text-sm text-inactive'>Dropoff</p>
+                                                <p>{booking?.dropoff?.name}</p>
+                                            </span>
+                                        </div>
+
                                         <hr />
-                                        <p>Passenger Details</p>
-                                        <p>Rider: <span>{booking.passenger.firstName}</span></p>
+
+                                        <div className='flex flex-col'>
+                                            <p className='text-sm text-inactive'>Dropoff Address</p>
+                                            <p >{toTitleCase(String(booking?.dropoff?.address))}</p>
+                                        </div>
+                                        <div className='flex flex-col'>
+                                            <p className='text-sm text-inactive'>Fare</p>
+                                            <p>P {booking.fareType == 'MULTIPLE' ? Number(booking.fare).toLocaleString() + ' each' : Number(booking.fare).toLocaleString()}</p>
+                                        </div>
+                                        <div className='flex flex-col'>
+                                            <p className='text-sm text-inactive'>Fare Type</p>
+                                            <p >{toTitleCase(String(booking.fareType))}</p>
+                                        </div>
+
+                                        <hr />
+                                        <div className='flex flex-col'>
+                                            <p className='text-sm text-inactive'>Passenger Name</p>
+                                            <span>{
+                                                handleFullName({
+                                                    firstName: booking.passenger.firstName,
+                                                    middleName: booking.passenger.middleName,
+                                                    lastName: booking.passenger.lastName
+                                                })}
+                                            </span>
+                                        </div>
 
                                         {
                                             booking.status == 'ACCEPTED' && <Button disabled={isLoading} onClick={pickupPassenger}>Pickup Passenger</Button>
@@ -173,14 +201,14 @@ const CompletedScreen = ({ booking, setPassengerDroppedOff }: { booking: Booking
 
                     <div className="flex flex-col">
                         <p className='text-sm font-medium text-inactive'>Fare</p>
-                        <p>P {booking.fareType == 'MULTIPLE' ? `${booking.fare} each` : `${booking.fare}`}</p>
+                        <p>P {booking.fareType == 'MULTIPLE' ? `${Number(booking.fare).toLocaleString()} each` : `${Number(booking.fare).toLocaleString()}`}</p>
                     </div>
                 </div>
 
                 <hr className='w-full' />
 
                 <div className="flex flex-col w-full">
-                    <p className='text-sm font-medium text-inactive'>Passenger</p>
+                    <p className='text-sm font-medium text-inactive'>Driver</p>
                     <p>{handleFullName({ firstName: booking?.passenger?.firstName, middleName: booking?.passenger?.middleName, lastName: booking?.passenger?.lastName })}</p>
                 </div>
 
