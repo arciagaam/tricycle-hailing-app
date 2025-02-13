@@ -40,7 +40,6 @@ export default function SearchDropOff({ getFetchedDropoffs, setDropoffs, onFocus
 
                         getFetchedDropoffs(resDropoff.data)
                     }
-                    // console.log(dropoffs)
                 }
             }
 

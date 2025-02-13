@@ -38,7 +38,7 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
     const [dropoffs, setDropoffs] = useState<Dropoff[] | null>();
     const [selectDropoffOpen, setSelectDropoffOpen] = useState(false)
     const [isLoading, setIsLoading] = useState(false);
-    const [passengerDroppedOff, setPassengerDroppedOff] = useState(true);
+    const [passengerDroppedOff, setPassengerDroppedOff] = useState(false);
     const [selectedFareType, setSelectedFareType] = useState<'specialFare' | 'multipleFare' | null>(null);
 
     const getFetchedDropoffs = (value: Dropoff[]) => {
@@ -81,11 +81,17 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
             setPassengerDroppedOff(true)
         })
 
+        socket.on('booking_cancelled', () => {
+            setBooking(null)
+            setSelectedDropoff(null)
+        })
+
         return () => {
             socket.off('new_booking')
             socket.off('accepted_booking')
             socket.off('pickup_passenger')
             socket.off('dropoff_passenger')
+            socket.off('booking_cancelled')
         }
     }, [])
 
@@ -104,7 +110,6 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
 
         setIsLoading(true);
 
-        console.log(selectedFareType)
         const res = await fetch('api/bookings', {
             method: 'POST',
             body: JSON.stringify({
@@ -138,7 +143,7 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
             <div className='h-full relative flex flex-col'>
                 <ResponsiveProvider>
                     {
-                        selectedDropoff ? <GoogleMapsDirections destination={{ lat: parseFloat(selectedDropoff.latitude), lng: parseFloat(selectedDropoff.longitude) }} /> : <GoogleMaps />
+                        selectedDropoff ? <GoogleMapsDirections destination={{ lat: parseFloat(selectedDropoff.latitude), lng: parseFloat(selectedDropoff.longitude) }} /> : <GoogleMaps disableClick={true} />
                     }
                 </ResponsiveProvider>
 
@@ -255,6 +260,21 @@ const GetCurrentStatusScreen = ({ booking }: { booking: BookingWithRelations }) 
 
 
 const BookingScreen = ({ booking }: { booking: BookingWithRelations }) => {
+
+    const handleCancelBooking = async () => {
+        const res = await fetch(`/api/bookings`, {
+            method: 'PATCH',
+            body: JSON.stringify({
+                id: booking.id,
+                status: 'CANCELLED'
+            })
+        });
+
+        if (!res.ok) return toast.error('Something went wrong while cancelling this booking. Try again')
+
+        socket.emit('cancel_booking', booking)
+        toast.success('Booking cancelled')
+    }
     return (
         <Drawer>
             <DrawerTrigger asChild>
@@ -304,7 +324,7 @@ const BookingScreen = ({ booking }: { booking: BookingWithRelations }) => {
                 </div>
 
                 <DrawerFooter>
-                    <Button variant={'destructive'}>Cancel Booking</Button>
+                    <Button onClick={handleCancelBooking} variant={'secondary'}>Cancel Booking</Button>
                 </DrawerFooter>
             </DrawerContent>
         </Drawer>

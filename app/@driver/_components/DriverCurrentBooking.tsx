@@ -159,7 +159,6 @@ export default function DriverCurrentBooking({ booking }: { booking: BookingWith
 }
 
 const CompletedScreen = ({ booking, setPassengerDroppedOff }: { booking: BookingWithRelations, setPassengerDroppedOff: React.Dispatch<SetStateAction<boolean>> }) => {
-    console.log(booking)
 
     return (
         <div className="fixed w-full inset-0 overflow-auto bg-black/50 z-[999] flex flex-col items-center justify-center lg:py-2">

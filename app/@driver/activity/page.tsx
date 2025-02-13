@@ -27,7 +27,6 @@ export default async function DriverActivities() {
         }
     })
 
-    console.log(bookings)
 
     if (bookings)
         return (

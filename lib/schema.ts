@@ -108,3 +108,8 @@ export const loginSchema = baseUserSchema.pick({
     username: true,
     password: true
 })
+
+export const resetPasswordSchema = z.object({
+    currentPassword: z.string().min(1, 'Required'),
+    newPassword: z.string().min(1, 'Required'),
+})

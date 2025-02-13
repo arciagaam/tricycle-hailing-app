@@ -5,10 +5,11 @@ import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api'
 
 type GoogleMapsProps = {
     onMapClick?: (latLng: { lat: number | null | undefined, lng: number | null | undefined }) => void
-    center?: { lat: number, lng: number }
+    center?: { lat: number, lng: number },
+    disableClick?: boolean
 }
 
-export default function GoogleMaps({ onMapClick, center }: GoogleMapsProps) {
+export default function GoogleMaps({ onMapClick, center, disableClick = false }: GoogleMapsProps) {
 
     const [point, setPoint] = useState<{ lat: number, lng: number } | null>(null);
 
@@ -79,6 +80,9 @@ export default function GoogleMaps({ onMapClick, center }: GoogleMapsProps) {
 
 
     const handleMapClick = (e: google.maps.MapMouseEvent) => {
+
+        if(disableClick) return;
+
         if (!e) {
             setPoint(null);
             return;
@@ -98,13 +102,13 @@ export default function GoogleMaps({ onMapClick, center }: GoogleMapsProps) {
 
         setPoint(null);
     }
-    
+
     if (isLoaded)
         return (
             <GoogleMap
                 mapContainerStyle={containerStyle}
                 zoom={16}
-                center={ center || { lat: 14.562339, lng: 121.150040 }}
+                center={center || { lat: 14.562339, lng: 121.150040 }}
                 options={mapOptions}
                 onClick={handleMapClick}
             >

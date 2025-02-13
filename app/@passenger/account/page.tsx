@@ -1,11 +1,10 @@
 'use client'
 
 import PageTitle from '@/app/_components/PageTitle'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import React, { useState } from 'react'
 import { MdKey, MdPerson } from 'react-icons/md'
 import EditPassengerAccountForm from './_components/EditPassengerAccountForm'
+import ResetPasswordForm from '@/app/_components/ResetPasswordForm'
 
 export default function AccountPage() {
     const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -24,9 +23,10 @@ export default function AccountPage() {
                         <MdKey className='text-2xl' />
                         Change Password
                     </span>
-                    <Input id="old-password" placeholder='Current password' type='password' />
-                    <Input id="new-password" placeholder='New password' type='password' />
-                    <Button type='submit' disabled className='disabled:bg-muted-foreground'>Reset</Button>
+                    {
+                        !isEditing &&
+                        <ResetPasswordForm />
+                    }
                 </div>
             </div>
         </div>

@@ -29,7 +29,8 @@ export default function EditDropoffForm({ dropoff }: { dropoff: Dropoff }) {
             address: dropoff.address,
             longitude: dropoff.longitude,
             latitude: dropoff.latitude,
-            fare: dropoff.fare
+            multipleFare: dropoff.multipleFare,
+            specialFare: dropoff.specialFare,
         }
     })
 
@@ -70,7 +71,7 @@ export default function EditDropoffForm({ dropoff }: { dropoff: Dropoff }) {
                     </div>
                 </div>
             }
-            
+
             <div className="w-full h-[400px] sm:max-h-[40dvh]">
                 <GoogleMaps onMapClick={handleMapClick} center={{ lat: parseFloat(dropoff.latitude), lng: parseFloat(dropoff.longitude) }} />
             </div>
@@ -79,10 +80,24 @@ export default function EditDropoffForm({ dropoff }: { dropoff: Dropoff }) {
                 <form onSubmit={editDropoffForm.handleSubmit(onSubmit)} className='flex flex-col gap-5'>
                     <FormField
                         control={editDropoffForm.control}
-                        name="fare"
+                        name="specialFare"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Fare</FormLabel>
+                                <FormLabel>Special Fare (1-2 Persons)</FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={editDropoffForm.control}
+                        name="multipleFare"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>3 Person Up Fare</FormLabel>
                                 <FormControl>
                                     <Input {...field} />
                                 </FormControl>
