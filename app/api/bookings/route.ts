@@ -18,9 +18,9 @@ export async function POST(req: Request) {
         return NextResponse.json({ message: 'Booking successfully created', data: booking }, { status: 201 });
 
     } catch (error) {
-        console.log('ERROR', error)
-
+        
         if (error instanceof Error) {
+            console.log('ERROR', error.stack)
             return NextResponse.json({ message: error.message }, { status: 400 });
         }
 

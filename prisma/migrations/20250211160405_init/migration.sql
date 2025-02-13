@@ -1,4 +1,7 @@
 -- CreateEnum
+CREATE TYPE "FareTypes" AS ENUM ('SPECIAL', 'MULTIPLE');
+
+-- CreateEnum
 CREATE TYPE "DropOffStatus" AS ENUM ('ACTIVE', 'DISABLED');
 
 -- CreateEnum
@@ -32,6 +35,7 @@ CREATE TABLE "User" (
 CREATE TABLE "UserSecurityQuestions" (
     "userId" INTEGER NOT NULL,
     "securityQuestionId" INTEGER NOT NULL,
+    "answer" TEXT NOT NULL,
 
     CONSTRAINT "UserSecurityQuestions_pkey" PRIMARY KEY ("userId","securityQuestionId")
 );
@@ -51,7 +55,8 @@ CREATE TABLE "Dropoff" (
     "address" TEXT NOT NULL,
     "longitude" TEXT NOT NULL,
     "latitude" TEXT NOT NULL,
-    "fare" TEXT NOT NULL,
+    "specialFare" TEXT NOT NULL,
+    "multipleFare" TEXT NOT NULL,
     "status" "DropOffStatus" NOT NULL DEFAULT 'ACTIVE',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3),
@@ -67,6 +72,8 @@ CREATE TABLE "Booking" (
     "driverId" INTEGER,
     "passengerId" INTEGER NOT NULL,
     "status" "BookingStatus" NOT NULL,
+    "fare" TEXT,
+    "fareType" "FareTypes",
     "pickupTime" TIMESTAMP(3),
     "dropoffTime" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,

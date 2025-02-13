@@ -7,6 +7,8 @@ import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import PageTitle from '@/app/_components/PageTitle';
+import { MdList } from 'react-icons/md';
+import { FaMotorcycle } from 'react-icons/fa';
 
 export default async function DriverActivities() {
     const cookiesStore = await cookies();
@@ -25,24 +27,29 @@ export default async function DriverActivities() {
         }
     })
 
-    console.log(bookings)
 
-    return (
-        <>
-            <PageTitle title='Activity History' />
-            <div className='bg-background min-w-full h-fit'>
-                <div className='flex flex-col p-4 w-full h-fit gap-5'>
+    if (bookings)
+        return (
+            <div className={`bg-background w-full flex flex-col items-start gap-2 ${bookings.length > 0 ? 'h-full' : 'h-fit'}`}>
+                <PageTitle title='Activity History' />
+                <div className='flex flex-col p-4 w-full h-fit gap-5 pt-[80px]'>
                     {
                         bookings.length > 0 ? bookings?.map(booking => (
                             <div key={booking.id} className={`border border-collapse border-gray-300 rounded-md flex flex-col gap-2 h-full min-w-dvw p-4`}>
-                                <span className='text-muted-foreground flex justify-between '>
-                                    <p className='text-black'>Ride to {booking.dropoff.address}</p>
-                                    <p className='text-muted-foreground'>
-                                        {booking.dropoffTime ? new Date(booking.dropoffTime!).toLocaleString() : booking.status}
-                                    </p>
+                                <span className='text-inactive flex justify-between '>
+                                    <span className='flex gap-2 items-center'>
+                                        <FaMotorcycle className='text-2xl text-primary' />
+                                        <span className='flex flex-col'>
+                                            <p className='text-black'>{booking.dropoff.name}</p>
+                                            <p className='text-sm text-inactive leading-none'>{booking.dropoff.address}</p>
+                                        </span>
+                                    </span>
+                                    <span className='flex flex-col'>
+                                        {booking.dropoffTime ? "P " + (booking.fareType == 'MULTIPLE' ? Number(booking.fare).toLocaleString() + " each" : Number(booking.fare).toLocaleString()) : booking.status}
+                                    </span>
                                 </span>
                                 <span className='flex justify-between items-center'>
-                                    <p className='text-muted-foreground text-xs'>
+                                    <p className='text-inactive text-xs'>
                                         {new Date(booking.createdAt!).toLocaleString()}
                                     </p>
                                     <Link href={`/activity/${1}`}>
@@ -51,8 +58,9 @@ export default async function DriverActivities() {
                                 </span>
                             </div>
                         )) : (
-                            <div className={`flex h-dvh w-dvw items-center justify-center`}>
-                                <p className='text-lg font-bold text-muted-foreground'>
+                            <div className={`flex h-[50dvh] w-full items-center justify-center`}>
+                                <p className='text-lg font-bold text-inactive flex flex-col items-center justify-center'>
+                                    <MdList className='text-2xl animate-bounce' />
                                     No activities to show.
                                 </p>
                             </div>
@@ -62,6 +70,5 @@ export default async function DriverActivities() {
 
                 </div>
             </div>
-        </>
-    )
+        )
 }

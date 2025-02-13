@@ -8,15 +8,14 @@ import { BookingWithRelations } from '@/lib/types';
 import { User } from '@prisma/client';
 
 export default function DriverBookingWrapper({ booking, bookings, user }: { booking: BookingWithRelations, bookings: BookingWithRelations[], user: User }) {
-
-    const [currentBooking, setCurrentBooking] = useState<BookingWithRelations>(booking);
+    const [currentBooking, setCurrentBooking] = useState<BookingWithRelations | null>(booking);
     const [currentBookings, setCurrentBookings] = useState<BookingWithRelations[]>(bookings);
 
     useEffect(() => {
         if (currentBooking) {
             socket.emit('reconnect', booking)
         }
-        
+
         socket.on('new_booking', (booking) => {
             setCurrentBookings((prev) => ([...prev, booking]))
         })
@@ -32,6 +31,11 @@ export default function DriverBookingWrapper({ booking, bookings, user }: { book
 
         socket.on('dropoff_passenger', (booking) => {
             setCurrentBooking(booking)
+        })
+
+        socket.on('booking_cancelled', (booking) => {
+            setCurrentBooking(null)
+            setCurrentBookings(prev => ([...prev.filter(prevBookings => prevBookings.id != booking.id)])) 
         })
 
         return () => {

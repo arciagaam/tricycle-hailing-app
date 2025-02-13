@@ -15,9 +15,9 @@ export default async function ManageUsers() {
 
   return (
     <div className="flex flex-col">
-      <PageTitle title={"Manage Dropoffs"} />
+      <PageTitle title={"Manage Users"}/>
 
-      <div className='w-full h-full p-4 gap-2 flex flex-col'>
+      <div className='w-full h-full pt-[80px] p-4 gap-2 flex flex-col'>
         <div className='flex w-full justify-end items-center'>
           <Link href={'/users/create'}>
             <Button>

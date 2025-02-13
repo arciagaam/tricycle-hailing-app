@@ -10,7 +10,8 @@ export const baseDropOffSchema = z.object({
     longitude: z.string(),
     latitude: z.string(),
     status: dropoffStatusEnum.default("ACTIVE"),
-    fare: z.string().min(1, 'Required'),
+    specialFare: z.string().min(1, 'Required'),
+    multipleFare: z.string().min(1, 'Required'),
     createdAt: z.string().datetime(),
     updatedAt: z.string().datetime().nullable(),
     deletedAt: z.string().datetime().nullable(),
@@ -106,4 +107,9 @@ export const dropoffBookingRelationSchema = baseDropOffSchema.extend({
 export const loginSchema = baseUserSchema.pick({
     username: true,
     password: true
+})
+
+export const resetPasswordSchema = z.object({
+    currentPassword: z.string().min(1, 'Required'),
+    newPassword: z.string().min(1, 'Required'),
 })

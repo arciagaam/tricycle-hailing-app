@@ -7,10 +7,11 @@ type TSearchDropOff = {
     getFetchedDropoffs: (dropoffs: Dropoff[]) => void;
     setDropoffs: React.Dispatch<React.SetStateAction<Dropoff[] | null | undefined>>;
     onFocus?: () => void;
-    onBlur?: () => void
+    onBlur?: () => void;
+    selectedDropoff?: Dropoff | null;
 }
 
-export default function SearchDropOff({ getFetchedDropoffs, setDropoffs, onFocus, onBlur, }: TSearchDropOff) {
+export default function SearchDropOff({ getFetchedDropoffs, setDropoffs, onFocus, onBlur }: TSearchDropOff) {
 
     const [value, setValue] = useState<string | null>()
 
@@ -39,7 +40,6 @@ export default function SearchDropOff({ getFetchedDropoffs, setDropoffs, onFocus
 
                         getFetchedDropoffs(resDropoff.data)
                     }
-                    // console.log(dropoffs)
                 }
             }
 
@@ -58,6 +58,7 @@ export default function SearchDropOff({ getFetchedDropoffs, setDropoffs, onFocus
             placeholder="Select drop off location"
             onFocus={onFocus}
             onBlur={onBlur}
+        // value={String(selectedDropoff ? selectedDropoff.address : "")}
         />
 
     )

@@ -8,7 +8,7 @@ import React, { ReactElement, useEffect, useState } from 'react'
 import { IconType } from 'react-icons/lib'
 import { MdClose, MdHome, MdList, MdLogout, MdMenu, MdPerson } from 'react-icons/md'
 
-export default function PassengerMenu() {
+export default function PassengerMenu({ appName }: { appName: string | React.ReactNode }) {
     const router = useRouter()
 
     const handleLogout = async () => {
@@ -48,9 +48,9 @@ export default function PassengerMenu() {
     }, [pathname])
 
     return (
-        <div className={`relative h-full`}>
+        <div className={`relative h-full max-w-0`}>
             {!navOpen ? (
-                <Button className={`${!navOpen ? 'block' : 'hidden'} fixed left-4 top-4 z-[999]`} onClick={() => setNavOpen(true)}>
+                <Button className={`${!navOpen ? 'block' : 'hidden'} fixed left-4 lg:left-auto lg:ml-4 top-4 z-[999]`} onClick={() => setNavOpen(true)}>
                     <MdMenu size={24} />
                 </Button>
 
@@ -60,7 +60,9 @@ export default function PassengerMenu() {
                     <div className='absolute z-[9999] max-w-fit top-0 flex flex-col shadow-md border-t-muted min-h-dvh bg-background'>
 
                         <div className='flex gap-2 w-full p-4 items-center justify-between'>
-                            <h1 className='text-lg text-primary font-bold tracking-tighter'>IT MOVE <span>RIDER</span></h1>
+                            <h1 className='text-lg text-primary font-bold tracking-tighter'>
+                                {appName}
+                            </h1>
                             <Button onClick={() => setNavOpen(false)} type='button' className='!focus:text-primary bg-transparent hover:bg-muted shadow-none w-fit h-fit p-0.5'>
                                 <MdClose className='text-black/80 focus:text-primary text-[24px]' />
                             </Button>
@@ -69,10 +71,10 @@ export default function PassengerMenu() {
                         <NavigationMenu className="border-r flex justify-start">
                             <NavigationMenuList className='w-[30dvh] flex flex-col flex-1 justify-start items-start gap-2 !m-0'>
                                 {routes.map((route, i) => (
-                                    <NavigationMenuItem key={i} className='w-full hover:bg-muted px-4 py-2'>
+                                    <NavigationMenuItem key={i} className={`w-full px-4 py-2 ${pathname === route.href ? 'bg-muted' : 'hover:bg-muted'}`}>
                                         <Link href={route.href} legacyBehavior passHref>
                                             <NavigationMenuLink
-                                                className={`flex gap-2 items-center leading-tight ${pathname === route.href ? 'text-primary' : 'text-muted-foreground'}`}>
+                                                className={`flex gap-2 items-center leading-tight ${pathname === route.href ? 'text-primary' : 'text-inactive'}`}>
                                                 {route.icon} {route.label}
                                             </NavigationMenuLink>
                                         </Link>
@@ -81,7 +83,7 @@ export default function PassengerMenu() {
                             </NavigationMenuList>
                         </NavigationMenu>
                         <div className='mt-auto w-full p-4'>
-                            <Button onClick={handleLogout} className='hover:bg-muted border-muted bg-transparent shadow-none text-red-500 w-full flex'>
+                            <Button onClick={handleLogout} className='hover:bg-muted-foreground border-muted bg-transparent shadow-none text-red-500 w-full flex'>
                                 <MdLogout className='text-[24px] ' />
                                 Logout
                             </Button>

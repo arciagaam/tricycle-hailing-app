@@ -40,7 +40,7 @@ export default function HandleDropoffStatusChange({ dropoff }: { dropoff: Dropof
                 </div>
             }
 
-            <Button onClick={handleDropoffStatusChange} className='w-fit'>
+            <Button variant={'secondary'} onClick={handleDropoffStatusChange} className='w-fit'>
                 {dropoff.status == 'ACTIVE' ? 'Disable' : 'Enable'} Dropoff
             </Button>
         </>
