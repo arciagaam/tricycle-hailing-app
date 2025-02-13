@@ -29,10 +29,10 @@ export default async function DriverActivities() {
 
     console.log(bookings)
 
-    return (
-        <>
-            <PageTitle title='Activity History' />
+    if (bookings)
+        return (
             <div className={`bg-background w-full flex flex-col items-start gap-2 ${bookings.length > 0 ? 'h-full' : 'h-fit'}`}>
+                <PageTitle title='Activity History' />
                 <div className='flex flex-col p-4 w-full h-fit gap-5 pt-[80px]'>
                     {
                         bookings.length > 0 ? bookings?.map(booking => (
@@ -46,7 +46,7 @@ export default async function DriverActivities() {
                                         </span>
                                     </span>
                                     <span className='flex flex-col'>
-                                        {booking.dropoffTime ? "P " + (booking.fareType == 'MULTIPLE' ?  Number(booking.fare).toLocaleString() + " each" : Number(booking.fare).toLocaleString()) : booking.status}
+                                        {booking.dropoffTime ? "P " + (booking.fareType == 'MULTIPLE' ? Number(booking.fare).toLocaleString() + " each" : Number(booking.fare).toLocaleString()) : booking.status}
                                     </span>
                                 </span>
                                 <span className='flex justify-between items-center'>
@@ -71,6 +71,5 @@ export default async function DriverActivities() {
 
                 </div>
             </div>
-        </>
-    )
+        )
 }

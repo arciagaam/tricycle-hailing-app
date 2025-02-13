@@ -74,7 +74,7 @@ export default function DriverAvailableBookings({ bookings, user }: { bookings: 
                                 <span className='text-right'>
                                     <p>
                                         P {Number(booking.fareType == 'MULTIPLE' ? booking.dropoff.multipleFare : booking.dropoff.specialFare).toLocaleString()}
-                                        {booking.fareType == 'MULTIPLE' && 'each'}
+                                        {booking.fareType == 'MULTIPLE' && ' each'}
                                     </p>
                                     <p className='text-inactive'>{booking.fareType == 'MULTIPLE' ? '3 Person Up' : 'Special'}</p>
                                 </span>
