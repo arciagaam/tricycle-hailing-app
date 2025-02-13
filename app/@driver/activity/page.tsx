@@ -42,7 +42,7 @@ export default async function DriverActivities() {
                                         <FaMotorcycle className='text-2xl text-primary' />
                                         <span className='flex flex-col'>
                                             <p className='text-black'>{booking.dropoff.name}</p>
-                                            <p className='text-inactive'>{booking.dropoff.address}</p>
+                                            <p className='text-sm text-inactive leading-none'>{booking.dropoff.address}</p>
                                         </span>
                                     </span>
                                     <span className='flex flex-col'>
