@@ -29,8 +29,8 @@ export default function EditDropoffForm({ dropoff }: { dropoff: Dropoff }) {
             address: dropoff.address,
             longitude: dropoff.longitude,
             latitude: dropoff.latitude,
-            multipleFare: dropoff.multipleFare,
-            specialFare: dropoff.specialFare,
+            multipleFare: dropoff.multipleFare || 0,
+            specialFare: dropoff.specialFare || 0,
         }
     })
 
