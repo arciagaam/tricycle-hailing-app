@@ -72,8 +72,8 @@ async function main() {
         longitude: '121.15185416462482',
         latitude: '14.56021890541903',
         status: 'ACTIVE',
-        specialFare: '150.00',
-        multipleFare: '50.00'
+        specialFare: 150.00,
+        multipleFare: 50.00
       }
     ]
   })
