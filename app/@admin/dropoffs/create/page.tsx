@@ -28,8 +28,8 @@ export default function CreateDropoff() {
             address: '',
             longitude: '',
             latitude: '',
-            specialFare: '',
-            multipleFare: ''
+            specialFare: 0,
+            multipleFare: 0
         }
     })
 
@@ -102,9 +102,11 @@ export default function CreateDropoff() {
                                 name="multipleFare"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>3 Person Up Fare</FormLabel>
+                                        <FormLabel>3 Person Up Fare (Price is for each person)</FormLabel>
                                         <FormControl>
+
                                             <Input {...field} />
+
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>

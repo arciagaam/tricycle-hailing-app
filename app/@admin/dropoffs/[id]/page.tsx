@@ -28,7 +28,7 @@ export default async function ViewDropoff(props: { params: Promise<{ id: string 
             <div className="flex flex-col pt-[80px] lg:pt-[100px] p-4 lg:p-8 gap-5">
 
                 <div className="relative w-full rounded-md sm:max-h-[40dvh] aspect-square ">
-                    <GoogleMaps center={{ lat: parseFloat(dropoff.latitude), lng: parseFloat(dropoff.longitude) }} />
+                    <GoogleMaps disableClick center={{ lat: parseFloat(dropoff.latitude), lng: parseFloat(dropoff.longitude) }} />
 
                     {/* <GoogleMapsDirections destination={{ lat: parseFloat(dropoff.latitude), lng: parseFloat(dropoff.longitude) }} /> */}
 
