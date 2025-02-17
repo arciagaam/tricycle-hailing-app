@@ -2,6 +2,8 @@
 
 import { Button } from '@/components/ui/button'
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from '@/components/ui/navigation-menu'
+import { useResponsive } from '@/hooks/useResponsive'
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import React, { ReactElement, useEffect, useState } from 'react'
@@ -42,6 +44,8 @@ export default function AdminMenu() {
         setNavOpen(false)
     }, [pathname])
 
+    const { isMobile } = useResponsive()
+ 
     return (
         <div className={`relative h-full max-w-0`}>
             {!navOpen ? (
@@ -55,7 +59,9 @@ export default function AdminMenu() {
                     <div className='absolute z-[9999] max-w-fit top-0 flex flex-col shadow-md border-t-muted min-h-dvh bg-background'>
 
                         <div className='flex gap-2 w-full p-4 items-center justify-between'>
-                            <h1 className='flex flex-col text-lg text-primary font-bold tracking-tighter'>
+                            <Image src="/logo.png" alt="logo" width={isMobile ? 30 : 40} height={isMobile ? 30 : 40} unoptimized />
+
+                            <h1 className={`flex flex-col text-lg text-primary font-bold tracking-tighter ${isMobile ? 'leading-none' : 'leading-normal'}`}>
                                 SBU Toda Tracker <span className='text-xs leading-none'>ADMIN</span>
                             </h1>
                             <Button onClick={() => setNavOpen(false)} type='button' className='!focus:text-primary bg-transparent hover:bg-muted shadow-none w-fit h-fit p-0.5'>

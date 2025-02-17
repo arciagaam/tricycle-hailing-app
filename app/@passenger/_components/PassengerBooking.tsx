@@ -449,7 +449,7 @@ const CompletedScreen = ({ booking, setPassengerDroppedOff }: { booking: Booking
                 <hr className='w-full' />
 
                 <div className="flex flex-col w-full">
-                    <p className='text-sm font-medium text-inactive'>Driver</p>
+                    <p className='text-sm font-medium text-inactive'>Driver Details</p>
                     <p>{handleFullName({ firstName: booking?.driver?.firstName, middleName: booking?.driver?.middleName, lastName: booking?.driver?.lastName })}</p>
                 </div>
 
