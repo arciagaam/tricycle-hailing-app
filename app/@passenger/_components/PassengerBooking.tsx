@@ -84,6 +84,7 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
         socket.on('booking_cancelled', () => {
             setBooking(null)
             setSelectedDropoff(null)
+            toast.error('Driver cancelled')
         })
 
         return () => {
@@ -115,7 +116,7 @@ export default function PassengerBooking({ currentBooking, currentUser }: {
             body: JSON.stringify({
                 dropoffId: selectedDropoff?.id,
                 passengerId: currentUser.id,
-                fare: selectedFareType == 'multipleFare' ? selectedDropoff.multipleFare : selectedDropoff.specialFare,
+                fare: selectedFareType == 'multipleFare' ? String(selectedDropoff.multipleFare) : String(selectedDropoff.specialFare),
                 fareType: selectedFareType == 'multipleFare' ? 'MULTIPLE' : 'SPECIAL'
             })
         })
@@ -275,6 +276,7 @@ const BookingScreen = ({ booking }: { booking: BookingWithRelations }) => {
         socket.emit('cancel_booking', booking)
         toast.success('Booking cancelled')
     }
+    
     return (
         <Drawer>
             <DrawerTrigger asChild>

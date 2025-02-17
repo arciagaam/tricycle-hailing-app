@@ -9,6 +9,7 @@ import { BookingWithRelations } from '@/lib/types'
 import { handleFullName, toTitleCase } from '@/lib/utils'
 import { socket } from '@/socket'
 import React, { SetStateAction, useState } from 'react'
+import toast from 'react-hot-toast'
 import { CiMenuKebab } from 'react-icons/ci'
 import { FaMotorcycle, FaSchool } from 'react-icons/fa'
 import { MdCheckCircle, MdPinDrop, MdSchool } from 'react-icons/md'
@@ -39,6 +40,21 @@ export default function DriverCurrentBooking({ booking }: { booking: BookingWith
 
         setIsLoading(false);
 
+    }
+
+    const handleCancelBooking = async () => {
+        const res = await fetch(`/api/bookings`, {
+            method: 'PATCH',
+            body: JSON.stringify({
+                id: booking.id,
+                status: 'CANCELLED'
+            })
+        });
+
+        if (!res.ok) return toast.error('Something went wrong while cancelling this booking. Try again')
+
+        socket.emit('cancel_booking', booking)
+        toast.success('Booking cancelled')
     }
 
     const dropoffPassenger = async () => {
@@ -137,9 +153,19 @@ export default function DriverCurrentBooking({ booking }: { booking: BookingWith
                                             </span>
                                         </div>
 
+
+
                                         {
-                                            booking.status == 'ACCEPTED' && <Button disabled={isLoading} onClick={pickupPassenger}>Pickup Passenger</Button>
+                                            booking.status == 'ACCEPTED' &&
+
+                                            <div className="flex flex-col gap-2">
+                                                <Button disabled={isLoading} onClick={pickupPassenger}>Pickup Passenger</Button>
+                                                <Button variant={'secondary'} disabled={isLoading} onClick={handleCancelBooking}>Cancel Pickup</Button>
+                                            </div>
+
                                         }
+
+
 
                                         {
                                             booking.status == 'ONGOING' && <Button disabled={isLoading} onClick={dropoffPassenger}>Dropoff Passenger</Button>
